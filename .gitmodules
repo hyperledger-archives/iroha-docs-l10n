@@ -1,4 +1,3 @@
 [submodule "iroha"]
 	path = iroha
-	url = git@github.com:hyperledger/iroha.git
-	branch = 5615261
+	url = https://github.com/hyperledger/iroha.git
