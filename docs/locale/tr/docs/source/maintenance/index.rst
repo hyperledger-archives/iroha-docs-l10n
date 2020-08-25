@@ -1,12 +1,12 @@
-========
-Maintain
-========
+=====
+Bakım
+=====
 
-Hardware requirements, deployment process in details, aspects related to security, configuration files — all of the listed is explained in this separate section, helpful for DevOps engineers or those who are digging deeper in the system capabilities.
+Donanım gereksinimleri, detaylı dağıtım süreci, güvenlikle ilgili hususlar, konfigürasyon dosyaları — listelenenlerin tamamı bu ayrı bölümde açıklandı, DevOps mühendisleri veya sistem özelliklerini derinlemesine inceleyenler için yardımcıdır.
 
 .. toctree::
     :maxdepth: 3
-    :caption: Table of contents
+    :caption: İçindekiler listesi
 
     restarting_node.rst
     sec-install.rst

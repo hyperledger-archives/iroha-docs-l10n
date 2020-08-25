@@ -1,9 +1,9 @@
-Client Libraries
-================
+Kullanıcı Kütüphaneleri
+=======================
 
 .. toctree::
     :maxdepth: 2
-    :caption: Table of contents
+    :caption: İçindekiler listesi
 
     libraries/java.rst
     libraries/javascript.rst

@@ -1,104 +1,103 @@
-Use Case Scenarios
-==================
+Kullanım Senaryoları
+====================
 
-We list a number of use cases and specific advantages that Hyperledger Iroha can introduce to these applications. We hope that the applications and use cases will inspire developers and creators to further innovation with Hyperledger Iroha.  
-
-
-Certificates in Education, Healthcare 
-------------------------------------- 
-
-Hyperledger Iroha incorporates into the system multiple certifying authorities such as universities, schools, and medical institutions. Flexible permission model used in Hyperledger Iroha allows building certifying identities, and grant certificates. The storage of explicit and implicit information in users' account allows building various reputation and identity systems. 
-
-By using Hyperledger Iroha each education or medical certificate can be verified that it was issued by certain certifying authorities. Immutability and clear validation rules provide transparency to health and education significantly reducing the usage of fake certificates.  
-
-Example
-^^^^^^^
-
-Imagine a medical institution registered as a ``hospital`` domain in Hyperledger Iroha. This domain has certified and registered workers each having some role, e.g. ``physician``, ``therapist``, ``nurse``. Each patient of the hospital has an account with full medical history. Each medical record, like blood test results, is securely and privately stored in the account of the patient as JSON key/values. Rules in ``hospital`` domain are defined such that only certified medical workers and the user can access the personal information. The medical data returned by a query is verified that it comes from a trusted source. 
-
-Hospital is tied to a specific location, following legal rules of that location, like storing personal data of citizens only in specific regions(`privacy rules`_). A multi-domain approach in Hyperledger Iroha allows sharing information across multiple countries not violating legal rules. For example, if the user ``makoto@hospital`` decides to share personal case history with a medical institution in another country, the user can use ``grant`` command with permission ``can_get_my_acc_detail``. 
-
-Similar to a medical institution, a registered university in Hyperledger Iroha has permissions to push information to the graduated students. A diploma or certificate is essentially Proof-of-Graduation with a signature of recognized University. This approach helps to ease hiring process, with an
-employer making a query to Hyperledger Iroha to get the acquired skills and competence of the potential employee. 
-
-.. _`privacy rules`: https://privacypolicies.com/blog/privacy-law-by-country/
-
-Cross-Border Asset Transfers
-----------------------------
-
-Hyperledger Iroha provides fast and clear trade and settlement rules using multi-signature accounts and atomic exchange. Asset management is easy as in centralized systems while providing necessary security guarantees. By simplifying the rules and commands required to create and transfer assets, we lower the barrier to entry, while at the same time maintaining high-security guarantees.  
-
-Example
-^^^^^^^
-
-For example [#f1]_, a user might want to transfer the ownership of a car. User ``haruto`` has registered owner-asset relationship with a car of ``sora`` brand with parameters: ``{"id": "34322069732074686520616E73776572", "color": "red", "size": "small"}``. This ownership is fixed in an underlying database of the system with copies at each validating peer. To perform the transfer operation user ``haruto`` creates an offer, i.e. a multi-signature transaction with two commands: ``transfer`` to user ``haru`` the car identifier and ``transfer`` some amount of ``usd`` tokens from ``haru`` to ``haruto``. Upon receiving the offer ``haru`` accepts it by signing the multi-signature transaction, in this case, transaction atomically commits to the system.  
-
-Hypeledger Iroha has no built-in token, but it supports different assets from various creators. This approach allows building a decentralized exchange market. For example, the system can have central banks from different countries to issue assets.
-
-.. [#f1] Currently not implemented  
-
-Financial Applications 
-----------------------
-
-Hyperleger Iroha can be very useful in the auditing process. Each information is validated by business rules and is constantly maintained by distinct network participants. Access control rules along with some encryption maintain desired level of privacy. Access control rules can be defined at different levels: user-level, domain-level or system-level. At the user-level privacy rules for a specific individual are defined. If access rules are determined at domain or system level, they are affecting all users in the domain. In Hyperledger Iroha we provide convenient role-based access control rules, where each role has specific permissions. 
-
-Transactions can be traced with a local database. Using Iroha-API auditor can query and perform analytics on the data, execute specific audit software. Hyperledger Iroha supports different scenarios for deploying analytics software:  on a local computer, or execute code on specific middleware. This approach allows analyzing Big Data application with Hadoop, Apache, and others. Hypeledger Iroha serves as a guarantor of data integrity and privacy (due to the query permissions restriction). 
-
-Example 
-^^^^^^^
-
-For example, auditing can be helpful in financial applications. An auditor account has a role of the ``auditor`` with permissions to access the information of users in the domain without bothering the user. To reduce the probability of account hijacking and prevent the auditor from sending malicious queries, the auditor is typically defined as a multi-signature account, meaning that auditor can make queries only having signatures from multiple separate identities. The auditor can make queries not only to fetch account data and balance but also all transactions of a user, e.g. all transfers of user ``haruto`` in domain ``konoha``. To efficiently analyze data of million users each Iroha node can work in tandem with analytics software.    
-
-Multi-signature transactions are a powerful tool of Hyperledger Iroha that can disrupt tax system. Each transaction in a certain domain can be as a multi-signature transaction, where one signature comes from the user (for example asset transfer) and the second signature comes from special taxing nodes. Taxing nodes will have special validation rules written using Iroha-API, e.g. each purchase in the certified stores must pay taxes. In other words, Iroha a valid purchase transaction must contain two commands: money transfer(purchase) to the store and money transfer(tax payment) to the government.           
+Kullanım durumlarının sayısını ve Hyperledger Iroha'nın bu uygulamalara getirebileceği spesifik avantajları listeleyeceğiz. Umuyoruz ki uygulamalar ve kullanım durumları Hyperledger Iroha ile geliştiricilere ve yaratıcılara daha fazla yenilik getirecek.  
 
 
-Identity Management
--------------------
+Eğitim ve Sağlık Sertifikaları 
+------------------------------ 
 
-Hyperledger Iroha has an intrinsic support for identity management. Each user in the system has a uniquely identified account with personal information, and each transaction is signed and associated with a certain user. This makes Hyperledger Iroha perfect for various application with KYC (Know Your Customer) features. 
+Hyperledger Iroha sisteme üniversiteler, okullar ve tıp kurumları gibi birçok sertifika yetkilisini dahil eder. Esnek yetki modeli sertifika kimliklerinin oluşturulmasına ve sertifika verilmesine izin veren Hyperledger Iroha'da kullanılır. Kullanıcıların hesabında belirgin ve belirgin olmayan bilgilerin depolanması çeşitli saygınlık ve kimlik sistemlerinin oluşturulmasına izin verir. 
 
-Example
-^^^^^^^
+Hyperledger Iroha kullanarak belirli sertifika yetkilileri tarafından verilen her eğitim veya tıp sertifikası doğrulanabilir. Değişmezlik ve net onaylama kuralları sahte sertifikaların kullanımını önemli ölçüde azaltan sağlık ve eğitime şeffaflık sağlar.
 
-For example, insurance companies can benefit from querying the information of user’s transaction without worrying about the information truthfulness. Users can also benefit from storing personal information on a blockchain since authenticated information will reduce the time of claims processing. 
-Imagine a situation where a user wants to make a hard money loan. Currently, pre-qualification is a tedious process of gathering information about income, debts and information verification. Each user in Hyperledger Iroha has an account with verified personal information, such as owning assets, job positions, and debts. User income and debts can be traced using query ``GetAccountTransactions``, owning assets using query ``GetAccountAssets`` and job positions using ``GetAccountDetail``. Each query returns verified result reducing the processing time of hard money loan will take only a few seconds.          
-To incentivize users to share personal information, various companies can come up with business processes. For example, insurance companies can create bonus discounts for users making fitness activities. Fitness applications can push private Proof-of-Activity to the system, and the user can decide later to share information with insurance companies using ``GrantPermission`` with permission ``can_get_my_acc_detail``.   
+Örnek
+^^^^^
+
+Hyperledger Iroha'da ``hospital`` alanı olarak kayıtlı bir sağlık kurumunu düşünün. Bu alan her birinin sahip olduğu bir rolü olan sertifikalı ve kayıtlı çalışlanlara sahiptir, örneğin ``physician``, ``therapist``, ``nurse``. Hastanenin her hastası tam tıbbi geçmişle bir hesaba sahiptir. Kan testi sonuçları gibi her tıbbi kayıt JSON anahtar/değerler olarak hastanın hesabında güvenli ve özel bir şekilde depolanır. ``hospital`` alanında kurallar sadece sertifikalı tıbbi çalışanlar ve kişisel bilgilere erişebilen kullanıcılara tanımlanır. Tıbbi veri güvenilir bir kaynaktan gelen doğrulanmış bir sorgu tarafından geri döndürülür. 
+
+Hastane yalnızca belirli bir bölgede vatandaşların kişisel bilgilerini saklamak gibi o lokasyonun yasal kurallarına uymak üzere spesifik bir lokasyona bağlıdır(`gizlilik kuralları`_). Hyperledger Iroha'daki çok-alanlı yaklaşım yasal kuralları ihlal etmeyen birçok ülkede bilgi paylaşımına izin verir. Örneğin, eğer ``makoto@hospital`` kullanıcısı kişisel durum geçmişini başka ülkedeki tıp kurumuyla paylaşmaya karar verirse, kullanıcı ``can_get_my_acc_detail`` yetkisiyle ``grant`` komutunu kulanabilir. 
+
+Bir tıp kurumuna benzer şekilde, Hyperledger Iroha'da kayıtlı bir üniversite mezun öğrencilere bilgi vermek için yetkilere sahiptir. Bir diploma veya sertifika temelde tanınan Üniversitenin bir imzası ile Mezuniyetin-Kanıtıdır. Bu yaklaşım bir işverenin potansiyel elemanının kazanılmış becerilerini ve yeterliliğini elde etmek için Hyperledger Iroha'ya sorgulama yapmasıyla işe alım sürecinde kolaylaşmaya yardımcı olur. 
+
+.. _`gizlilik kuralları`: https://privacypolicies.com/blog/privacy-law-by-country/
+
+Sınır-Ötesi Varlık Transferleri
+-------------------------------
+
+Hyperledger Iroha çoklu imzalı hesapları ve atomik değişimi kullanarak hızlı ve net ticaret ve yerleşim kuralları sağlar. Varlık yönetimi gerekli güvenlik garantilerini sağlarken merkezi sistemlerdeki kadar kolaydır. Varlık yaratmak ve transfer etmek için gereken kuralları ve komutları basitleştirerek aynı zamanda yüksek-güvenlikli garantileri korurken giriş engelini indiriyoruz.  
+
+Örnek
+^^^^^
+
+Örneğin [#f1]_, bir kullanıcı bir arabanın mülkiyetini transfer etmek isteyebilir. ``haruto`` kullanıcısı bu parametrelerle ``sora`` markalı bir araba ile sahip-varlık ilişkisine kayıt oldu: ``{"id": "34322069732074686520616E73776572", "color": "red", "size": "small"}``. Bu sahiplik her onaylayıcı eşteki kopyaları ile sistemin temel veritabanında sabitlenir. Transfer işlemi gerçekleştirmek için ``haruto`` kullanıcısı bir teklif oluşturur, örneğin iki komutlu çoklu-imza işlemi: ``haru`` kullanıcısına araba tanımlayıcısı ``transfer`` etmek ve ``haru``'dan ``haruto``'ya bir miktar ``usd`` jetonu ``transfer`` etmek. Teklifi alması üzerine ``haru`` çoklu-imza işlemini imzalayarak kabul eder, bu durumda işlem atomik olarak sisteme işlenir.  
+
+Hypeledger Iroha dahili jetona sahip değildir fakat çeşitli yaratıcılardan farklı varlıkları destekler. Bu yaklaşım merkezi olmayan bir borsa oluşturulmasına izin verir. Örneğin, sistem farklı ülkelerden varlık ihraç etmek için merkez bankalarına sahip olabilir.
+
+.. [#f1] Şu anda uygulanmadı  
+
+Finansal Uygulamalar 
+--------------------
+
+Hyperleger Iroha denetim sürecinde çok kullanışlı olabilir. Her bilgi iş kuralları tarafından onaylanır ve farklı ağ katılımcıları tarafından sürekli korunur. Bâzı şifreleme ile birlikte erişim kontrol kuralları istenen gizlilik seviyesini korur. Erişim kontrol kuralları farklı seviyelerde tanımlanabilir: kullanıcı-seviyesi, alan-seviyesi veya sistem-seviyesi. Kullanıcı-seviyesinde spesifik bir birey için gizlilik kuralları tanımlanır. Eğer erişim kuralları alan veya sistem seviyesinde belirlenirse, alandaki bütün kullanıcıları etkiliyorlar. Hyperledger Iroha'da her rolün spesifik yetkilere sahip olduğu uygun rol-bazlı erişim kontrol kuralları sağlıyoruz. 
+
+İşlemler yerel bir veritabanıyla izlenebilir. Iroha-API denetçisini kullanmak verileri sorgulayabilir ve analiz edebilir spesifik denetim yazılımları yürütebilir. Hyperledger Iroha analitik yazılımı dağıtmak için farklı senaryolara destek verir:  yerel bir bilgisayarda veya spesifik bir ara katmanda kodu çalıştırınız. Bu yaklaşım Hadoop, Apache ve diğerleriyle Big Data uygulamasını analiz etmeye izin verir. Hypeledger Iroha veri bütünlüğü ve gizliliğinin garantörü olarak servis yapar (sorgu yetkileri kısıtlaması nedeniyle). 
+
+Örnek
+^^^^^
+
+Örneğin, denetleme finansal uygulamalarda yardımcı olabilir. Bir denetçi hesabı kullanıcıyı rahatsız etmeksizin alandaki kullanıcıların bilgisine erişim izni olan bir ``auditor`` rolüne sahiptir. Hesap ele geçirme ihtimalini azaltmak ve denetçinin kötü niyetli sorgular göndermesine engel olmak için, denetçi tipik olarak çoklu-imza hesabı olarak tanımlanır bunun anlamı denetçi yalnızca birden çok ayrı kimlikten imzalara sahip sorgular oluşturablir. Denetçi sadece hesap verilerini ve bakiyeyi almak için değil aynı zamanda bir kullanıcının bütün işlemlerini de sorgulayabilir, örneğin ``haruto`` kullanıcısının ``konoha`` alanındaki bütün transferleri. Milyonlarca kullanıcının verisini verimli bir biçimde analiz etmek için her Iroha düğümü analitik yazılımla beraber çalışabilir.    
+
+Çoklu-imza işlemleri Hyperledger Iroha'nın vergi sistemini bozabilen güçlü bir aracıdır. Belirli bir alandaki her işlem ilk imzanın kullanıcıdan gelen (örneğin varlık transferi) ve ikinci imzanın özel vergi düğümlerinden gelen bir çoklu-imza işlemi olabilir. Vergi düğümleri Iroha-API kullanrak yazılmış özel onaylama kurallarına sahip olacaktır, örneğin sertifikalı mağazalardaki her sipariş vergi ödemek zorundadır. Başka bir deyişle, Iroha geçerli bir sipariş işlemi iki komut içermelidir: mağazaya para transferi(sipariş) ve devlete para transferi(vergi ödemesi).           
 
 
-Supply Chain
-------------
-
-Governance of a decentralized system and representing legal rules as a system's code is an essential combination of any supply chain system. Certification system used in Hyperledger Iroha allows tokenization of physical items and embedding them into the system. Each item comes with the information about “what, when, where and why”. 
-
-Permission systems and restricted set of secure core commands narrows the attack vector and provides effortlessly a basic level of privacy. Each transaction is traceable within a system with a hash value, by the credentials or certificates of the creator. 
-
-Example
-^^^^^^^
-
-Food supply chain is a shared system with multiple different actors, such as farmers, storehouses, grocery stores, and customers. The goal is to deliver food from a farmer's field to the table of a customer. The product goes through many stages, with each stage recorded in shared space. A customer scans a code of the product via a mobile device, in which an Iroha query is encoded. Iroha query provides a full history with all stages, information about the product and the farmer. 
-
-For example, ``gangreen`` is a registered farmer ``tomato`` asset creator, he serves as a guarantor tokenizing physical items, i.e. associating each tomato with an Iroha ``tomato`` item. Asset creation and distribution processes are totally transparent for network participants. Iroha ``tomato`` goes on a journey through a multitude of vendors to finally come to user ``chad``. 
-
-We simplified asset creation to just a single command ``CreateAsset`` without the need to create complex smart contracts. One the major advantages of Hyperledger Iroha is in its ease, that allows developers to focus on the provided value of their applications. 
-
-Fund Management
+Kimlik Yönetimi
 ---------------
 
-With the support of multisignature transactions it is possible to maintain a fund by many managers. In that scheme investment can only be made after the confirmation of the quorum participants.
+Hyperledger Iroha kimlik yönetimi için gerçek bir desteğe sahiptir. Sistemdeki her kullanıcı kişisel bilgilerinin bulunduğu özgün bir şekilde tanımlanmış bir hesaba sahiptir ve her işlem belirli bir kullanıcı tarafından imzalandı ve ilişkilendirildi. Bu KYC (Know Your Customer) özellikli çeşitli uygulamalar için Hyperledger Iroha'ı mükemmel yapar. 
 
-Example
+Örnek
+^^^^^
+
+Örneğin, sigorta şirketleri bilginin doğruluğu hakkında endişe etmeksizin kullanıcının işlem bilgisinin sorgulanmasından faydalanabilir. Kullanıcılar ayrıca kişisel bilgilerin bir blokzincirinde depolanmasından da yararlanabilir çünkü kimliği doğrulanmış bilgiler taleplerin işleme koyulma süresini azaltacaktır. 
+Peşin para kredisi almak isteyen bir kullanıcının olduğu bir durum düşünün. Şu anda, önyeterlilik gelir, borçlar ve bilgi doğrulaması hakkında bilgi toplamanın sıkıcı bir sürecidir. Hyperledger Iroha'daki her kullanıcı varlıklara sahip olmak, iş pozisyonları ve borçlar gibi doğrulanmış kişisel bilgilere sahip bir hesabı vardır. ``GetAccountTransactions`` kullanarak kullanıcının geliri ve borçları, ``GetAccountAssets`` sorgusunu kullanarak varlıkları ve ``GetAccountDetail`` kulanarak iş pozisyonları izlenilebilir. Her sorgu nakit para kredisinin işlem süresini azaltan doğrulanmış sonuç döndürür ve sadece birkaç saniye sürer.          
+Kişisel bilgileri paylaşmaya kullanıcıları ikna etmek için, çeşitli şirketler iş süreçleriyle birlikte gelebilirler. Örneğin, sigorta şirketleri fitness aktiviteleri yapan kullanıcılar için bonus indirimler yapabilirler. Fitness uygulamaları özel Faaliyet-Kanıtı'nı sisteme gönderebilir ve kullanıcı ``can_get_my_acc_detail`` yetkisiyle ``GrantPermission`` kullanarak daha sonra sigorta şirketleriyle bilgi paylaşmaya karar verebilir.   
+
+
+Tedarik Zinciri
+---------------
+
+Merkezi olmayan bir sistemin yöneimi ve sistemin bir kodu olarak yasal kuralların temsiliyeti herhangi bir tedarik zincir sisteminin temel bir kombinasyonudur. Hyperledger Iroha'da kullanılan Sertifikasyon sistemi fiziksel ürünlerin tokenizasyonuna ve onları sisteme gömmeye izin verir. Her ürün “ne, ne zaman, nerede ve neden” hakkında bilgilerle gelir. 
+
+Yetki sistemleri ve kısıtlı güvenli çekirdek komutları kümesi atak vektörünü daraltır ve çaba harcamadan temel seviyede gizlilik sağlar. Her işlem karışım değerine sahip bir sistemde yaratıcının kimlik bilgileri veya sertifikaları tarafından izlenebilir. 
+
+Örnek
+^^^^^
+
+Gıda tedarik zinciri çiftçiler, ambarlar, bakkallar ve müşteriler gibi birden fazla farklı aktöre sahip paylaşılan bir sistemdir. Amaç bir çiftçinin tarlasından bir müşterinin masasına yiyecek teslim etmektir. Ürün birçok aşamadan geçer ve her aşama paylaşılan alanda kaydedilir. Müşteri Iroha sorgusunun kodlandığı bir mobil cihaz aracılığıyla ürünün kodunu tarar. Iroha sorgusu bütün aşamalarıyla ürün ve çiftçi hakkındaki bilgilerle dolu bir geçmiş sağlar. 
+
+Örneğin, ``gangreen`` kayıtlı bir çiftçi ``tomato`` varlık yaratıcısıdır, fiziksel eşyaları tokenleyen bir garantör olarak hizmet verir, örneğin her domatesin bir Iroha ``tomato`` ürünüyle ilişkilendirilmesi. Varlık yaratıcısı ve dağıtım süreçleri ağ katılımcıları için bütün olarak şeffaftır. Iroha ``tomato`` sonunda ``chad`` kullanıcısına gelmek için çok sayıda satıcı aracılığıyla bir yolculuğa çıkar. 
+
+Varlık yaratmayı kompleks akıllı sözleşmeler oluşturmaya ihtiyaç duymadan yalnızca tek bir ``CreateAsset`` komutuyla basitleştirdik. Hyperledger Iroha'nın en büyük avantajlarından biri geliştiricilerin uygulamalarının sağlanan değerine odaklanmalarını kolaylaştırır. 
+
+Fon Yönetimi
+------------
+
+Çoklu imza işlemlerinin desteği ile birçok yönetici tarafından fon sağlanması mümkündür. Bu şemada sadece yeterli sayıdaki katılımcıların onayından sonra yatırım yapılabilir.
+
+Örnek
 ^^^^^^^
 
-The fund assets should be held at one account.
-Its signatories should be fund managers, who are dealing with investments and portfolio distributions.
-That can be added via ``AddSignatory`` command.
-All of the assets should be held within one account, which signatories represent the fund managers.
-Thus the concrete exchanges can be performed with the multisignature transaction so that everyone will decide on a particular financial decision.
-The one may confirm a deal by sending the original transaction and one of managers' signature.
-Iroha will maintain the transaction sending so that the deal will not be completed until it receives the required number of confirmation, which is parametrized with the transaction quorum parameter.
+Fon varlıkları tek hesapta tutulmalıdır.
+İmza sahipleri yatırımlar ve portföy dağıtımlarıyla ilgilenen fon yöneticileri olmalıdır.
+``AddSignatory`` komutu aracılığıyla eklenebilir.
+Tüm varlıklar imzalayanların fon yöneticilerini temsil ettiği tek bir hesapta tutulmalıdır.
+Böylece somut değiş tokuşlar çok imzalı işlemlerle gerçekleştirilebilir böylece herkes belirli bir finansal karara karar verebilir.
+Orjinal işlemi ve yöneticilerin birinin imzasını göndererek bir anlaşma onaylanabilir.
+Iroha işlem gönderimini işlem çekirdeği parametresiyle parametreleştirilen gerekli sayıda onay alana kadar tamamlanmayacak şekilde sürdürür.
 
 
-Related Research
+İlgili Araştırma
 ----------------
 
-(The idea was to show current pioneers of blockchain applications and their works.)
+(Fikir blokzincir uygulamalarının ve çalışmalarının öncülerini göstermekti.)

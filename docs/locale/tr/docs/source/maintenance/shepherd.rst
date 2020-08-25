@@ -2,56 +2,56 @@
 Shepherd
 ========
 
-Shepherd is a command line utility that helps to perform maintenance tasks with running irohad daemon.
+Shepherd, irohad arka plan programını çalıştıran bakım görevlerini yerine getirmeye yardımcı olan bir komut satırı yardımcı uygulamasıdır.
 
-Prerequisites
-=============
+Önkoşullar
+==========
 
-To access irohad daemon, utility service has to be configured in it.
-See `the configuration details <#configuring-irohad>`_.
+irohad arka plan programına erişmek için, hizmet programı içinde yapılandırılmalıdır.
+`Konfigürasyon detaylarına <#configuring-irohad>`_ bakınız.
 
-Next, when invoking ``shepherd``, pass the ``--irohad`` command line argument with address and port of irohad utility service:
+Ardından, ``shepherd``'ı çağırırken, irohad hizmet programının adres ve bağlantı noktalarıyla ``--irohad`` komut satırı argümanını geçin:
 
 .. code-block:: shell
 
    ./shepherd --irohad 127.0.0.1:11001 <...>
 
-Supported actions
-=================
+Desteklenen eylemler
+====================
 
-These are the things that you can do with ``shepherd`` by specifying additional command line arguments.
+Bunlar ek komut satırı argümanları belirterek ``shepherd`` ile yapabileceğiniz şeylerdir.
 
-Graceful shutdown
-^^^^^^^^^^^^^^^^^
-How did you stop iroha before?
-What, did you really really kill it?
-Oh, please never do that again, it is not polite and nice!
+Otomatik zararsız kapanma
+^^^^^^^^^^^^^^^^^^^^^^^^^
+İroha'yı daha önce nasıl durdurdunuz?
+Ne yani, gerçekten prosesi durdurdunuz mu?
+Lütfen bir daha asla yapma, kibar ve hoş değil!
 
 .. code-block:: shell
 
    ./shepherd <...> --shutdown
 
-With ``--shutdown`` argument, shepherd will politely ask Iroha to stop.
+``--shutdown`` argümanıyla, shepherd kibarca Iroha'dan durmasını isteyecek.
 
-Watch it work
-^^^^^^^^^^^^^
-Widely considered one of the greatest pleasures is watching others work.
-With shepherd you can watch Iroha working!
+İşe yaradığını izleyin
+^^^^^^^^^^^^^^^^^^^^^^
+Yaygın olarak görülen en büyük zevklerden biri, başkalarının çalışmasını izlemektir.
+Shepherd ile Iroha'nın çalışmasını izleyebilirsiniz!
 
 .. code-block:: shell
 
    ./shepherd <...> --status
 
-This will subscribe for work cycle status updates.
-You will get unambiguous messages when the daemon is starting, operating, terminating or has just stopped.
+Bu, çalışma döngüsü durum güncellemelerine abone olacaktır.
+Arka plan programı başlatılırken, çalışırken, sonlandırıldığında veya henüz durduğunda net mesajlar alacaksınız.
 
-Other parameters
-================
+Diğer parametreler
+==================
 
-You can also set the logging level:
+Ayrıca işlem geçmişi saklama seviyesini ayarlayabilirsiniz:
 
 .. code-block:: shell
 
    ./shepherd <...> --verbosity debug <...>
 
-Supported values are ``trace``, ``debug``, ``info``, ``warning``, ``error`` and ``critical``.
+Desteklenen değerler ``trace``, ``debug``, ``info``, ``warning``, ``error`` ve ``critical``'dır.

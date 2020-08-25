@@ -1,12 +1,12 @@
 .. _concepts_architecture:
 
-=========================
-Concepts and Architecture
-=========================
+===================
+Konsept ve Mimarlık
+===================
 
-Iroha is a system that can work with different concepts, and for your convenience we would like you to look through them so you could familiarise yourself with what you will be dealing with. That can be done in "Core concepts section".
+Iroha farklı konseptlerle çalışabilinen bir sistemdir ve size kolaylık sağlamak için onları incelemenizi istiyoruz böylece ne ile ilgileneceğinizi tanıyabilirsiniz. "Temel kavramlar bölümünde" bunu yapabilirsiniz.
 
-To learn, what Iroha is made of, please check out "What's inside Iroha?"
+Iroha'nın asıl yüzünü öğrenmek için, lütfen "Iroha'da neler var?"a göz atın.
 
 .. toctree::
       :maxdepth: 1

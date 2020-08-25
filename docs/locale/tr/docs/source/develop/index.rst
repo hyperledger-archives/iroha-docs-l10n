@@ -1,16 +1,16 @@
-================
-Develop on Iroha
-================
+====================
+Iroha'da Geliştirmek
+====================
 
-Iroha is a great backend for your applications working on distributed ledgers.
-In this section we will cover the instruments (API reference and libraries) and cases you could use for that.
+Iroha dağıtılmış defterlerde çalışan uygulamanız için harika bir arka servisdir.
+Bu bölümde araçları (API referans ve kütüphaneler) ve bunun için kullanabileceğimiz durumları kapsayacağız.
 
-You can also check out `The Borsello App <https://github.com/claudiocandio/borsello>`_ – it is a wallet for Android & iOS along with a web browser application contributed by `Claudio <https://github.com/claudiocandio>`_.
-It might help you understand the general idea of how frontend can be used with HL Iroha.
+Ayrıca `The Borsello App <https://github.com/claudiocandio/borsello>`_'i kontrol edebilirsiniz – `Claudio <https://github.com/claudiocandio>`_ tarafından katkı yapılmış bir web tarayıcı uygulaması ile birlikte Android & iOS için bir cüzdandır.
+HL Iroha'yla nasıl önyüz kullanılabileceğine dair genel bir fikir oluşmasına yardımcı olabilir.
 
 .. toctree::
     :maxdepth: 2
-    :caption: Table of contents
+    :caption: İçindekiler listesi
 
     libraries.rst
     keys.rst

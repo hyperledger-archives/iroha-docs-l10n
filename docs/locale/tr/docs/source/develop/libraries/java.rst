@@ -1,27 +1,27 @@
-Java Library
-------------
+Java Kütüphaneleri
+------------------
 
-Client library of Iroha written completely in Java 8, which includes:
+Iroha'nın kullanıcı kütüphanesi tamamen Java 8'de yazıldı ve şunları içeriyor:
 
-- SDK to work with Iroha API
+- SDK Iroha API'yla çalışmak için
 
-- async wrapper over Iroha API
+- Iroha API üzerinde asenkron kapsayıcı
 
-- `testcontainers` wrapper for convenient integration testing with Iroha
+- Iroha ile rahat entegrasyon testi için `testcontainers` kapsayıcısı
 
-- examples in Java and Groovy
+- Java ve Groovy'de örnekler
 
-Both options are described in the following sections.
-Please check readme file in `project's repo <https://github.com/hyperledger/iroha-java>`__.
+Her iki seçenek de aşağıdaki bölümlerde açıklanmaktadır.
+Lütfen `projenin reposundaki <https://github.com/hyperledger/iroha-java>`__ benioku dosyasını kontrol ediniz.
 
-How to use
-^^^^^^^^^^
+Nasıl kullanılır
+^^^^^^^^^^^^^^^^
 
 - `JitPack <https://jitpack.io/#hyperledger/iroha-java>`__
-- `GitHub <https://github.com/hyperledger/iroha-java>`__
+- `GitHub <https://github.com/hyperledger/iroha>`__
 
-Example code
-^^^^^^^^^^^^
+Örnek kod
+^^^^^^^^^
 
 .. code-block:: java
 

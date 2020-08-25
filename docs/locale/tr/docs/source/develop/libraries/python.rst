@@ -1,20 +1,20 @@
-Python Library
---------------
+Python Kütüphanesi
+------------------
 
-Where to Get
-^^^^^^^^^^^^
+Nereden edinilir
+^^^^^^^^^^^^^^^^
 
-A supported python library for Iroha is available at its `own Hyperledger iroha-python repo <https://github.com/hyperledger/iroha-python/>`__.
-Python 3+ is supported.
+Iroha için desteklenen bir python kütüphanesi onun `kendi Hyperledger iroha-python reposunda <https://github.com/hyperledger/iroha-python/>`__ mevcuttur.
+Python 3+ desteklenir.
 
-You can also install Python library via pip:
+Ayrıca pip aracılığıyla Python kütüphanesini yükleyebilirsiniz:
 
   .. code:: sh
 
       pip install iroha
 
-Example Code
-^^^^^^^^^^^^
+Örnek Kod
+^^^^^^^^^
 
 .. code:: python
 
