@@ -1,143 +1,143 @@
-First off, thanks for taking the time to contribute!
+Öncelikle zamanınızı destek vermeye ayırdığınız için teşekkürler!
 
-The following is a short set of guidelines for contributing to Iroha.
-
-
-#### Table Of Contents
-
-##### [How Can I Contribute?](#how-can-i-contribute-1)
-
-- [Reporting Bugs](#reporting-bugs)
-- [Reporting Vulnerabilities](#reporting-vulnerabilities)
-- [Suggesting Improvements](#suggesting-improvements)
-- [Asking Questions](#asking-questions)
-- [Your First Code Contribution](#your-first-code-contribution)
-- [Pull Requests](#pull-requests)
-
-##### [Styleguides](#styleguides-1)
-
-- [Git Style Guide](#git-style-guide)
-- [C++ Style Guide](#c-style-guide)
-- [Documentation Styleguide](#documentation-styleguide)
-
-### [Contact Developers](#places-where-community-is-active)
+Aşağıda Iroha'ya nasıl destek verebileceğinizi anlatan bir kılavuz hazırladık.
 
 
-## How Can I Contribute?
+#### İçindekiler
 
-### Reporting Bugs
+##### [Nasıl destek olabilirim?](#nasil-destek-olabilirim)
 
-*Bug* is an error, design flaw, failure or fault in Iroha that causes it to produce an incorrect or unexpected result, or to behave in unintended ways.
+- [Hataları Raporlamak](#hatalari-raporlamak)
+- [Güvenlik Açıklarını Raporlamak](#guvenlik-aciklarini-raporlamak)
+- [İyileştirmeler Önermek](#iyilestirmeler-onermek)
+- [Sorular Sormak](#sorular-sormak)
+- [İlk Kod Desteğiniz](#ilk-kod-desteginiz)
+- [Pull Talepleri](#pull-talepleri)
 
-Bugs are tracked as [JIRA issues](https://jira.hyperledger.org/projects/IR/issues/IR-275?filter=allopenissues&orderby=issuetype+ASC%2C+priority+DESC%2C+updated+DESC) in Hyperledger Jira.
+##### [Stil kılavuzları](#stil-kilavuzlari)
 
-To submit a bug, [create new issue](https://jira.hyperledger.org/secure/CreateIssue.jspa) and include these details:
+- [Git Stil Kılavuzu](#git-stil-kilavuzu)
+- [C++ Stil Kılavuzu](#c-stil-kilavuzu)
+- [Dokümantasyon Stil Kılavuzu](#dokumentasyon-stilkilavuzu)
 
-| Field                   | What to enter                                                    |
+### [Geliştiriciler ile Teamasa Geçin](#toplulugun-aktif-oldugu-yerler)
+
+
+## Nasil Destek Olabilirim?
+
+### Hatalari Raporlamak
+
+Hatalar (bug) tasarım açıkları, yanlışlık ya da arıza olarak Iroha'nın geçersiz veya beklenmeyen bir sonuç üretmesine neden olan veya kasıt edilmemiş şekillerden davranmasına neden olan durumlardır.
+
+Hatalar [JIRA sorunları](https://jira.hyperledger.org/projects/IR/issues/IR-275?filter=allopenissues&orderby=issuetype+ASC%2C+priority+DESC%2C+updated+DESC) olarak Hyperledger Jira'da tutulmaktadırlar..
+
+Bir hatayı bildirmek istiyorsanız, [yeni bir sorun oluşturabilir](https://jira.hyperledger.org/secure/CreateIssue.jspa) ve aşağıdaki detayları girebilirsiniz:
+
+| Alan                    | Giriş yapabileceğiniz                                            |
 | :---------------------- | ---------------------------------------------------------------- |
-| Project                 | Iroha (IR)                                                       |
-| Issue Type              | Bug                                                              |
-| Summary                 | Essence of the problem                                               |
-| Description             | What the issue is about; if you have any logs, please provide them|
-| Priority                | You can use Medium though if you see the issue as a high priority, please choose that|
-| Environment             | Your OS, device's specs, Virtual Environment if you use one, version of Iroha etc. |
+| Proje                   | Iroha (IR)                                                       |
+| Hata Tipi               | Bug                                                              |
+| Özet                    | Sorunun esası                                                    |
+| Açıklama                | Sorunun ne ile alakalı olduğu; eğer log (geçmiş) kayıtları varsa lütfen iletin|
+| Öncelik                 | Orta (Medium) olarak girebilirsiniz ancak sorunun acil olduğunu düşünüyorsanız lütfen daha yüksek bir öncelik belirtiniz|
+| Ortam                   | İşletim sisteminiz, cihazınızın özellikleri, Sanal Ortam (eğer kullanıyorsanız), Iroha'nın versiyonu vs.|
 
 
-### Reporting Vulnerabilities
+### Guvenlik Aciklarini Raporlamak
 
-While we try to be proactive in preventing security problems, we do not assume they’ll never come up.
+Güvenlik sorunları karşısında her ne kadar proaktif olmaya çalışsak da hiç çıkmayacaklarını telâkki etmiyoruz.
 
-It is standard practice to responsibly and privately disclose to the vendor (Hyperledger organization)
-a security problem before publicizing, so a fix can be prepared, and damage from the vulnerability minimized.
+Sorumluluk bilinci gözeterek duyuru yapmadan önce gizlice güvenlik açığını üretici ile paylaşmak (Hyperledger organizasyonu), bir çözümün üretilmesine olanak tanımak ve güvenlik açığından doğacak zararları minimize etmek standartlaşmış bir pratiktir.
 
-Before the First Major Release (1.0) all vulnerabilities are considered to be bugs, so feel free to submit them as described above.
-After the First Major Release please utilize [a bug bounty program here](https://hackerone.com/hyperledger) in order to submit vulnerabilities and get your reward.
+İlk Majör Sürüm'den önce (1.0) tespit edilen bütün güvenlik açıkları hata olarak değerlendirilmektedir, yukarıda anlatıldığı gibi bildirebilirsiniz.
+İlk Majör Sürüm'den sonra ise lütfen [burada bir hata ödül programı](https://hackerone.com/hyperledger) oluşturup, güvenlik açığına karşılık ödülünüzü alabilirsiniz.
 
-In any case — feel free to reach to any of existing maintainers in Rocket.Chat private messages or in an e-mail (check CONTRIBUTORS.md file) if you want to discuss whether your discovery is a vulnerability or a bug.
 
-### Suggesting Improvements
+Her durumda da Rocket.Chat özel mesajlarından ya da e-posta (CONTRIBUTORS.md dosyasına bakın) yolu ile bakım personeli (maintainers) ile iletişime geçip keşfettiğinizin bir hata mı bir güvenlik açığımı olduğunu değerlendirebilirsiniz.
 
-An *improvement* is a code or idea, which makes **existing** code or design faster, more stable, portable, secure or better in any other way.
+### Iyilestirmeler Onermek
 
-Improvements are tracked as [JIRA improvements](https://jira.hyperledger.org/browse/IR-184?jql=project%20%3D%20IR%20and%20issuetype%20%3D%20Improvement%20ORDER%20BY%20updated%20DESC). To submit new improvement, [create new issue](https://jira.hyperledger.org/secure/CreateIssue.jspa) and include these details:
+Bir *iyileştirme* (improvement) **var olan** kodu ya da tasarımı daha hızlı, daha sağlam, taşınabilir, güvenli ya da başka bir yolla daha iyi yapan bir kod veya fikir olabilir.
 
-| Field                   | What to enter                                                    |
+İyileştirmeler [JIRA iyileştirmeleri](https://jira.hyperledger.org/browse/IR-184?jql=project%20%3D%20IR%20and%20issuetype%20%3D%20Improvement%20ORDER%20BY%20updated%20DESC) olarak takip edilmektedirler. Yeni bir iyileştirme göndermek istiyorsanız, [yeni iyileştirme oluşturup](https://jira.hyperledger.org/secure/CreateIssue.jspa) şu detayları ekleyebilirsiniz:
+
+| Alan                    | Giriş yapabileceğiniz                                            |
 | :---------------------- | ---------------------------------------------------------------- |
-| Project                 | Iroha (IR)                                                       |
-| Issue Type              | Improvement                                                      |
-| Summary                 | Essence of the idea                                              |
-| Description             | What the idea is about; if you have any code suggestions, you are welcome to add them here |
-| Priority                | You can use Medium                                               |
-| Assign                  | You can assign the task to yourself if you are planning on working on it|
+| Proje                   | Iroha (IR)                                                       |
+| Hata Tipi               | İyileştirme (Improvement)                                        |
+| Özet                    | Fikirin temelleri                                                |
+| Açıklama                | Fikir ne ile alakalı; eğer kod önerileriniz varsa buraya ekleyebilirsiniz |
+| Öncelik                 | Orta (Medium) olarak girebilirsiniz                              |
+| Atama                   | Eğer üzerinde çalışmayı düşünüyorsanız kendinize atayabilirsiniz |
 
-### Asking Questions
+### Sorular Sormak
 
-A *question* is any discussion that is typically neigher a bug, nor feature request or improvement. If you have a question like "How do I do X?" - this paragraph is for you.
+Bir *soru* hata, özellik talebi ya da iyileştirme olmayan herhangi bir görüşme olarak ele alınmaktadır. Eğer "X'i nasıl yaparım" gibi bir sorunuz varsa, bu paragraf sizin için.
 
-Please post your question in [your favourite messenger](#places-where-community-is-active) so members of the community could help you. You can also help others!
+Lütfen sorularınızı [favori mesajlaşma uygulamanızı kullanarak](#toplulugun-aktif-oldugu-yerler) iletiniz ki topluluk üyeleri size yardımcı olabilsinler.Aynı zamanda siz de başkalarına yardımcı olabilirsiniz.
 
-### Your First Code Contribution
+### İlk Kod Desteğiniz
 
-Read our [C++ Style Guide](#c-style-guide) and start with beginner-friendly issues with JIRA label [`[good-first-issue]`](https://jira.hyperledger.org/issues/?jql=project%20%3D%20IR%20and%20labels%20%3D%20good-first-issue%20ORDER%20BY%20updated%20DESC) <- click here. Indicate somehow that you are working on this task: get in touch with maintainers team, community or simply assign this issue to yourself.
+Lütfen bizim [C++ Stil Kılavuzu](#c-stil-kilavuzu)'muzu okuyup yeni başlayanlara uygun sorunlar -JIRA etiketi [`[good-first-issue]`](https://jira.hyperledger.org/issues/?jql=project%20%3D%20IR%20and%20labels%20%3D%20good-first-issue%20ORDER%20BY%20updated%20DESC) - üzerinde çalışmaya başlayarak yola koyulunuz. Ancak bir şekilde de ilgili sorun üzerinde çalıştığınızı ya bakım takımı ya da topluluk ile iletişime geçerek ya da ilgili sorunu kendinize atayarak bildiriniz.
 
-### Pull Requests
+### Pull Talepleri
 
-- Fill in [the required template](.github/PULL_REQUEST_TEMPLATE.md)
+- [Gerekli şablonu](.github/PULL_REQUEST_TEMPLATE.md) doldurunuz.
 
-- End all files with a newline
+- Bütün dosya sonlarında bir boş satır bırakınız.
 
-- **Write tests** for new code. Test coverage for new code must be at least 70%
+- Yeni kod için **testler yazınız**. Testler yazılmış kodun en az %70'ini kapsamalıdır.
 
-- Every pull request should be reviewed and **get at least two approvals from maintainers team**. Check who is a current maintainer in [MAINTAINERS.md](https://github.com/hyperledger/iroha/blob/master/MAINTAINERS.md) file
+- Her pull talebi gözden geçirilmeli ve **bakım takımından en az iki onay almalıdır**. Şu anda kimlerin bakım yaptığını [MAINTAINERS.md](https://github.com/hyperledger/iroha/blob/master/MAINTAINERS.md) dosyasından öğreniniz.
 
-- When you've finished work make sure that you've got all passing CI checks — after that **squash and merge** your pull request
+- Çalışmanızı bitirdiğinizde pull talebinizin **paketlenip birleştirilmesi**'nden sonra CI (devamlı entegrasyon) onaylarınının tamamını geçtiğinizinden emin olun.
 
-- Follow the [C++ Style Guide](#c-style-guide)
+- [C++ Stil Kılavuzu](#c-stil-kilavuzu)'na uyunuz.
 
-- Follow the [Git Style Guide](#git-style-guide)
+- [Git Stil Kılavuzu](#git-stil-kilavuzu)'na uyunuz
 
-- **Document new code** based on the [Documentation Styleguide](#documentation-styleguide)
+- [Dokümantasyon Stil Kılavuzu](#dokumantasyon-stil-kilavuzu)'nu baz alarak **yeni kodu dokümante ediniz**.
 
-- When working with **PRs from forks** check [this manual](https://help.github.com/articles/checking-out-pull-requests-locally)
-
-
-## Styleguides
-
-### Git Style Guide
-
-- **Sign-off every commit** with [DCO](https://github.com/apps/dco): `Signed-off-by: $NAME <$EMAIL>`. You can do it automatically using `git commit -s`
-- **Use present tense** ("Add feature", not "Added feature").
-- **Use imperative mood** ("Deploy docker to..." not "Deploys docker to...").
-- Write meaningful commit message.
-- Limit the first line of commit message to 50 characters or less
-- First line of commit message must contain summary of work done, second line must contain empty line, third and other lines can contain list of commit changes
+- **Fork'lardan PR yaparken** [bu kılavuzu](https://help.github.com/articles/checking-out-pull-requests-locally) takip ediniz.
 
 
-### C++ Style Guide
+## Stil Kilavuzlari
 
-- Use clang-format [settings](https://github.com/hyperledger/iroha/blob/master/.clang-format) file. There are guides available on the internet (e.g. [Kratos wiki](https://github.com/KratosMultiphysics/Kratos/wiki/How-to-configure-clang%E2%80%90format))
-- Follow [CppCoreGuidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines) and [Cpp Best Practices](https://lefticus.gitbooks.io/cpp-best-practices).
-- Avoid [platform-dependent](https://stackoverflow.com/questions/1558194/learning-and-cross-platform-development-c) code.
-- Use [C++14](https://en.wikipedia.org/wiki/C%2B%2B14).
-- Use [camelCase](https://en.wikipedia.org/wiki/Camel_case) for class names and methods, use [snake_case](https://en.wikipedia.org/wiki/Snake_case) for variables.
+### Git Stil Kilavuzu
 
-
-
-### Documentation Styleguide
-
-- Use [Doxygen](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html).
-- Document all public API: methods, functions, members, templates, classes...
+- **Her commit'i imzalayın** bkz: [DCO](https://github.com/apps/dco): `Signed-off-by: $NAME <$EMAIL>`.  Bunu otomatik hale getirmek için  `git commit -s` komutunu kullanabilirsiniz.
+- **Şimdiki zaman dilini kullanın** ("Özellik Ekleniyor", "Özellik Eklendi" değil).
+- **Emrivaki konuşun** ("Docker'ı taşı...", "Docker'a taşır..." değil).
+- Anlamlı gönderi (commit) mesajları yazın.
+- Gönderi (commit) mesajının ilk satırını 50 karakter ile sınırlayın.
+- Gönderi (commit) mesajının ilk satırı halledilmiş işin özeti, ikinci satırı boş, üçüncü ve diğer satırları ise değişiklikler listesini içermelidir.
 
 
-### Places where community is active
+### C++ Stil Kilavuzu
 
-Our community members are active at:
+- clang-format [ayarları](https://github.com/hyperledger/iroha/blob/master/.clang-format) dosyasını kullanın. İnternette bununla ilgili kılavuzlar bulabilirsiniz (örneğin [Kratos wiki](https://github.com/KratosMultiphysics/Kratos/wiki/How-to-configure-clang%E2%80%90format))
+- [CppCoreGuidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines) ve  [Cpp Best Practices](https://lefticus.gitbooks.io/cpp-best-practices) kılavuzlarını kullanın.
+- [Platforma-bağımlı](https://stackoverflow.com/questions/1558194/learning-and-cross-platform-development-c) kod yazmaktan kaçının.
+- [C++14](https://en.wikipedia.org/wiki/C%2B%2B14) kullanın.
+- Sınıf adları ve metodlar için [CamelCase](https://en.wikipedia.org/wiki/Camel_case), değişkenler için de [snake_case](https://en.wikipedia.org/wiki/Snake_case) kullanın.
 
-| Service      | Link                                                         |
+
+
+### Dokümantasyon Stil Kilavuzu
+
+- [Doxygen](http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html) kullanın.
+- Bütün ortak API'ları dokümante edin: metodlar, fonksiyonlar, üyeler, şablonlar, sınıflar ...
+
+
+### Toplulugun Aktif Oldugu Yerler
+
+Topluluğumuz şuralarda aktiftir:
+
+| Servis       | Link                                                         |
 | ------------ | ------------------------------------------------------------ |
 | RocketChat   | https://chat.hyperledger.org/channel/iroha                   |
 | StackOverflow| https://stackoverflow.com/questions/tagged/hyperledger-iroha |
-| Mailing List | [hyperledger-iroha@lists.hyperledger.org](mailto:hyperledger-iroha@lists.hyperledger.org)                              |
+| Posta Listesi| [hyperledger-iroha@lists.hyperledger.org](mailto:hyperledger-iroha@lists.hyperledger.org)                              |
 | Gitter       | https://gitter.im/hyperledger-iroha/Lobby                    |
 | Telegram     | https://t.me/hl_iroha                                        |
 | YouTube      | https://www.youtube.com/channel/UCYlK9OrZo9hvNYFuf0vrwww     |
@@ -146,4 +146,4 @@ Our community members are active at:
 
 ---
 
-Thank you for reading the document! 
+Dokümanı okuduğunuz için teşekkür ederiz.
