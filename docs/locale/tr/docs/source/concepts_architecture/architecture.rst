@@ -1,9 +1,9 @@
 .. _architecture:
 
-What's inside Iroha?
+Iroha'da neler var?
 ====================
 
-HL Iroha network consists of several essential components that provide the communication between the nodes. You can learn about them below.
+HL Iroha ağı düğümler arasında bağlantı sağlayan birkaç temel bileşenden meydana gelir. Bunları aşağıda öğrenebilirsiniz.
 
 .. image:: ../../image_assets/pipeline-diagram.png
 	:width: 80%
@@ -15,98 +15,98 @@ Torii
 
 ⛩
 
-Entry point for `clients <glossary.html#client>`__.
-Uses gRPC as a transport.
-In order to interact with Iroha anyone can use gRPC endpoints, described in `Commands <../develop/api/commands.html>`__ and `Queries <../develop/api/queries.html>`__ sections, or use `client libraries <../develop/libraries.html>`__.
+`clients <glossary.html#client>`__ için giriş noktası.
+Ulaşım olarak gRPC kullanın.
+Iroha ile etkileşim için herhangi biri gRPC'nin bitiş noktalarını kullanabilir, `Commands <../develop/api/commands.html>`__ ve `Queries <../develop/api/queries.html>`__ bölümünde tanımlanmıştır, veya `client libraries <../develop/libraries.html>`__ 'u kullanabilirsiniz.
 
-MST Processor
+MST İşlemci
 -------------
 
 *Multisignature Transactions Processor*
 
-It is an internal gRPC service that sends and receives messages from other peers through `Gossip protocol <https://en.wikipedia.org/wiki/Gossip_protocol>`_.
-Its mission is to send out `multisignature transactions <glossary.html#multisignature-transactions>`_ that have not received enough signatures to reach the `quorum <glossary.html#quorum>`_ until it is reached.
+`Gossip protocol <https://en.wikipedia.org/wiki/Gossip_protocol>`_ ile diğer kullanıcılarda mesaj gönderip mesaj alan dahili bir gRPC servisidir.
+Misyonu  `yeterli sayıya <glossary.html#quorum>`_ ulaşılana kadar yeterli sayıda imza almayanlara `çoklu imza işlemleri <glossary.html#multisignature-transactions>`_ göndermektir.
 
-Peer Communication Service
---------------------------
+Eş İletişim Servisi
+-------------------
 
-Internal component of Iroha - an intermediary that transmits `transaction <glossary.html#transaction>`__ from `Torii <#torii>`__ through `MstProcessor <#MstProcessor>`_ to `Ordering Gate <#ordering-gate>`__.
-The main goal of PCS is to hide the complexity of interaction with consensus implementation.
+Iroha'nın iç bileşeni - `işlemi <glossary.html#transaction>`__ `Torii <#torii>`__'dan `Ordering Gate <#ordering-gate>`__'e `MstProcessor <#MstProcessor>`_ ile ileten bir aracı.
+PCS'nin esas amacı konsensüs uygulaması ile etkileşimin karmaşılığını gizlemektir.
 
 Ordering Gate
 -------------
 
-It is an internal Iroha component (gRPC client) that relays `transactions <glossary.html#transaction>`__ from `Peer Communication Service <#peer-communication-service>`__ to `Ordering Service <#ordering-service>`__.
-Ordering Gate recieves `proposals <glossary.html#proposal>`_ (potential blocks in the chain) from Ordering Service and sends them to `Simulator <#simulator>`__ for `stateful validation <glossary.html#stateful-validation>`__.
-It also requests proposal from the Ordering Service based on the consensus round.
+`İşlemleri <glossary.html#transaction>`__ `Eş İletişim Servisi <#peer-communication-service>`__ 'den `Ordering Service <#ordering-service>`__ 'e aktaran dahili bir Iroha bileşenidir (gRPC kullanıcısı).
+Ordering Gate `önerileri <glossary.html#proposal>`_ Ordering Service'den alır (zincirdeki potansiyel bloklar) ve `durumsal doğrulama <glossary.html#stateful-validation>`__ için `Simulator <#simulator>`__'e gönderir.
+Ayrıca konsensüs turuna göre Ordering Service'den öneri talebinde bulunur.
 
 Ordering Service
 ----------------
 
-Internal Iroha component (gRPC server) that receives messages from other `peers <glossary.html#peer>`__ and combines several `transactions <glossary.html#transaction>`__ that have been passed `stateless validation <glossary.html#stateless-validation>`__ into a `proposal <glossary.html#proposal>`__.
-Each node has its own ordering service.
-Proposal creation could be triggered by one of the following events:
+Diğer `eşlerden <glossary.html#peer>`__ mesajlar alan ve `durumsuz doğrulamadan <glossary.html#stateless-validation>`__ geçirilen birkaç `işlemi <glossary.html#transaction>`__ bir `öneriye <glossary.html#proposal>`__ birleştiren dahili Iroha bileşenidir. (gRPC sunucusu)
+Her düğüm kendi ordering service'ine sahiptir.
+Öneri oluşturmak aşağıdaki olaylardan birini tetikleyebilir:
 
-1. Time limit dedicated to transactions collection has expired.
+1. İşlem koleksiyonu için ayırılan zaman sınırının süresi doldu.
 
-2. Ordering service has received the maximum amount of transactions allowed for a single proposal.
+2. Ordering service tek bir öneri için izin verilen maksimum işlem miktarını alır.
 
-Both parameters (timeout and maximum size of proposal) are configurable (check `environment-specific parameters <../configure/index.html#environment-specific-parameters>`_ page).
+Her iki parametre (zamanaşımı ve önerinin maksimum boyutu) yapılandırılabilir (`environment-specific parameters <../configure/index.html#environment-specific-parameters>`_ sayfasını kontrol ediniz).
 
-A common precondition for both triggers is that at least one transaction should reach the ordering service.
-Otherwise, no proposal will be formed.
+Her iki tetikleme için de ortak önkoşul en az bir işlem ordering service'e ulaşmasıdır.
+Aksi takdirde, öneri oluşturulmaz.
 
-Ordering service also performs preliminary validation of the proposals (e.g. clearing out statelessly rejected transactions from the proposal).
+Ayrıca Ordering service önerinin ön doğrulamasını gerçekleştirir (örneğin durumsuz reddedilen işlemleri Öneriden silmek).
 
-Verified Proposal Creator
--------------------------
+Doğrulanmış Öneri Yaratıcı
+--------------------------
 
-Internal Iroha component that performs `stateful validation <glossary.html#stateful-validation>`_ of `transactions <glossary.html#transaction>`__ contained in received `proposal <glossary.html#proposal>`__ from the `Ordering Service <#ordering-service>`_.
-On the basis of transactions that have passed stateful validation **verified proposal** will be created and passed to `Block Creator <#block-creator>`__.
-All the transactions that have not passed stateful validation will be dropped and not included in a verified proposal.
+Dahili Iroha bileşeni `Ordering Service <#ordering-service>`_ 'den alınmış `öneriyi <glossary.html#proposal>`__ içeren `işlemlerin <glossary.html#transaction>`__ `durumsal doğrulamasını <glossary.html#stateful-validation>`_ gerçekleştirir.
+Durumsal doğrulamadan geçen işlemler bazında **doğrulanmış öneri** oluşturulacak ve `Blok Yaratıcı <#block-creator>`__'ya geçecek.
+Durumsal doğrulamadan geçemeyen bütün işlemler kaldırılacak ve doğrulanmış öneriye dahil edilmeyecek.
 
-Block Creator
+Blok Yaratıcı
 -------------
 
-System component that forms a block from a set of transactions that have passed `stateless <glossary.html#stateless-validation>`__ and `stateful <glossary.html#stateful-validation>`__ validation for further propagation to `consensus <#consensus>`__.
+Sistem bileşeni `konsensüs <#consensus>`__'e daha fazla yayılmak için `durumsuz <glossary.html#stateless-validation>`__ ve `durumsal <glossary.html#stateful-validation>`__ doğrulamadan geçen işlemlerin kümesinden bir blok oluşturur.
 
-Block creator, together with the `Verified Proposal Creator <#verified-proposal-creator>`_ form a component called `Simulator <https://github.com/hyperledger/iroha/tree/master/irohad/simulator>`_.
+Blok yaratıcı, `Doğrulanmış Öneri Yaratıcı <#verified-proposal-creator>`_ ile birlikte `Simulator <https://github.com/hyperledger/iroha/tree/master/irohad/simulator>`_ adı verilen bir bileşen oluşturur.
 
-Block Consensus (YAC)
+Blok Konsensüs (YAC)
 ---------------------
 
-*Consensus, as a component*
+*Bir bileşen olarak Konsensüs*
 
-Consensus is the heart of the blockchain - it preserves a consistent state among the `peers <glossary.html#peer>`__ within a peer network.
-Iroha uses own consensus algorithm called Yet Another Consensus (aka YAC).
+Konsensüs blokzincirin kalbidir - eş ağı içerisinde `eşler <glossary.html#peer>`__ arasındaki tutarlı durumu korur.
+Iroha, Yet Another Consensus (aka YAC) adı verilen kendi konsensüs algoritmasını kullanır.
 
-You can check out a video with a thorough explanation of the principles of consensus and YAC in particular `here <https://youtu.be/mzuAbalxOKo>`__.
+Konsensüs ve özellikle YAC ilkelerinin kapsamlı açıklamasını içeren videoya `buradan <https://youtu.be/mzuAbalxOKo>`__. göz atabilirsiniz.
 
-Distinctive features of YAC algorithm are its scalability, performance and Crash fault tolerance.
+YAC algoritmasının belirgin özellikleri ölçeklenebilirlikleri, performansı ve Çarpışma hatası toleransıdır.
 
-To ensure consistency in the network, if there are missing blocks, they will be downloaded from another peer via `Synchronizer <#synchronizer>`__.
-Committed blocks are stored in `Ametsuchi <#ametsuchi>`__ block storage.
+Ağda tutarlılığı sağlamak için, eğer eksik bloklar varsa, `Senkronizör <#synchronizer>`__ aracılığıyla diğer eşten yükleyecekler.
+İşlenmiş bloklar `Ametsuchi <#ametsuchi>`__ blok depolama alanında saklanır.
 
-For general definition of the consensus, please check `this link <glossary.html#consensus>`_.
+Konsensüsün genel tanımı için, lütfen `bu linki <glossary.html#consensus>`_ kontrol ediniz.
 
 
-Synchronizer
+Senkronizör
 ------------
 
-Is a part of `consensus <#consensus>`__.
-Adds missing blocks to `peers' <glossary.html#peer>`__ chains (downloads them from other peers to preserve consistency).
+`Konsensüsün <#consensus>`__ bir parçası.
+`Eş <glossary.html#peer>`__ zincirlerine eksik bloklar ekler (tutarlılığı korumak için diğer eşlerden yüklerler).
 
 Ametsuchi Blockstore
 --------------------
 
-Iroha storage component, which stores blocks and a state generated from blocks, called `World State View <#world-state-view>`__.
-There is no way for the `client <glossary.html#client>`__ to directly interact with Ametsuchi.
+Blokları depolayan ve bloklardan durum üreten `World State View <#world-state-view>`__ adı verilen Iroha depolama bileşenidir.
+`Kullanıcı <glossary.html#client>`__ için doğrudan Ametsuchi ile etkileşime geçmenin yolu yoktur.
 
 
 World State View
 ----------------
 
-WSV reflects the current state of the system, can be considered as a snapshot.
-For example, WSV holds information about an amount of `assets <glossary.html#asset>`__
-that an `account <glossary.html#account>`__ has at the moment but does not contain any info
-history of `transaction <glossary.html#transaction>`__ flow.
+WSV sistemin mevcut durumunu yansıtır, ayrıca anlık görüntü olarak da kabul edilir.
+Örnek vermek gerekirse, WSV şu anda var olan fakat `işlem <glossary.html#transaction>`__ 
+akışının bilgi geçmişi bulunmayan bir `hesabın <glossary.html#account>`__ 
+`varlıklarının <glossary.html#asset>`__ miktarı hakkında bilgi tutar.

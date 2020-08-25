@@ -1,72 +1,73 @@
-HL Burrow Integration
-=====================
+HL Burrow Entegrasyonu
+======================
 
-As Iroha maintainers, we have received many questions and requests for custom smart-contracts support from our users.
-And to provide them more freedom in fulfilling their business needs, we integrated HL Burrow EVM – another great project of the Hyperledger greenhouse, – into Iroha.
+Iroha bakımcıları olarak, kullanıcılarımızdan özel akıllı-sözleşme desteği için birçok soru ve istek aldık.
+Ve iş ihtiyaçlarını karşılamada daha fazla özgürlük sağlamak için, HL Burrow EVM entegre ettik – Hyperledger greenhouse'un başka harika projesi, – Iroha'da.
 
-.. note:: In the context of Iroha, HL Burrow provides an Ethereum Virtual Machine that can run Solidity smart-contracts.
-	We did our best to provide you with the best user experience possible – and to use it with Iroha, you only need to add a `CMake flag during Iroha build <../build/index.html#cmake-parameters>`_ and it will start working right away.
+.. not:: Iroha'nın içeriğinde, HL Burrow Solidity akıllı-sözleşmelerini çalıştırabilecek bir Ethereum Sanal Makinesi sağlar.
+	Size mümkün olan en iyi kullanıcı deneyimini sağlamak için elimizden gelenin en iyisini yaptık – ve Iroha ile kullanmak için, sadece  `CMake flag during Iroha build <../build/index.html#cmake-parameters>`_ eklemeniz gerekir ve hemen çalışmaya başlayacak.
 
-You can read about Solidity smart-contract language `here <https://solidity.readthedocs.io/>`_, if you are new to this language.
+Eğer bu dilde yeniyseniz, Solidity akıllı sözleşme dili hakkında `buradan <https://solidity.readthedocs.io/>`_ bilgi edinebilirsiniz.
 
-How it works
-------------
+Nasıl çalışır
+-------------
 
-For this integration, we have created a special `Call Engine command <../develop/api/commands.html#call-engine>`_ in Iroha, as well as a special `Engine Receipts query <../develop/api/queries.html#engine-receipts>`_ for retrieving the results of the command.
+Bu entegrasyon için, Iroha'da özel bir `Çağrı Motoru komutu <../develop/api/commands.html#call-engine>`_ yarattık, bununla birlikte komutların sonuçlarını almak için özel bir `Motor Alındı sorgusu <../develop/api/queries.html#engine-receipts>`_ yarattık.
 
-The command
-^^^^^^^^^^^
+Komut
+^^^^^
 
-In the command, you can:
+Komutta şunları yapabilirsiniz:
 
 **Сreate a new contract account in EVM**
 
-If the *callee* in the `CallEngine <../develop/api/commands.html#call-engine>`_ is not specified and the *input* parameter contains some bytecode, a new contract account is created.
+Eğer `CallEngine <../develop/api/commands.html#call-engine>`_'deki *callee* belirtilmediyse ve *input* parametresi bâzı bayt kodları içeriyorsa, yeni bir sözleşme hesabı oluşturulur.
 
 **Call a method of a previously deployed contract**
 
-If the *callee* is specified, then the input is treated as an ABI-encoded selector of a method of the callee contract followed by the arguments.
+Eğer the *callee* belirtilmediyse, girdi callee sözleşmesinin metodunun ardından argümanların ABI-kodlu bir seçici olarak kabul edilir.
 
-.. hint:: It is much like deploying a contract or calling a contract function in Ethereum depending on the contents of the `data` field of the `eth_sendTransaction <https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendtransaction>`_ message call.
-	See `ABI-specification <https://solidity.readthedocs.io/en/v0.6.5/abi-spec.html>`_ for details.
+.. ipucu:: `eth_sendTransaction <https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendtransaction>`_ mesaj çağrısının `veri` alanının içeriğine bağlı olarak Ethereum'da bir sözleşme yapmak veya bir sözleşme fonksiyonu çağırmak gibidir.
+	Detaylar için `ABI-specification <https://solidity.readthedocs.io/en/v0.6.5/abi-spec.html>`_ bakınız.
 
-The query
-^^^^^^^^^
+Sorgu
+^^^^^
 
-To query the outcome of a `CallEngine <../develop/api/commands.html#call-engine>`_ command one should use the `Engine Receipts query <../develop/api/queries.html#engine-receipts>`_.
-The output of any computations inside the EVM will not be available for the caller until it has been written to the ledger (that is, the block that has the respective Iroha transaction has been committed).
-Among the other `data <../develop/api/queries.html#response-structure>`_, the *EngineReceipts* query will return an array of log entries generated in the EVM during the *CallEngine* execution.
+`CallEngine <../develop/api/commands.html#call-engine>`_ komutunun çıktısını sorgulamak için birisi `Motor Alındı sorgusunu <../develop/api/queries.html#engine-receipts>`_ kullanmalıdır.
 
-.. hint:: A common way for dApps developers to let interested parties see the outcome of a contract execution is to emit an event with some data before exiting a contract function so that this data is written to the *Event Log*.
-	`Ethereum Yellow Paper <https://ethereum.github.io/yellowpaper/paper.pdf>`_ defines a log entry as a 3-tuple containing the emitter’s address, an array of 32-byte long topics and a byte array of some data.
+EVM içindeki hesaplamaların çıktısı deftere yazılana kadar arayan için mevcut olmayacak (yani ilgili Iroha işlemine sahip blok işlenir).
+Diğer `veriler <../develop/api/queries.html#response-structure>`_ arasında, *EngineReceipts* sorgusu *CallEngine* uygulaması boyunca EVM içinde oluşturulmuş bir işlem geçmişi girişleri dizisi döndürecek.
 
-Running Native Iroha Commands in EVM
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. ipucu:: dApps geliştiricilerinin ilgili tarafların bir sözleşme yürütmesinin sonucunu görmelerine izin vermelerinin yaygın bir yolu, bir sözleşme metodundan çıkmadan önce bâzı veriler içeren bir olay yayınlamaktır böylece bu veriler *Event Log*'a yazılır.
+	`Ethereum Yellow Paper <https://ethereum.github.io/yellowpaper/paper.pdf>`_ işlem geçmişi girdisini emitörün adresini, 32 bayt uzunluğunda konuların dizisini ve bâzı verilerin bayt dizisini içeren 3-veri grubu olarak tanımlar.
 
-With HL Burrow integration, you can also use native commands to change the state of Iroha.
+EVM'de Yerel Iroha Komutlarını Çalıştırma
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The integration mechanism of Burrow EVM empowers Iroha application developers with a tool able to directly act on the Iroha state from smart contracts code thus providing foundation for programmable business logic extensions of the built-in Iroha commands system.
-Conditional asset transfers, transaction fees, non-fungible assets and so on are just a few examples of such extensions.
-The tricky part here is that the Iroha data model is quite different from that of Ethereum.
-For instance, in Ethereum there is only one kind of built-in asset (`Eth`) therefore getting an account balance in EVM context simply means returning the balance property of the account.
-In Iroha, on the other hand, an account can have multiple assets, or not have assets at all, so any function that returns an account balance must take at least one extra argument – the asset ID.
-Same logic applies to transferring/sending assets from account to account.
+HL Burrow Entegrasyonuyla, ayrıca Iroha'nın durumunu değiştirmek için yerel komutlar kullanabilirsiniz.
 
-As a solution to this data model mismatch problem we introduce so-called Service Contracts in Burrow that are “aware” of the Iroha data model and expose an API to interact with Iroha state (query balances, transfer assets and so on).
+Burrow EVM entegrasyon mekanizması Iroha uygulama geliştiricilerine akıllı sözleşmeler kodundan Iroha durumunda doğrudan hareket edebilen bir araç sunar böylece yerleşik Iroha komut sisteminin programlanabilir iş mantığı uzantıları için dayanak sağlar.
+Koşullu varlık transferleri, işlem ücretleri, değişimi mümkün olmayan varlıklar ve benzeri bu tür uzantılara sadece birkaç örnektir.
+Buradaki aldatıcı bölüm Iroha veri modelinin Ethereum'dan oldukça farklı olmasıdır.
+Örneğin, Ethereum'da sadece bir tür yerleşik varlık vardır (`Eth`) böylece EVM içeriğinde bir hesap bakiyesi elde etmek basitçe hesabın bakiye mülkünü geri döndürmek anlamına gelir.
+Iroha'da tam tersine bir hesap birden fazla varlığa sahip olabilir veya hiç varlığı olmayabilir, böylece hesap bakiyesini geri döndüren herhangi bir fonksiyon en az bir ekstra argüman almalı – varlık ID'si.
+Aynı mantık varlıkların hesaptan hesaba transfer edilmesi/gönderilmesi için de geçerlidir.
 
-.. note:: You can check out `Burrow documentation <https://wiki.hyperledger.org/display/burrow/Burrow+-+The+Boring+Blockchain>`_ for more information on Natives and external dispatchers.
+Bu veri modeli uyumsuzluğu problemine bir çözüm olarak, Iroha veri modelini “farkında” olan ve Iroha durumuyla etkileşime geçmek için bir API gösteren Hizmet Sözleşmelerini sunuyoruz (sorgu bakiyeleri, varlıkları aktarmak ve benzeri).
 
-Schematically the interaction between different parts of the system looks as follows:
+.. not:: Yerel ve harici görev dağıtıcılar hakkında daha fazla bilgi için `Burrow dökmantasyonunu <https://wiki.hyperledger.org/display/burrow/Burrow+-+The+Boring+Blockchain>`_ kontrol edebilirsiniz.
+
+Sistemin farklı bölümleri arasındaki etkileşim şematik olarak şu şekildedir:
 
 .. image:: ../../image_assets/burrow/natives.svg
 
-.. attention::
-	From the Burrow EVM perspective such Service Contract is hosted in a Native external VM and is callable via the same interfaces as if it was deployed at some special address in the EVM itself.
-	These methods are used specifically for Iroha integration, so the address of the Service Contract can only be found while working with it via Iroha.
+.. dikkat::
+	Burrow EVM perspektifinden bu tip Hizmet Sözleşmesi Yerli bir harici VM içinde barındırılıyor ve EVM'in kendisinde özel bir adrese konuşlandırılmış gibi aynı arayüzler aracılığıyla çağrılabilir.
+	Bu metodlar spesifik olarak Iroha entegrasyonu için kullanılır, böylece Hizmet Sözleşmesinin adresi yalnızca Iroha ile çalışırken bulunabilir.
 
-Current release of the Iroha EVM wrapper contains a single service contract deployed at the address `A6ABC17819738299B3B2C1CE46D55C74F04E290C` (the last 20 bytes of the *keccak256* hash of the string *ServiceContract*) which exposes 2 methods to query Iroha assets balances and transfer assets between accounts.
+ Iroha EVM kapsayıcı mevcut sürümü hesaplar arasındaki Iroha varlık bakiyeleri ve varlıkları transfer etmeyi sorgulamak için 2 metod sunan `A6ABC17819738299B3B2C1CE46D55C74F04E290C` adresinde barındırılan tek bir hizmet sözleşmesi içerir (*ServiceContract* dizesinin *keccak256* karışımının son 20 baytı).
 
-The signatures of these two methods look like this:
+Bu iki metodun imzası şöyle görünür:
 
 	**function** getAssetBalance(string memory *accountID*, string memory *assetID*) public view
 	returns (string memory *result*) {}
@@ -74,15 +75,15 @@ The signatures of these two methods look like this:
 	**function** transferAsset(string memory *src*, string memory *dst*, string memory *assetID*,
 	string memory *amount*) public view returns (string memory *result*) {}
 
-.. hint:: From a developer’s perspective calling a function of a native contract is no different from calling a method of any other smart contract provided the address of the latter is known:
+.. ipucu:: Geliştiricilerin perspektifinden yerel bir sözleşmenin fonksiyonunu çağırmak ikincisinin adresi biliniyorsa, başka bir akıllı sözleşmenin metodu çağırmaktan farklı değildir:
 
-	bytes memory payload = abi.encodeWithSignature("getAssetBalance(string,string)", "myacc@test", "coin#test");
+	bytes memory payload = abi.encodeWithSignature("getOtherAssetBalance(string,string)", "myacc@test", "coin#test");
 
 	(bool success, bytes memory ret) = address(0xA6ABC17819738299B3B2C1CE46D55C74F04E290C).delegatecall(payload);
 
-Here a special kind of EVM message calls is used - the **delegatecall**, which allows a contract to dynamically load and run code from a different address at runtime in its own execution context.
+Burada EVM mesaj çağrılarının özel bir türü kullanılır - bir sözleşmenin dinamik olarak yüklenmesine ve kendi yürütme içeriğinde işlem esnasında farklı bir adresten kod çalışmasına izin veren **delegatecall**.
 
-.. seealso:: Now, let's move to the usage `examples <burrow_example.html>`_
+.. ayrıcabakınız:: Şimdi, kullanım `örneklerine <burrow_example.html>`_ geçelim
 
 
 

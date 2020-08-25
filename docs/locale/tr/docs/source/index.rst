@@ -1,24 +1,24 @@
-*******************************
-Hyperledger Iroha documentation
-*******************************
+********************************
+Hyperledger Iroha dokümantasyonu
+********************************
 
 .. image:: ../image_assets/iroha_logo.png
 
 .. warning::
     For secure deployment on platforms other than new Linux versions, please read `this note <deploy/index.html#security-notice>`_ first before deploying Iroha in production.
 
-Welcome! Hyperledger Iroha is a simple blockchain platform you can use to make trusted, secure, and fast applications by bringing the power of permission-based blockchain with Crash fault-tolerant consensus. It's free, open-source, and works on Linux and Mac OS, with a variety of mobile and desktop libraries.
+Hoşgeldiniz! Hyperledger Iroha, Crash hata-tolerans konsensüsü ile izin tabanlı blokzincir gücünü getirerek güvenilir, güvenli ve hızlı uygulamalar yapmak için kullanabileceğiniz basit bir blokzincir platformudur. Ücretsiz, açık-kaynak ve Linux'da ve Mac OS'da çalışır, çeşitli mobil ve masaüstü kütüphaneleri ile.
 
-You can download the source code of Hyperledger Iroha and latest releases from `GitHub page <https://github.com/hyperledger/iroha>`_.
+Hyperledger Iroha'nın kaynak kodunu ve son sürümünü `GitHub sayfasından <https://github.com/hyperledger/iroha>`_ indirebilirsiniz.
 
-This documentation will guide you through the installation, deployment, and launch of Iroha network, and explain to you how to write an application for it. We will also see which use case scenarios are feasible now, and are going to be implemented in the future.
+Bu dokümantasyon kurulum, dağıtım ve Iroha ağının başlangıcı boyunca size rehberlik edecek ve nasıl uygulama yazacağınızı açıklayacaktır. Ayrıca hangi kullanım senaryolarının şu anda uygulanabilir olduğunu ve gelecekte uygulanacağını göreceğiz.
 
-As Hyperledger Iroha is an open-source project, we will also cover contribution part and explain you a working process.
+Hyperledger Iroha açık-kaynak bir proje olduğundan, ayrıca katkı bölümünü de ele alacağız ve size çalışma prosesini açıklayacağız.
 
 .. toctree::
     :maxdepth: 2
     :numbered:
-    :caption: Table of contents
+    :caption: İçindekiler listesi
 
     overview.rst
     concepts_architecture/index.rst

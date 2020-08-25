@@ -1,62 +1,62 @@
-===============
-Key Pair Format
-===============
+====================
+Anahtar Çifti Biçimi
+====================
 
-Iroha uses key pairs (.pub and .priv keys) to sign transactions – every `account <../concepts_architecture/glossary.html#account>`_ has at least 1 pair.
-Some accounts (if `quorum <../concepts_architecture/glossary.html#quorum>`_ is more than 1) might have more `Signatories <../concepts_architecture/glossary.html#signatory>`_ that sign transactions – and each Signatory has a pair of keys.
-Cryptographic algorithms use those keys – and in Iroha we provide you with a choice – which algorithms to use.
+Iroha işlemleri imzalamak için anahtar çiftleri kullanır (.pub ve .priv anahtarları) – her `hesap <../concepts_architecture/glossary.html#account>`_ en az 1 çifte sahiptir.
+Bâzı hesaplar (eğer `yeterli çoğunluk <../concepts_architecture/glossary.html#quorum>`_ 1'den fazlaysa) daha fazla işlemleri imzalayan `İmza sahiplerine <../concepts_architecture/glossary.html#signatory>`_ sahip olabilir – ve her İmza sahibi bir anahtar çiftine sahiptir.
+kriptografik algoritma bu anahtarları kullanır – ve Iroha'da size kullanılacak algoritmalarla alâkalı bir tercih sağlarız.
 
 .. note:: Check out how to create key pairs using the Python library `here <../getting_started/python-guide.html#creating-your-own-key-pairs-with-python-library>`_.
 
-Supported Crypto Algorithms
-===========================
+Destekli Kripto Algoritmaları
+=============================
 
-Natively, HL Iroha uses a custom algorithm – Ed25519 with SHA-3.
-These keys are supported by all versions of Iroha, including the old ones.
-But as we all know, we need more universal options as well – that is why Iroha has `HL Ursa integration <../integrations/index.html#hyperledger-ursa>`_ – it is a library with different crypto algorithms, that allows to work with Iroha using more mainstream keys.
-Ursa provides Iroha with support of standard Ed25519 with SHA-2 algorithm.
+Doğal olarak, HL Iroha özel bir algoritma kullanır – SHA-3 ile Ed25519.
+Bu anahtarlar eskileri de içerecek şekilde Iroha'nın bütün versiyonları tarafından desteklenir.
+Fakat hepimizin bildiği gibi, daha evrensel seçeneklere de ihtiyaç duyarız – bunun sebebi Iroha'nın `HL Ursa entegrasyonuna <../integrations/index.html#hyperledger-ursa>`_ sahip olmasıdır – daha ana akım anahtarlar kullanarak Iroha ile çalışmaya izin veren farklı kripto algoritmalara sahip bir kütüphanedir.
+Ursa SHA-2 algoritması ile Ed25519 standart desteği ile Iroha sağlar.
 
-Public Keys
------------
+Genel Anahtarlar
+----------------
 
-To provide easy solution that would allow using different algorithms without "breaking" backward compatibility, we introduced **multihash** format for public keys in Iroha.
-You can learn more about multihash `here <https://github.com/multiformats/multihash>`_.
+Kolay çözüm sağlamak için geriye dönük uyumluluk "kesilmeden" farklı algoritmalar kullanmasına izin verir, Iroha'daki genel anahtarlar için **çoklu karışım** biçimini tanıtacağız.
+Çoklu karışım hakkında daha fazla bilgiyi `buradan <https://github.com/multiformats/multihash>`_ öğrenebilirsiniz.
 
-Generally, to use keys, different from the native SHA-3 ed25519 keys, you will need to bring them to this format:
+Genellikle, yerli SHA-3 ed25519 anahtarlarından farklı anahtarları kullanmak için bu formata taşımanız gerekecek:
 
 .. code-block:: shell
 
 	<varint key type code><varint key size in bytes><actual key bytes>
 
 
-.. note:: In multihash, varints are the Most Significant Bit unsigned varints (also called base-128 varints).
+.. not:: Çoklu karışımda varints En Anlamlı Bit imzasız varints'dir (ayrıca base-128 varints olarak adlandırılır).
 
 
-If Iroha receives a standard public key of 32 bytes, it will treat is as a native Iroha key.
-If it receives a multihash public key, it will treat it based on the table below.
+Eğer Iroha 32 baytlık standart bir genel anahtar alırsa, yerel bir Iroha anahtarı olarak davranacaktır.
+Eğer bir çoklu karışım genel anahtar alırsa, aşağıdaki tabloyu baz alarak davranacaktır.
 
 
-Right now, Iroha "understands" only one multihash key format:
+Şimdi, Iroha yalnızca bir çoklu karışım anahtar biçimini "algılar":
 
 +------------+-----------+----------+------------------+
-|Name        |Tag        |Code      |Description       |
+|Adı         |Etiket     |Kod       |Açıklama          |
 +============+===========+==========+==================+
 |ed25519-pub |key        |0xed	    |Ed25519 public key|
 +------------+-----------+----------+------------------+
 
-Examples of public keys in Iroha:
+Iroha'daki genel anahtarlara örnekler:
 
 +----------------+--------+----------+-------------------------+----------------------+
-| type           | code   | length   | data                    | what Iroha recognises|
+| tip            | kod    | uzunluk  | veri                    | Iroha'nın tanıdığı   |
 +================+========+==========+=========================+======================+
 | multihash key  | ED01   | 20       | 62646464c35383430b...   | ed25519/sha2         |
 +----------------+--------+----------+-------------------------+----------------------+
 | raw 32 byte key| --     | --       | 716fe505f69f18511a...   | ed25519/sha3         |
 +----------------+--------+----------+-------------------------+----------------------+
 
-Note that code `0xED` is encoded as `ED01` by the rules of multihash format.
+`0xED` kodu çoklu karışım biçiminin kuralı tarafından `ED01` olarak şifrelenmiş olduğunu dikkate alınız.
 
-Private Keys
-------------
+Özel Anahtarlar
+---------------
 
-**Private keys** in Ursa are represented by concatenation of a private key and a public key – without multihash prefixes.
+Ursa'daki **özel anahtarlar** bir özel anahtar ve bir genel anahtarın birleştirilmesiyle temsil edilir – çoklu karışım ön eki olmaksızın.

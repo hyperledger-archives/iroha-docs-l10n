@@ -1,27 +1,27 @@
-Javascript library
-------------------
+Javascript Kütüphanesi
+----------------------
 
 .. image:: https://img.shields.io/npm/v/iroha-helpers.svg
 
-This library provides functions which will help you to interact with Hyperledger Iroha from your JS program.
+Bu kütüphane sizin JS programınızdan Hyperledger Iroha ile etkileşim kurmak için size yardım edecek fonksiyonu sağlar.
 
-Installation
-^^^^^^^^^^^^
-Via npm
+Kurulum
+^^^^^^^
+npm aracılığıyla
 
 .. code:: sh
 
     $ npm i iroha-helpers
 
-Via yarn
+yarn aracılığıyla
 
 .. code:: sh
 
     $ yarn add iroha-helpers
 
-Commands
+Komutlar
 ^^^^^^^^
-For usage of any command you need to provide ``commandOptions`` as a first argument.
+Herhangi bir komutun kullanımı için ilk argüman olarak ``commandOptions``'u sağlamaya ihtiyacınız vardır.
 
 .. code-block:: javascript
 
@@ -32,7 +32,7 @@ For usage of any command you need to provide ``commandOptions`` as a first argum
     commandService: null
   }
 
-As second argument you need to provide object that contains properties for required command.
+İkinci argüman olarak gerekli komut için gereken özellikleri içeren objeyi sağlamaya ihtiyacınız vardır.
 
 .. code-block:: javascript
   
@@ -56,9 +56,9 @@ As second argument you need to provide object that contains properties for requi
     value: 'statham'
   })
 
-Queries
-^^^^^^^
-For usage of any query you need to provide ``queryOptions`` as a first argument.
+Sorgular
+^^^^^^^^
+Herhangi bir sorgunun kullanımı için ilk argüman olarak ``queryOptions``'u sağlamaya ihtiyacınız vardır.
 
 .. code-block:: javascript
 
@@ -68,7 +68,7 @@ For usage of any query you need to provide ``queryOptions`` as a first argument.
     queryService: null
   }
 
-As second argument you need to provide object that contains properties for required query.
+İkinci argüman olarak  gerekli sorgu için gereken özellikleri içeren objeyi sağlamaya ihtiyacınız vardır.
 
 .. code-block:: javascript
   
@@ -89,8 +89,8 @@ As second argument you need to provide object that contains properties for requi
     accountId: 'admin@test'
   })
 
-Example code
-^^^^^^^^^^^^
+Örnek Kod
+^^^^^^^^^
 
 .. code-block:: javascript
 

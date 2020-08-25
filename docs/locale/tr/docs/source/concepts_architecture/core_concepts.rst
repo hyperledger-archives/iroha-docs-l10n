@@ -1,11 +1,11 @@
 .. _core-concepts:
 
-Core concepts
-=============
+Temel kavramlar
+===============
 
-Why Iroha runs in a network? How to understand the objects inside and outside the system?
-How peers in the network collaborate and decide which data to put into the blockchain?
-We will look through the basics of Iroha in this section.
+Neden Iroha ağda çalışır? Objelerin sistemin içinde mi dışında mı olduğunu nasıl anlarız?
+Nasıl eşler ağ işbirliği içindedir ve hangi veririnin blokzincire konacağına nasıl karar veririz?
+Bu bölümde Iroha'nın temellerini inceleyeceğiz.
 
 .. toctree::
     :maxdepth: 1

@@ -1,13 +1,13 @@
-Iroha API reference
+Iroha API referansı
 ===================
 
-In API section we will take a look at building blocks of an application interacting with Iroha.
-We will overview commands and queries that the system has, and the set of client libraries encompassing transport and application layer logic.
+API bölümünde Iroha ile etkileşim halindeki bir uygulamanın yapı taşlarına bir göz atacağız.
+Sistemin sahip olduğu komutları ve sorguları ve taşıma ve uygulama katmanı mantığını kapsayan kullanıcı kütüphanesi kümesini gözden geçireceğiz.
 
-Iroha API follows command-query separation `principle <https://en.wikipedia.org/wiki/Command%E2%80%93query_separation>`_.
+Iroha API komut-sorgu ayırma `ilkesini <https://en.wikipedia.org/wiki/Command%E2%80%93query_separation>`_ takip eder.
 
-Communication between Iroha peer and a client application is maintained via `gRPC <https://grpc.io/about/>`_ framework. 
-Client applications should follow described protocol and form transactions accordingly to their `description <../concepts_architecture/glossary.html#transaction>`_.
+Iroha eşi ve bir kullanıcı uygulaması arasındaki iletişim `gRPC <https://grpc.io/about/>`_ çalışma alanı aracılığıyla korunur. 
+Kullanıcı uygulaması tanımlanmış protokolü ve `açıklamalarına <../concepts_architecture/glossary.html#transaction>`_ göre form işlemlerini takip etmelidir.
 
 
 .. toctree::
@@ -18,9 +18,9 @@ Client applications should follow described protocol and form transactions accor
     api/queries.rst
     api/permissions.rst
 
-Commands here are parts of `transaction <../concepts_architecture/glossary.html#transaction>`_ - a state-changing set of actions in the system. When a transaction passes validation and consensus stages, it is written in a `block <../concepts_architecture/glossary.html#block>`_ and saved in immutable block store (blockchain).
+Komutlar burada `işlemlerin <../concepts_architecture/glossary.html#transaction>`_ parçasıdır - sistemdeki durum-değiştiren eylemlerin kümesi. Bir işlem onaylama ve konsensüs aşamalarını geçerken, bir `bloğa <../concepts_architecture/glossary.html#block>`_ yazılır ve sabit blok depo alanına kaydedilir (blokzinciri).
 
-Transactions consist of commands, performing an action over an `entity <../concepts_architecture/er_model.html>`_ in the system. The entity might be an account, asset, etc.
+İşlemler sistemde bir `varlık <../concepts_architecture/er_model.html>`_ üzerinde eylem gerçekleştiren komutlardan oluşur. Varlık bir hesap, varlık, vb. olabilir
 
 
 

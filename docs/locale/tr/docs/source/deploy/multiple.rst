@@ -1,19 +1,19 @@
-=========================================
-Running multiple instances (peer network)
-=========================================
+===================================
+Çoklu örnekleri çalıştırma (eş ağı)
+===================================
 
-In order to set up a peer network, one should follow routines, described in this section.
-In this version, we support manual deployment and automated by Ansible Playbook.
-Choose an option, that meets your security criteria and other needs.
+Eş ağını kurmak için, biri bu bölümde anlatılan rutinleri takip etmelidir.
+Bu versiyonda, manuel dağıtımı destekliyoruz ve Yanıtlayıcı Başucu Kitabı tarafından otomatikleştiriliyor.
+Güvenlik kriterlerinizi ve diğer ihtiyaçlarınızı karşılayan bir seçenek seçin.
 
-Manually
---------
+Manuel Olarak
+-------------
 
-By manual deployment, we mean that Iroha peer network is set up without automated assistance.
-It is similar to the process of running a single local instance, although the difference is the genesis block includes more than a single peer.
-In order to form a block, which includes more than a single peer, or requires customization for your needs, please take a look at `:ref:`deploy_troubles` section.
+Manuel dağıtım tarafından derken, bahsetmek istediğimiz Iroha eş ağı otomatik yardım olmaksızın kurulduğudur.
+Fark genesis bloklarının bir tek eşten fazlasını içermesi olmasına rağmen tek bir yerel örneğin çalışma süreçleri benzerdir.
+Tek bir eşten fazlasını içeren veya ihtiyaçlarınız için özelleştirme gerektiren bir blok oluşturmak için lütfen `:ref:`deploy_troubles` bölümüne bakınız.
 
-Automated
----------
+Otomatikleştirilmiş
+-------------------
 
-Follow `this guide <https://github.com/hyperledger/iroha-deploy/blob/master/ansible/roles/iroha-docker/README.md>`__
+`Bu kılavuzu <https://github.com/hyperledger/iroha-deploy/blob/master/ansible/roles/iroha-docker/README.md>`__ takip ediniz.

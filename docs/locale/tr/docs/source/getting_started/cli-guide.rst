@@ -1,95 +1,95 @@
-CLI guide: sending your first transactions and queries
-======================================================
+CLI kılavuzu: ilk işlemlerini ve sorgularını gönderme
+=====================================================
 
-You can interact with Iroha using various ways.
-You can use our client libraries
-to write code in various programming languages (e.g. Java, Python, Javascript,
-Swift) which communicates with Iroha.
-Alternatively, you can use ``iroha-cli`` – our command-line tool for interacting with Iroha.
-As a part of this guide, let's get familiar with ``iroha-cli``
+Çeşitli yollar kullanarak Iroha ile etkileşimde bulunabilirsiniz.
+Iroha ile iletişim kuran çeşitli programlama 
+dillerinde kod yazmak için kullanıcı kütüphanelerimizi 
+kullanabilirsiniz (örneğin Java, Python, Javascript, Swift).
+Alternatif olarak, Iroha ile etkileşim için komut satırı aracımız olan ``iroha-cli`` kullanabilirsiniz.
+Bu kılavuzun bir parçası olarak, ``iroha-cli``'yı tanıyalım
 
-.. Attention:: Despite that ``iroha-cli`` is arguably the simplest way to start working with Iroha,
-  ``iroha-cli`` covers only some possible commands/queries, so user experience might not be the best.
-  If you want to help us build a better CLI version please let us know!
+.. Dikkat:: Buna rağmen ``iroha-cli`` muhtemelen Iroha ile çalışmaya başlamanın en basit yoludur,
+  ``iroha-cli`` yalnızca bâzı muhtemel komutları/sorguları kapsar, bu yüzden kullanıcı deneyimi en iyisi olmayabilir.
+  Eğer daha iyi bir CLI versiyonu oluşturmamıza yardım etmek isterseniz lütfen bize bildirin!
 
 .. raw:: html
 
   <script src="https://asciinema.org/a/6dFA3CWHQOgaYbKfQXtzApDob.js" id="asciicast-6dFA3CWHQOgaYbKfQXtzApDob" async></script>
 
-Open a new terminal (note that Iroha container and ``irohad`` should be up and
-running) and attach to an ``iroha`` docker container:
+Yeni bir terminal açın (Iroha konteyneri ve ``irohad`` kurulmuş ve çalışıyor olmasına 
+dikkat edin) ve bir ``iroha`` docker konteyneri ekleyin:
 
 .. code-block:: shell
 
   docker exec -it iroha /bin/bash
 
-Now you are in the interactive shell of Iroha's container again.
-We need to launch ``iroha-cli`` and pass an account name of the desired user.
-In our example, the account ``admin`` is already created in the ``test`` domain.
-Let's use this account to work with Iroha.
+Şimdi tekrar Iroha konteynerinin interaktif kabuğundasınız.
+``iroha-cli``'yı başlatmaya ve istenen kullanıcının hesap adını geçmeye ihtiyacımız var.
+Örneğimizde, ``admin`` hesabı zaten ``test`` alanında yaratıldı.
+Iroha ile çalışmak için bu hesabı kullanalım.
 
 .. code-block:: shell
 
   iroha-cli -account_name admin@test
 
-.. note:: Full account name has a ``@`` symbol between name and domain.
-  Note that the keypair has the same name.
+.. not:: Tam hesap adı isim ile alan adı arasında bir ``@`` sembolüne sahiptir.
+  Anahtar çiftinin aynı ada sahip olduğunu unutmayınız.
 
-Creating the First Transaction
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+İlk İşlemi Yaratmak
+^^^^^^^^^^^^^^^^^^^
 
-You can see the interface of ``iroha-cli`` now.
-Let's create a new asset, add some asset to the admin account and transfer it to other account.
-To achieve this, please choose option ``1. New transaction (tx)`` by writing ``tx`` or ``1`` to a console.
+Şimdi ``iroha-cli``'ın arayüzünü görebilirsiniz.
+Yeni bir varlık yaratalım, admin hesabına biraz varlık ekleyelim ve diğer hesaba transfer edelim.
+Bunu yapmak için, lütfen konsola ``tx`` veya ``1`` yazarak ``1. Yeni işlem (tx)`` seçeneğini seçin.
 
-Now you can see a list of available commands.
-Let's try creating a new asset.
-Select ``14. Create Asset (crt_ast)``.
-Now enter a name for your asset, for example ``coolcoin``.
-Next, enter a Domain ID. In our example we already have a domain ``test``, so let's use it.
-Then we need to enter an asset precision
-– the amount of numbers in a fractional part.
-Let's set precision to ``2``.
+Şimdi mevcut komutların listesini görebilirsiniz.
+Yeni bir varlık oluşturmayı deneyelim.
+``14. Varlık Yarat (crt_ast)``'ı seçiniz.
+Şimdi varlığınız için bir isim giriniz, örneğin ``coolcoin``.
+Sonrasında, bir alan ID'si giriniz. Örneğimizde zaten``test`` alanımız var, bu yüzden onu kullanacağız.
+Sonra varlık hassasiyeti girmeye ihtiyacımız var
+– fraksiyonel bölümündeki sayıların miktarı.
+Hassaslığı ``2`` olarak ayarlayalım.
 
-Congratulations, you have created your first command and added it to a transaction!
-You can either send it to Iroha or add some more commands
-``1. Add one more command to the transaction (add)``.
-Let's add more commands, so we can do everything in one shot. Type ``add``.
+Tebrikler, ilk komutunuzu yarattınız ve onu bir işleme eklediniz!
+Iroha'ya gönderebilir veya daha fazla komutlar ekleyebilirsiniz
+``1. İşleme bir tane daha komut ekleyin (ekle)``.
+Daha fazla komut ekleyelim, böylece tek seferde herşeyi yapabiliriz. ``add`` yazın.
 
-Now try adding some ``coolcoins`` to our account.
-Select ``16. Add Asset Quantity (add_ast_qty)``, enter asset ID – ``coolcoin#test``,
-integer part and ``coolcoin#test``, integer part and precision.
-For example, to add 200.50 precision.
-For example, to add 200.50 ``coolcoins``, we need to enter integer ``coolcoins``,
-we need to enter integer part as ``20050`` and precision as  part as ``20050``
-and precision as ``2``, so it becomes ``200.50``.
+Şimdi hesabımıza ``coolcoins`` eklemeyi deneyelim.
+``16. Varlık Miktarı Ekle (add_ast_qty)``'yi seçiniz, varlık ID'sini giriniz – ``coolcoin#test``,
+tamsayı bölümü ve ``coolcoin#test``, tamsayı bölümü ve hassasiyet.
+Örneğin, 200,50 hassasiyet eklemek için.
+Örneğin, 200.50 ``coolcoins`` eklemek için, ``coolcoins`` tamsayısını girmemiz gerekir,
+Tamsayı bölümünü ``20050`` olarak girmemiz gerekir ve hassasiyet bölümünü ``20050`` 
+olarak ve hassaslığı ``2`` olarak girmemiz gerekir böylece ``200.50`` olur.
 
-.. note:: Full asset name has a ``#`` symbol between name and domain.
+.. not:: Tam varlık adı isim ile alan adı arasında bir ``#`` sembolüne sahiptir.
 
-Let's transfer 100.50 ``coolcoins`` from ``admin@test`` to ``test@test``
-by adding one more command and choosing ``5. Transfer Assets (tran_ast)``.
-Enter Source Account and Destination Account, in our case ``admin@test``
-and ``test@test``, Asset ID (``coolcoin#test``), integer part and precision (``10050`` and ``2`` accordingly).
+Bir tane daha komut ekleyip ``5. Varlıkları Transfer Et (tran_ast)``'i seçerek
+``admin@test``'den ``test@test``'e 100.50 ``coolcoins`` transfer edelim.
+Kaynak Hesabı ve Hedef Hesabı giriniz, bizim durumumuzda ``admin@test``
+ve ``test@test``, Varlık ID'si (``coolcoin#test``), tamsayı bölümü ve hassasiyet (``10050`` ve ``2``).
 
-Now we need to send our transaction to Iroha peer (``2. Send to Iroha peer (send)``).
-Enter peer address (in our case ``localhost``) and port (``50051``).
-Now your transaction is submitted and you can see your transaction hash.
-You can use it to check transaction's status.
+Şimdi Iroha eşine işlemimizi göndermeye ihtiyacımız var (``2. Iroha Eşine Gönder (gönder)``).
+Eş adresini giriniz (bizim durumumuzda ``localhost``) ve bağlantı noktası (``50051``).
+Şimdi işleminiz gönderildi ve işlem karışımınızı görebilirsiniz.
+İşlemin durumunu kontrol etmek için kullanabilirsiniz.
 
-Go back to a terminal where ``irohad`` is running.
-You can see logs of your transaction.
+``irohad``'ın çalıştığı terminale geri dönün.
+İşleminizin işlem geçmişini görebilirsiniz.
 
-Yay! You have submitted your first transaction to Iroha.
+Yaşasın! Iroha'ya ilk işleminizi gönderdiniz.
 
-Creating the First Query
-^^^^^^^^^^^^^^^^^^^^^^^^
+İlk Sorguyu Yaratmak
+^^^^^^^^^^^^^^^^^^^^
 
-Now let's check if ``coolcoins`` were successfully transferred from ``admin@test`` to ``test@test``.
-Choose ``2. New query (qry)``.
-``8. Get Account's Assets (get_acc_ast)`` can help you to check if ``test@test`` now has ``coolcoin``.
-Form a query in a similar way you did with commands you did with commands and ``1. Send to Iroha peer (send)``.
-Now you can see information about how many ``coolcoin`` does ``test@test`` have.
-It will look similar to this:
+Şimdi ``coolcoins``'in başarılı bir şekilde ``admin@test``'den ``test@test``'e transfer edilip edilmediğini kontrol edelim.
+``2. Yeni sorgu (qry)``'yu seçiniz.
+``8. Hesabın Varlıklarını Al (get_acc_ast)`` ``test@test``'in şu anda ``coolcoin``'e sahip olup olmadığını kontrol etmek için size yardımcı olabilir.
+Komutlar ve ``1. Iroha Eşine gönder (gönder)`` ile yaptığınız komutlara benzer şekilde bir sorgu oluşturunuz.
+Şimdi kaç tane ``coolcoin``'in ``test@test``'e sahip olduğu hakkında bilgiyi görebiliriz.
+Buna benzeyecek:
 
 .. code-block:: shell
 
@@ -98,21 +98,21 @@ It will look similar to this:
   [2018-03-21 12:33:23.179338394][th:36][info] QueryResponseHandler -Asset Id- coolcoin#test
   [2018-03-21 12:33:23.179387969][th:36][info] QueryResponseHandler -Balance- 100.50
 
-Isn't that awesome?
-You have submitted your first query to Iroha and got a response!
+Harika değil mi?
+Iroha'ya ilk sorgunuzu gönderdiniz ve bir yanıt aldınız!
 
-.. hint:: To get information about all available commands and queries please check our API section.
+.. ipucu:: Bütün mevcut komutlar ve sorgular hakkında bilgi edinmek için lütfen API bölümümüzü kontrol ediniz.
 
-Being Badass
-^^^^^^^^^^^^
+Kötü Niyetli Olmak
+^^^^^^^^^^^^^^^^^^
 
-Let's try being badass and cheat Iroha. For example, let's transfer more ``coolcoins`` than ``admin@test`` has.
-Try to transfer 100000.00 ``coolcoins`` from ``admin@test`` to ``test@test``.
-Again, proceed to ``1. New transaction (tx)``, ``5. Transfer Assets (tran_ast)``,
-enter Source Account and Destination Account, in our case ``admin@test`` and ``test@test``, Asset ID (``coolcoin#test``),
-integer part and precision (``10000000`` and ``2`` accordingly).
-Send a transaction to Iroha peer as you did before.
-Well, it says
+Kötü niyetli olmayı ve Iroha'yı aldatmayı deneyelim. Örneğin, ``admin@test``'in sahip olduğundan daha fazla ``coolcoins`` transfer edelim.
+``admin@test``'den ``test@test``'e 100000.00 ``coolcoins`` transfer etmeyi deneyiniz.
+Tekrar, ``1. Yeni işlem (tx)``, ``5. Varlıkları Transfer Et (tran_ast)``'a ilerleyin,
+Kaynak Hesabı ve Hedef Hesabı girin, bizim durumumuzda ``admin@test`` ve ``test@test``, Varlık ID'si (``coolcoin#test``),
+tamsayı bölümü ve hassasiyet (``10000000`` ve ``2``).
+Daha önce yaptığınız gibi Iroha eşine bir işlem gönderin.
+Diyor ki:
 
 .. code::
 
@@ -121,16 +121,16 @@ Well, it says
   Its hash is fc1c23f2de1b6fccbfe1166805e31697118b57d7bb5b1f583f2d96e78f60c241
 
 `Your transaction was accepted for processing`.
-Does it mean that we had successfully cheated Iroha?
-Let's try to see transaction's status.
-Choose ``3. New transaction status request (st)`` and enter transaction's hash which you can get in the console after the previous command.
-Let's send it to Iroha.
-It replies with:
+Bu, Iroha'yı başarıyla kandırdığımız anlamına mı geliyor?
+İşlemin durumunu görmeyi deneyelim.
+``3. Yeni işlem durumu isteği (st)``'ni seçiniz ve önceki komuttan sonra konsolda alabileceğiniz işlem karışımını giriniz.
+Iroha'ya gönderelim.
+Şöyle yanıtladı:
 
 .. code::
 
   Transaction has not passed stateful validation.
 
-Apparently no.
-Our transaction was not accepted because it did not pass stateful validation and ``coolcoins`` were not transferred.
-You can check the status of ``admin@test`` and ``test@test`` with queries to be sure (like we did earlier).
+Görünüşe göre hayır.
+İşlemimiz kabul edilmedi çünkü durumsal doğrulamayı geçmedi ve ``coolcoins``'e transfer edilmedi.
+Emin olmak için sorgularla ``admin@test`` ve ``test@test``'in durumunu kontrol edebilirsiniz (daha önce yaptığımız gibi).

@@ -1,38 +1,38 @@
-iOS Swift Library
------------------
+iOS Swift Kütüphanesi
+---------------------
 
-The library was created to provide convenient interface for iOS applications to communicate with Iroha blockchain including sending transactions/query, streaming transaction statuses and block commits.
+Kütüphane iOS uygulamalarının işlem/sorgu göndermeyi, işlem durumlarının ve blok işlemesinin akışını içeren Iroha blokzinciri ile iletişim kurması için uygun bir arayüz sağlaması için yaratılmıştır.
 
-Where to get
-^^^^^^^^^^^^
+Nereden edinilir
+^^^^^^^^^^^^^^^^
 
-Iroha iOS library is available through CocoaPods. To install it, simply add the following line to your Podfile:
+Iroha iOS kütüphanesi CocoaPods ile mevcuttur. Yüklemek için, Podfile'ınıza basitçe alttaki satırı ekleyin:
 
 .. code-block:: swift
 
     pod 'IrohaCommunication'
 
-Also you can download the source code for the library in `its repo <https://github.com/hyperledger/iroha-ios>`__
+Ayrıca `reposundan <https://github.com/hyperledger/iroha-ios>`__ kütüphane için kaynak kodu indirebilirsiniz
 
 
 
-How to use
-^^^^^^^^^^
+Nasıl kullanılır
+^^^^^^^^^^^^^^^^
 
-For new Iroha users we recommend to checkout `iOS example project <https://github.com/hyperledger/iroha-ios/tree/master/Example>`__.
-It tries to establish connection with Iroha peer which should be also run locally on your computer to create new account and send some asset quantity to it.
-To run the project, please, go through steps below:
+Yeni Iroha kullanıcıları için `iOS örnek projesine <https://github.com/hyperledger/iroha-ios/tree/master/Example>`__ gözatmalarını öneriyoruz.
+Ayrıca yeni hesap yaratmak için bilgisayarınızda yerel olarak çalıştırmanız gereken Iroha eşleriyle bağlantı kurmaya çalışır ve bâzı varlık miktarını gönderir.
+Projeyi çalıştırmak için, lütfen aşağıdaki adımları uygulayın:
 
-- Follow instructions from Iroha documentation to setup and run iroha peer in Docker container.
+- Docker konteynerindeki iroha eşini kurmak ve çalıştırmak için Iroha dökümantasyonundaki yönergeleri takip edin.
 
-- Clone `iroha-ios repository <https://github.com/hyperledger/iroha-ios>`__.
+- `iroha-ios deposunu <https://github.com/hyperledger/iroha-ios>`__ klonlayın.
 
-- cd Example directory and run pod install.
+- cd Örnek dizini ve pod kurulumunu çalıştırın.
 
-- Open IrohaCommunication.xcworkspace in XCode
+- XCode'daki IrohaCommunication.xcworkspace'i açın.
 
-- Build and Run IrohaExample target.
+- IrohaExample hedefini kurun ve çalıştırın.
 
-- Consider logs to see if the scenario completed successfully.
+- Eğer senaryo başarıyla tamamlanırsa işlem geçmişini görmeyi düşününüz.
 
-Feel free to experiment with example project and don't hesitate to ask any questions in Rocket.Chat.
+Örnek projeyle deneme yapmak açısından özgür hissedin ve Rocket.Chat'de herhangi bir soru sorma konusunda tereddüt etmeyin.

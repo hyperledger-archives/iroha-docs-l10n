@@ -1,12 +1,12 @@
 .. _deploy-guide:
 
-======
-Deploy
-======
+========
+Dağıtmak
+========
 
-Hyperledger Iroha can be deployed in different ways, depending on the perspective and the purpose.
-There can be either a single node deployed, or multiple nodes running in several containers on a local machine or spread across the network — so pick any case you need.
-This page describes different scenarios and is intended to act as a how-to guide for users, primarily trying out Iroha for the first time.
+Hyperledger Iroha perspektife ve amaca bağlı olarak farklı yollarla dağıtılabilir.
+Dağıtılmış tek bir düğüm veya yerel bir makine üzerinde birkaç konteynerda çalışan veya ağa yayılmış birçok düğüm olabilir. — yani ihtiyacınız olan herhangi bir durumu seçin.
+Bu sayfa farklı senaryoları tanımlar ve öncelikli olarak Iroha'yı ilk kez deneyen kullanıcılar için nasıl kullanılacağına dair bir kılavuz olarak harekete geçmeyi hedeflemiştir.
 
 Security notice
 ===============
