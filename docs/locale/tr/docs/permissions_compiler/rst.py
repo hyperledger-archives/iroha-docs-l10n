@@ -1,1 +1,0 @@
-../../../../../iroha/docs/permissions_compiler/rst.py

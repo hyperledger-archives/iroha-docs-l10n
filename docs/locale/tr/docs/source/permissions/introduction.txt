@@ -1,1 +1,13 @@
-../../../../../../iroha/docs/source/permissions/introduction.txt
+Hyperledger Iroha kullanıcılarının eylemlerini sınırlamak için rol tabanlı bir erişim kontrol sistemi kullanır.
+Bu sistem farklı erişim seviyelerine sahip kullanıcı gruplarını içeren kullanım senaryosu uygulamak için fazlasıyla yardımcı olur—
+süper kullanıcılara varlık transferi bile alamayan zayıf kullanıcılar arasında.
+Yetkilendirme sistemimizin güzelliği Iroha kurulumunuzda süper kullanıcıya sahip olmaya 
+veya muhtemel tüm izinleri kullanmaya ihtiyacınız yok: ayrı ve hafif roller yaratabilirsiniz.
+
+Sistemin bakımı rolleri ve rollere dahil olan izinleri ayarlamayı içerir.
+Sistem dağıtımının başlangıç adımında bu yapılabilir — genesis blokta,
+veya Iroha ağı kurulduktan ve çalıştırıldıktan sonra, roller değiştirilebilir (eğer bunu yapabilecek bir rol varsa :)
+
+Bu bölüm izinleri anlamak için yardımcı olacak ve belirli yetkileri içeren rollerin nasıl yaratacağına dair bir fikir verecek.
+Her izin spesifik yetkiler gerektiren işlem veya sorgu yaratma yolunu gösteren Python'da yazılmış bir örnekle sağlanır. 
+Her örnek `Supplementary Sources`_ bölümünde bulunan *commons.py* modülünü kullanır.

@@ -1,1 +1,2 @@
-../../../../../iroha/docs/source/.gitignore
+_build
+.vscode
