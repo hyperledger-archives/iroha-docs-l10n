@@ -1,5 +1,5 @@
 ==================
-Join the Community
+Topluluğa katıl
 ==================
 
 .. include:: ../../../CONTRIBUTING.rst

@@ -1,55 +1,55 @@
-Configure TLS for client-peer communication (torii)
-===================================================
-By default, client-peer communication is not encrypted.
-To enable it, you need to:
+Kullanıcı-eş iletişimi için TLS yapılandırmak (torii)
+=====================================================
+Varsayılan olarak kullanıcı-eş iletişimi şifreli değildir.
+Etkinleştirmek için şunları yapmanız lazım:
 
-1. `Generate <#generating-keys>`_ a key/certificate pair for each peer
-2. Distribute the certificate to all clients
-3. `Configure <#configuring-irohad>`_ irohad to use these keys
-4. [Re]start irohad
+1. Her eş için bir anahtar/sertifika çifti `oluşturun <#generating-keys>`_
+2. Bütün kullanıcılara sertifikaları dağıtın
+3. Bu anahtarları kullanmak için irohad'ı `yapılandırın <#configuring-irohad>`_ 
+4. Irohad'ı [tekrar] başlatın
 
 
-Generating keys
-~~~~~~~~~~~~~~~
+Anahtar oluşturma
+~~~~~~~~~~~~~~~~~
 
-Keys must be presented in PEM format. To generate them you can use ``openssl``:
+Anahtarlar PEM formatında sunulmalıdır. Onları oluşturmak için ``openssl`` kullanabilirsin:
 
 .. code-block:: sh
 
     $ openssl genpkey -algorithm rsa -out server.key
     $ openssl req -new -key server.key -x509 -out server.crt
 
-You can use any algorithm you want instead of ``rsa``, as long as your
-``openssl`` supports it.
-To find out which are supported, you can use
+``openssl``'in desteklediği sürece ``rsa`` yerine istediğiniz herhangi 
+bir algoritmayı kullanabilirsiniz.
+Hangilerinin desteklendiğini öğrenmek için şunu kullanabilirsiniz:
 
 .. code-block:: sh
 
     $ openssl list-public-key-algorithms
 
-If you need to use plain IP addresses to connect to the node, you need to
-specify ``subjectAltName`` in your server certificate, for that you need to add
-a ``subjectAltName`` directive to ``v3_ca`` section of your openssl config
-before generating the certificate.
-For example, for the default installation, ``/etc/ssl/openssl.cnf``:
+Eğer düğüme bağlanmak için düz IP adresleri kullanmaya ihtiyaç duyduysanız, sunucu sertifikanızda 
+``subjectAltName``'i belirtmelisiniz, bunun için sertifikayı oluşturmadan 
+önce openssl yapılandırmanızın ``v3_ca`` bölümüne bir ``subjectAltName`` 
+yönergesi eklemeniz gerekir.
+Örneğin, varsayılan kurulum için, ``/etc/ssl/openssl.cnf``:
 
 .. code-block:: text
 
     [ v3_ca ]
     subjectAltName=IP:12.34.56.78
 
-Fields in the certificate don't really matter except for the Common Name (CN),
-it would be checked against the client's hostname, and TLS handshake will fail
-if they do not match (e.g. if you connect to example.com:50051, then irohad at
-example.com would need to have example.com in common name of the certificate).
+Sertifikadaki alanlar Common Namex (CN) haricinde önemli değil,
+kullanıcının ana bilgisayar adına göre kontrol edilir ve eğer eşleşmedilerse
+TLS anlaması hata verecek (örneğin eğer example.com:50051'a bağlantı kurarsanız, example.com'daki 
+irohad'ın sertifikanın ortak adına example.com'a sahip olması gerekir.).
 
-Configuring irohad
-~~~~~~~~~~~~~~~~~~
+Irohad yapılanıdrması
+~~~~~~~~~~~~~~~~~~~~~
 
-To configure iroha to use your keys, you need to modify the ``torii_tls_params``
-config parameter.
+Anahtarlarınızı kullanacak şekilde iroha'yı yapılandırmak için, ``torii_tls_params``yapılandırma 
+parametresini modifiye etmeniz gerekir.
 
-It should look like the following block:
+Aşağıdaki blok gibi görünmelidir:
 
 .. code-block:: javascript
 
@@ -58,10 +58,10 @@ It should look like the following block:
         "key_pair_path": "/path/to/server"
     }
 
-``port`` - set this to any port you would like (but usually you
-would want 55552)
+``port`` - bunu istediğiniz herhangi bir bağlantı noktasına kurar (fakat genellikle 
+55552'yi istersiniz)
 
-``key_pair_path`` - set this to full path to the key/certificate pair,
-such that if you have a key at ``/path/to/server.key`` and a certificate at
-``/path/to/server.crt``, you need to specify
+``key_pair_path`` - bunu anahtar/sertifika çiftinin tam yoluna kurar,
+öyle ki eğer ``/path/to/server.key``'de bir anahtarınız ve ``/path/to/server.crt``'de 
+bir sertifikanız varsa, şunu belirtmelisiniz
 ``torii_tls_keypair=/path/to/server``

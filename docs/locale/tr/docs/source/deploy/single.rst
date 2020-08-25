@@ -1,93 +1,93 @@
-=======================
-Running single instance
-=======================
+==========================
+Tekli örnekleri çalıştırma
+==========================
 
-Generally, people want to run Iroha locally in order to try out the API and explore the capabilities.
-This can be done in local or container environment (Docker).
-We will explore both possible cases,
-but in order to simplify peer components deployment, *it is advised to have Docker installed on your machine*.
+Genellikle, API'yı denemek ve kabiliyetlerini keşfetmek için Iroha'yı yerel olarak çalıştırmak ister.
+Bu yerel veya konteyner ortamında yapılabilir (Docker).
+Her iki olası durumu da inceleyeceğiz,
+fakat eş bileşenleri dağılımını basitleştirmek için, *Docker'ı makinenize kurmanız tavsiye edilir*.
 
-Local environment
------------------
+Yerel ortam
+-----------
 
-By local environment, it is meant to have daemon process and Postgres deployed without any containers.
-This might be helpful in cases when messing up with Docker is not preferred — generally a quick exploration of the features.
+Yerel ortam tarafından, arka plan sürecinin ve Postgres'in herhangi bir konteyner olmaksızın dağıtılması amaçlanmaktadır.
+Docker ile uğraşmanın tercih edilmediği durumlarda bu yardımcı olabilir — genellikle özelliklerin hızlı bir şekilde araştırılması.
 
-Run postgres server
-"""""""""""""""""""
+Postgres sunucusu çalıştırma
+""""""""""""""""""""""""""""
 
-In order to run postgres server locally, you should check postgres `website <https://www.postgresql.org/docs/current/static/server-start.html>`__ and follow their description.
-Generally, postgres server runs automatically when the system starts, but this should be checked in the configuration of the system.
+Yerel olarak postgres sunucusunu çalıştırmak için, you postgres `websitesini <https://www.postgresql.org/docs/current/static/server-start.html>`__ kontrol etmelisiniz ve yönergeleri takip etmelisiniz.
+Genellikle, sistem başladığında postgres sunucusu otomatik olarak çalışır, fakat bu sistemin yapılandırmasında kontrol edilmelidir.
 
 
-Run iroha daemon (irohad)
-"""""""""""""""""""""""""
+İroha arkaplanı çalıştırma (irohad)
+"""""""""""""""""""""""""""""""""""
 
-There is a list of preconditions which you should meet before proceeding:
+İlerlemeden önce yapmanız gereken ön koşulların bir listesi var:
 
- * Postgres server is up and running
- * `irohad` Iroha daemon binary is built and accessible in your system
- * The genesis block and configuration files were created
- * Config file uses valid postgres connection settings
- * A keypair for the peer is generated
- * This is the first time you run the Iroha on this peer and you want to create new chain
+ * Postgres sunucusunun hazırlanır ve çalıştırılır
+ * `irohad` Iroha arkaplan ikilisi kurulur ve sisteminizde erişebilir haldedir
+ * Genesis blok ve yapılandırma dosyaları oluşturur
+ * Yapılandırma dosyası geçerli postgres bağlantı ayarlarını kullanır
+ * Eşler için bir anahtar çifti oluşturulur
+ * Bu eş üzerinde Iroha'yı ilk kez çalıştırıyorsunuz ve yeni bir zincir oluşturmak istiyorsunuz
 
-.. Hint:: Have you got something that is not the same as in the list of assumptions? Please, refer to the section :ref:`deploy_troubles`.
+.. İpucu:: Varsayımlar listesindekiyle aynı olmayan birşey var mı? Lütfen, :ref:`deploy_troubles` bölümüne bakınız.
 
-In case of valid assumptions, the only thing that remains is to launch the daemon process with following parameters:
+Geçerli varsayımlar durumunda, geri kalan tek şey parametreleri takip ederek arkaplan sürecini başlatmaktır:
 
 +---------------+-----------------------------------------------------------------+
-| Parameter     | Meaning                                                         |
+| Parametre     | Anlamı                                                          |
 +---------------+-----------------------------------------------------------------+
-| config        | configuration file, containing postgres connection and values   |
-|               | to tune the system                                              |
+| config        | yapılandırma dosyası, sistemi ayarlamak için postgres           |
+|               | bağlantısı ve değerleri içerir                                  |
 +---------------+-----------------------------------------------------------------+
-| genesis_block | initial block in the ledger                                     |
+| genesis_block | defterdeki başlangıç bloğu                                      |
 +---------------+-----------------------------------------------------------------+
-| keypair_name  | private and public key file names without file extension,       |
-|               | used by peer to sign the blocks                                 |
+| keypair_name  | dosya uzantısı olmaksızın özel ve genel anahtar dosya isimleri, |
+|               | blokları imzalamak için eş tarafından kullanılır                |
 +---------------+-----------------------------------------------------------------+
 
-.. Attention:: Specifying a new genesis block using `--genesis_block` with blocks already present in ledger requires `--overwrite_ledger` flag to be set. The daemon will fail otherwise.
+.. Dikkat:: Defterde zaten mevcut bloklar ile `--genesis_block` kullanarak yeni genesis bloklarını belirlemek için `--overwrite_ledger` bayrağının ayarlanması gerekir. Aksi takdirde arkaplan programı başarısız olur.
 
-An example of shell command, running Iroha daemon is
+Kabuk komutuna bir örnek olarak, Iroha arkaplan programı çalıştırmak:
 
 .. code-block:: shell
 
     irohad --config example/config.sample --genesis_block example/genesis.block --keypair_name example/node0
 
-.. Note:: if you are running Iroha built with `HL Ursa support <../integrations/index.html#hyperledger-ursa>`_ please get the example keys and genesis block in `example/ursa-keys/`
+.. Not:: `HL Ursa support <../integrations/index.html#hyperledger-ursa>`_ ile oluşturulmuş bir Iroha çalıştırıyorsanız lütfen `example/ursa-keys/`'deki örnek anahtarlar ve genesis blokları edinin.
 
-.. Attention:: If you have stopped the daemon and want to use existing chain — you should not pass the genesis block parameter.
+.. Dikkat:: Arkaplan programını durdurduysanız ve var olan zincirleri kullanmayı istiyorsanız — genesis blok parametresini geçmemelisiniz.
 
 
 Docker
 ------
 
-In order to run Iroha peer as a single instance in Docker, you should pull the image for Iroha first:
+Docker'da tek bir örnek olarak Iroha eşlerini çalıştırmak için, öncelikle Iroha için görüntüsünü çekmelisiniz:
 
 .. code-block:: shell
 
     docker pull hyperledger/iroha:latest
 
-.. Hint:: Use *latest* tag for latest stable release, and *develop* for latest development version
+.. İpucu:: En son kararlı sürüm için *en son* etiketi kullanın ve en son geliştirme sürümü için *geliştirin*
 
-Then, you have to create an enviroment for the image to run without problems:
+Ardından, görüntüyü problemsiz çalıştırmak için bir ortam oluşturmalısınız:
 
-Create docker network
-"""""""""""""""""""""
+Docker ağı yaratın
+""""""""""""""""""
 
-Containers for Postgres and Iroha should run in the same virtual network, in order to be available to each other.
-Create a network, by typing following command (you can use any name for the network, but in the example, we use *iroha-network* name):
+Birbirilerine erişebilir olmak için, Postgres ve Iroha için konteynerler aynı sanal ağda çalışmalıdır.
+Aşağıdaki komutu yazarak bir ağ yaratmak (ağ için herhangi bir isim kullanabilirsiniz, fakat biz örnekte *iroha-network* ismini kullandık):
 
 .. code-block:: shell
 
     docker network create iroha-network
 
-Run Postgresql in a container
-"""""""""""""""""""""""""""""
+Bir konteynerde Postgresql çalıştırmak
+"""""""""""""""""""""""""""""""""""""""
 
-Similarly, run postgres server, attaching it to the network you have created before, and exposing ports for communication:
+Benzer şekilde postgres sunucusunu çalıştırın daha önce yarattığınız ağa ekleyin ve iletişim için bağlantı noktalarını açın:
 
 .. code-block:: shell
 
@@ -98,25 +98,25 @@ Similarly, run postgres server, attaching it to the network you have created bef
     --network=iroha-network \
     -d postgres:9.5
 
-Create volume for block storage
-"""""""""""""""""""""""""""""""
+Blok depolama alanı için disk bölümü yaratmak
+"""""""""""""""""""""""""""""""""""""""""""""
 
-Before we run iroha daemon in the container, we should create persistent volume to store files, storing blocks for the chain.
-It is done via the following command:
+Konteynerde iroha arkaplan programı çalıştırmadan önce, dosyaları depolamak ve zincir için blokları depolamak için kalıcı bir disk bölümü yaratmalıyız.
+Aşağıdaki komut aracılığıyla yapılır:
 
 .. code-block:: shell
 
     docker volume create blockstore
 
-Running iroha daemon in docker container
-""""""""""""""""""""""""""""""""""""""""
+Docker konteynerinde iroha arkaplan programı çalıştırmak 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-There is a list of assumptions which you should review before proceeding:
- * Postgres server is running on the same docker network
- * There is a folder, containing config file and keypair for a single node
- * This is the first time you run the Iroha on this peer and you want to create new chain
+Devam etmeden önce gözden geçirmeniz gereken varsayımların bir listesi vardır:
+ * Postgres sunucusu aynı docker ağında çalışıyor
+ * Tek bir düğüm için yapılandırma dosyası ve anahtar çiftini içeren bir dosya vardır 
+ * Bu eş üzerinde ilk kez Iroha'yı çalıştırıyorsunuz ve yeni bir zincir eklemek istiyorsunuz
 
-If they are met, you can move forward with the following command:
+Eğer karşılaşırlarsa aşağıdaki komutlar ile ilerleyebilirsiniz:
 
 .. code-block:: shell
 

@@ -1,29 +1,29 @@
-***********
-Permissions
-***********
+********
+Yetkiler
+********
 
-Hyperledger Iroha uses a role-based access control system to limit actions of its users.
-This system greatly helps to implement use cases involving user groups having different access levels —
-ranging from the weak users, who can't even receive asset transfer to the super-users.
-The beauty of our permission system is that you don't have to have a super-user
-in your Iroha setup or use all the possible permissions: you can create segregated and lightweight roles.
+Hyperledger Iroha kullanıcılarının eylemlerini sınırlamak için rol-bazlı bir erişim kontrol sistemi kullanır .
+Bu sistem farklı erişim seviyelerine sahip kullanıcı gruplarını içeren kullanım durumlarını uygulamaya büyük ölçüde yardımcı olur —
+varlık transferi bile alamayan zayıf kullanıcılardan süper-kullanıcılara kadar.
+Yetkilendirme sistemimizin güzelliği bir süper-kullanıcıya sahip olmak zorunda olmamanızdır.
+Iroha kurulumunuzda veya muhtemel bütün yetkileri kullandığınızda: ayrılmış ve hafif roller yaratabilirsiniz. 
 
-Maintenance of the system involves setting up roles and permissions, that are included in the roles.
-This might be done at the initial step of system deployment — in genesis block,
-or later when Iroha network is up and running, roles can be changed (if there is a role that can do that :)
+Sistemin bakımı rollerde bulunan rolleri ayarlamayı ve yetkileri içerir.
+Sistem yayılmasının ilk adımında bu yapılabilir — genesis blokta,
+veya sonra Iroha ağı hazır ve çalışıyorken, roller değiştirilebilir (eğer bunu yapabilecek bir rol varsa :)
 
-This section will help you to understand permissions and give you an idea of how to create roles including certain permissions.
-Each permission is provided with an example written in Python that demonstrates the way of transaction or query creation,
-which require specific permission. Every example uses *commons.py* module, which listing is available at `Supplementary Sources`_ section.
+Bu bölüm yetkileri anlamak için ve belirli yetkileri içeren rolleri nasıl yaratacağına dair fikir vermesi için size yardımcı olacaktır.
+Her yetki Python'da yazılmış işlem veya sorgu yaratmanın yolunun gösteren bir örnekle sağlanır,
+spesifik yetki gerektirir. Her örnek listelemesi `Supplementary Sources`_ bölümünde bulunan *commons.py* modülünü kullanır.
 
-*******************
-List of Permissions
-*******************
+******************
+Yetkilerin Listesi
+******************
 
 .. iroha_gen_permissions_index:: permissions/matrix.csv
 
-********************
-Permissions Detailed
-********************
+*****************
+Ayrıntılı İzinler
+*****************
 
 .. iroha_gen_detailed_permissions:: permissions/matrix.csv

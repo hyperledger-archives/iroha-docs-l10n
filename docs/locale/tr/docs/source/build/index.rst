@@ -1,41 +1,41 @@
 .. _build-guide:
 
 ==============
-Building Iroha
+Iroha Kurulumu
 ==============
 
-In this guide we will learn how to install all dependencies, required to build
-Iroha and how to actually build it.
+Bu kılavuzda Iroha'nın kurulumu için gereken bütün bağımlılıkları nasıl kuracağımızı ve Iroha'nın nasıl kurulacağını öğreneceğiz.
 
-There will be 3 steps:
+Kurulum için 3 adım var:
 
-#. Installing environment prerequisites
+#. Ortam önkoşulların kurulumu
 
-#. Installing Iroha dependencies (will be performed automatically for Docker)
+#. Iroha bağımlılıklarının kurulumu (Docker için otomatik olarak uygulanacak)
 
-#. Building Iroha
+#. Iroha'nın kurulumu
 
-.. note:: You don't need to build Iroha to start using it.
-  Instead, you can download prepared Docker image from the Hub,
-  this process explained in details in the :ref:`getting-started` page of this documentation.
+.. not:: Kullanmaya başlamak için Iroha'yı kurmanıza gerek yok.
+  Bunun yerine, Hub'dan hazırlanmış Docker görüntüsünü indirebilirsiniz,
+  bu süreç dökümanın :ref:`getting-started` sayfasında detaylıca açıklandı.
 
-Prerequisites
+Önkoşullar
 =============
 
-In order to successfully build Iroha, we need to configure the environment.
-There are several ways to do it and we will describe all of them.
+Iroha'nın başarılı bir şekilde kurulumu için ortamın konfigüre edilmesine ihtiyaç duyarız.
+Bunu yapmanın birkaç yolu var ve hepsini anlatacağız.
 
-Currently, we support Unix-like systems (we are basically targeting popular
-Linux distros and MacOS). If you happen to have Windows or you don't want to
-spend time installing all dependencies you might want to consider using Docker
-environment. Also, Windows users might consider using
-`WSL <https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux>`_
+Şu anda Unix benzeri sistemleri destekliyoruz (temel olarak popüler Linux dağıtımlarını
+ve MacOS'u hedefliyoruz). Windows'unuz varsa veya bütün bağımlılıkları yüklemek için 
+zaman harcamak istemiyorsanız Docker ortamını kullanmayı düşünmeyi 
+isteyebilirsiniz. Ayrıca, Windows kullanıcıları `WSL <https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux>`_
+kullanmayı düşünebilir.
 
-Technically Iroha can be built under Windows natively in experimental mode.
-This guide covers that way too.
-All the stages related to native Windows build are separated from the main flow due to its significant differences.
 
-Please choose your preferred platform below for a quick access:
+Teknik olarak Iroha Windows'un altında deneysel modda kurulabilir.
+Bu kılavuz bu yöntemi de kapsamaktadır.
+Yerel Windows kurulumu ile alakalı bütün aşamalar önemli farklılıklarından dolayı ana akıştan ayrılır.
+
+Lütfen hızlı erişim için aşağıdaki tercih ettiğiniz platformu seçiniz:
 
     - :ref:`docker-pre`
     - :ref:`linux-pre`
@@ -43,65 +43,65 @@ Please choose your preferred platform below for a quick access:
     - :ref:`Windows-pre`
 
 
-.. hint:: Having troubles? Check FAQ section or communicate to us directly, in
-  case you were stuck on something. We don't expect this to happen, but some
-  issues with an environment are possible.
+.. ipucu:: Sorun mu yaşıyorsunuz? Sıkça Sorulan Sorular bölümünü kontrol edin veya
+  bir şeye takılmanız halinde doğrudan bizimle iletişime geçin. Bunun olmasını
+  beklemiyoruz, fakat ortam ile ilgili bâzı sorunlar mümkündür.
 
 .. _docker-pre:
 
 Docker
 ^^^^^^
 
-First of all, you need to install ``docker`` and ``docker-compose``. You can
-read how to install it on the
-`Docker's website <https://www.docker.com/community-edition/>`_
+Öncelikle, ``docker`` ve ``docker-compose``'u yüklemeniz gerekli. 
+`Docker'ın websitesinden <https://www.docker.com/community-edition/>`_ kurulumunu 
+nasıl yapabileceğinizi okuyabilirsiniz.
 
-.. note:: Please, use the latest available docker daemon and docker-compose.
+.. not:: Lütfen, mevcut son çıkan docker daemon ve docker-compose'u kullanın.
 
-Then you should clone the `Iroha repository <https://github.com/hyperledger/iroha>`_
-to the directory of your choice:
+Sonrasında `Iroha deposunu <https://github.com/hyperledger/iroha>`_ seçtiğiniz
+dizine klonlamalısınız:
 
 .. code-block:: shell
 
   git clone -b master https://github.com/hyperledger/iroha --depth=1
 
-.. hint:: ``--depth=1`` option allows us to download only latest commit and
-  save some time and bandwidth. If you want to get a full commit history, you
-  can omit this option.
+.. ipucu:: ``--depth=1`` seçeneği yalnızca son işlemeyi indirmemize izin verir 
+  ve zaman ve bant genişliğinden tasarruf etmemizi sağlar. Eğer bütün işleme geçmişine
+  erişmek istiyorsanız, bu seçeneği atlayabilirsiniz.
 
-When it is done, you need to run the development environment. Run the
-``scripts/run-iroha-dev.sh`` script:
+Tamamlandığında geliştirme ortamını çalıştırmanız gerekmektedir. Alttaki kod satırını çalıştırın:
+``scripts/run-iroha-dev.sh`` betiği:
 
 .. code-block:: shell
 
   bash scripts/run-iroha-dev.sh
 
-.. hint:: Please make sure that Docker is running before executing the script.
-  MacOS users could find a Docker icon in system tray, Linux users can use
+.. ipucu:: Lütfen betik gerçekleştirilmeden önce Docker'ın çalışıyor olduğuna emin olun.
+  MacOS kullanıcıları sistem çubuğunda bir Docker ikonu bulabilir, Linux kullanıcıları şunu kullanabilir:
   ``systemctl start docker``
 
-After you execute this script, the following things will happen:
+Bu betiği gerçekleştirdikten sonra, aşağıdakiler gerçekleştirilecek:
 
-#. The script will check whether you have containers with Iroha already running. Successful completion finishes with the new container shell.
+#. Betik Iroha ile halihazırda çalışan konteynerlerin olup olmadığını kontrol eder. Yeni konteyner kabuğu ile başarılı bir şekilde tamamlanır.
 
-#. The script will download ``hyperledger/iroha:develop-build`` and ``postgres`` images. ``hyperledger/iroha:develop-build`` image contains all development dependencies and is based on top of ``ubuntu:20.04``. ``postgres`` image is required for starting and running Iroha.
+#. Betik ``hyperledger/iroha:develop-build`` ve ``postgres`` görüntülerini yükler. ``hyperledger/iroha:develop-build`` görüntüsü bütün geliştirme bağımlılıklarını içerir ve ``ubuntu:18.04``'nun üstüne dayanmaktadır. ``postgres`` görüntüsü Iroha'nın başlaması ve çalışması için gereklidir.
 
-#. Two containers are created and launched.
+#. İki konteyner yaratılır ve başlatılır.
 
-#. The user is attached to the interactive environment for development and testing with ``iroha`` folder mounted from the host machine. Iroha folder is mounted to ``/opt/iroha`` in Docker container.
+#. Kullanıcı ana makineden ``iroha`` dosyası ile geliştirme ve test için interaktif ortama eklenir. Iroha dosyası Docker konteynerindeki ``/opt/iroha``'a bağlanır.
 
-Now your are ready to build Iroha! Please go directly to `Building Iroha <#build-process>`_ section.
+Şimdi Iroha kurulumuna hazırsınız! Lütfen doğrudan `Building Iroha <#build-process>`_ bölümüne gidin.
 
 .. _linux-pre:
 
 Linux
 ^^^^^
 
-To build Iroha, you will need the following packages:
+Iroha kurulumu için, alttaki paketlere ihtiyacınız var:
 
 ``build-essential`` ``git`` ``ca-certificates`` ``tar`` ``ninja-build`` ``curl`` ``unzip`` ``cmake``
 
-Use this code to install environment dependencies on Debian-based Linux distro.
+Debian tabanlı Linux dağıtımında ortam bağımlılıklarını yüklemek için bu kodu kullanın.
 
 .. code-block:: shell
 
@@ -110,76 +110,76 @@ Use this code to install environment dependencies on Debian-based Linux distro.
   build-essential ninja-build \
   git ca-certificates tar curl unzip cmake
 
-.. note::  If you are willing to actively develop Iroha and to build shared
-  libraries, please consider installing the
-  `latest release <https://cmake.org/download/>`_ of CMake.
+.. not::  Eğer Iroha'yı aktif bir şekilde geliştirmeye ve paylaşılan kütüphaneler 
+  oluşturmaya istekliyseniz, lütfen CMake'in `son sürümünü 
+  <https://cmake.org/download/>`_ kurmayı düşünün.
 
-Now you are ready to `install Iroha dependencies <#installing-dependencies-with-vcpkg-dependency-manager>`_.
+Şimdi `Iroha'nın bağımlılıklarını kurmaya <#installing-dependencies-with-vcpkg-dependency-manager>`_ hazırsınız.
 
 .. _macos-pre:
 
 MacOS
 ^^^^^
 
-If you want to build Iroha from scratch and actively develop it, please use the following code
-to install all environment dependencies with Homebrew:
+Iroha'yı sıfırdan oluşturmak ve aktif bir şekilde geliştirmek istiyorsanız, lütfen Homebrew 
+ile bütün ortam bağımlılıklarını yüklemek için aşağıdaki kodu kullanın:
 
 .. code-block:: shell
 
   xcode-select --install
-  brew install cmake ninja git gcc@9
+  brew install cmake ninja git gcc@7
 
-.. hint:: To install the Homebrew itself please run
+.. ipucu:: Homebrew'i yüklemek için lütfen çalıştırın
 
   ``ruby -e "$(curl -fsSL https://raw.githubusercontent.com/homebrew/install/master/install)"``
 
-Now you are ready to `install Iroha dependencies <#installing-dependencies-with-vcpkg-dependency-manager>`_.
+Şimdi `Iroha'nın bağımlılıklarını kurmaya <#installing-dependencies-with-vcpkg-dependency-manager>`_ hazırsınız.
 
 .. _windows-pre:
 
 Windows
 ^^^^^^^
 
-.. note:: All the listed commands are designed for building 64-bit version of Iroha.
+.. not:: Listenen bütün komutlar Iroha'nın 64 bit versiyonu oluşturmak için dizayn edilmiştir.
 
 Chocolatey Package Manager
 """"""""""""""""""""""""""
 
-First of all you need Chocolatey package manager installed.
-Please refer `the guide <https://chocolatey.org/install>`_ for chocolatey installation.
+Öncelikle Chocolatey package manager'ı yüklemeniz gerekmektedir.
+Lütfen chocolatey kurulumu için `kılavuza <https://chocolatey.org/install>`_ başvurun.
 
 Building the Toolset
 """"""""""""""""""""
 
-Install CMake, Git, Microsoft compilers via chocolatey being in Administrative mode of command prompt:
+Komut sistemi Yönetici modda olacak şekilde chocolatey aracılığıyla CMake, Git, Microsoft derleyicilerini kurun:
 
 .. code-block:: shell
 
   choco install cmake git visualstudio2019-workload-vctools ninja
 
 
-PostgreSQL is not a build dependency, but it is recommended to install it now for the testing later:
+PostgreSQL bir yapı bağımlılığı değildir fakat sonra test etmek için şimdi yüklenmesi önerilir:
 
   .. code-block:: shell
 
     choco install postgresql
-    # Don't forget the password you set!
+    # Belirlediğiniz şifreyi unutmayın!
 
-Now you are ready to `install Iroha dependencies <#installing-dependencies-with-vcpkg-dependency-manager>`_.
+Şimdi `Iroha'nın bağımlılıklarını kurmaya <#installing-dependencies-with-vcpkg-dependency-manager>`_ hazırsınız.
 
 Installing dependencies with Vcpkg Dependency Manager
 =====================================================
 
-Currently we use Vcpkg as a dependency manager for all platforms - Linux, Windows and MacOS.
-We use a fixed version of Vcpkg to ensure the patches we need will work.
+Şu anda bütün platformlar için bağımlılık yöneticisi olarak Vcpkg kullanıyoruz - Linux, Windows ve MacOS.
+İhtiyacımız olan yamaların çalışmasını sağlamak için sabit bir Vcpkg versiyonu kullanıyoruz.
 
-That stable version can only be found inside the Iroha repository, so we will need to clone Iroha.
-The whole process is pretty similar for all platforms but the exact commands are slightly different.
+Bu sabit versiyon yalnızca Iroha deposunun içinde bulunabilir bu nedenle Iroha'yı klonlamamız gerekmektedir.
+Tüm süreç bütün platformlar için oldukça benzerdir fakat kesin komutlar biraz farklıdır.
 
 Linux and MacOS
 ^^^^^^^^^^^^^^^
 
-Run in terminal:
+Terminalde çalıştır:
 
 .. code-block:: shell
 
@@ -187,144 +187,136 @@ Run in terminal:
   iroha/vcpkg/build_iroha_deps.sh
   vcpkg/vcpkg integrate install
 
-After the installation of vcpkg you will be provided with a CMake build parameter like
+Vcpkg kurulumundan sonra size alttaki gibi bir CMake build parameter verilecektir
 ``-DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake``.
-Save it somewhere for later use and move to `Building Iroha <#build-process>`_ section.
+Sonra kullanmak için bir yere kaydedin ve `Iroha'nın Oluşturulması <#build-process>`_ bölümüne gidin.
 
 Windows
 ^^^^^^^
 
-Execute from Power Shell:
+Power Shell'den gerçekleştir:
 
 .. code-block:: shell
 
   git clone https://github.com/hyperledger/iroha.git
   powershell -ExecutionPolicy ByPass -File .\iroha\.packer\win\scripts\vcpkg.ps1 .\vcpkg .\iroha\vcpkg
 
-After the installation of vcpkg you will be provided with a CMake build parameter like
+Vcpkg kurulumundan sonra size alttaki gibi bir CMake build parameter verilecektir
 ``-DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake``.
-Save it somewhere for later use and move to `Building Iroha <#build-process>`_ section.
+Sonra kullanmak için bir yere kaydedin ve `Iroha'nın Oluşturulması <#build-process>`_ bölümüne gidin.
 
-.. note:: If you plan to build 32-bit version of Iroha -
-  you will need to install all the mentioned librares above
-  prefixed with ``x86`` term instead of ``x64``.
+.. not:: Eğer Iroha'nın 32 bit versiyonunu oluşturmayı planlıyorsanız -
+  üstte bahsedilen bütün kütüphaneleri öneki ``x64`` yerine 
+  ``x86`` olarak yüklemeniz gerekmektedir.
 
-Build Process
-=============
+Oluşturma Süreci
+================
 
-Cloning the Repository
-^^^^^^^^^^^^^^^^^^^^^^
-This step is currently unnecessary since you have already cloned Iroha in the previous step.
-But if you want, you can clone the `Iroha repository <https://github.com/hyperledger/iroha>`_ to the
-directory of your choice.
+Depoyu klonlama
+^^^^^^^^^^^^^^^^
+Önceki adımda Iroha'yı klonladığımız için bu adım gereksizdir.
+Fakat eğer isterseniz `Iroha deposunu <https://github.com/hyperledger/iroha>`_ to the
+seçtiğiniz dizine klonlayabilirsiniz.
 
 .. code-block:: shell
 
   git clone -b master https://github.com/hyperledger/iroha
   cd iroha
 
-.. hint:: If you have installed the prerequisites with Docker, you don't need
-  to clone Iroha again, because when you run ``run-iroha-dev.sh`` it attaches
-  to Iroha source code folder. Feel free to edit source code files with your
-  host environment and build it within docker container.
+.. ipucu:: Eğer Docker ile önkoşulları yüklediyseniz, Iroha'nın klonuna 
+  ihtiyaç duymayacaksınız, çünkü ``run-iroha-dev.sh``'ı çalıştırdığınızda Iroha 
+  kaynak kodu klasörüne eklenir. Ana ortamınız ile kaynak kodu dosyalarını 
+  düzenleyebilir ve docker container'ının içinde oluşturabilirsiniz.
 
 
-Building Iroha
-^^^^^^^^^^^^^^
+Iroha'nın Oluşturulması
+^^^^^^^^^^^^^^^^^^^^^^^
 
-To build Iroha, use these commands:
+Iroha'yı oluşturmak için şu komutları kullanın:
 
 .. code-block:: shell
 
   cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Ninja"
   cmake --build build --target irohad -- -j<number of threads>
 
-.. warning:: If you want to use tests later, instead of building `irohad` target, you need to use this:
+.. not:: Docker'da bir araç-zinciri dosyasına giden yol ``/opt/dependencies/scripts/buildsystems/vcpkg.cmake``. Diğer 
+  ortamlarda lütfen önceki adımlarda kullandığınız yolu kullanın.
 
-.. code-block:: shell
+İş-dizisi sayısı platforma bağlı olarak farklı bir şekilde tanımlanacaktır:
+- Linux'ta: ``nproc`` aracılığıyla.
+- MacOS'ta: ``sysctl -n hw.ncpu`` ile.
+- Windows'ta: ``echo %NUMBER_OF_PROCESSORS%`` kullan.
 
-  cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Ninja"
-  cmake --build build --target all -- -j<number of threads>
+.. not:: Windows'ta oluştururken bunu Power Shell'den gerçekleştirmeyin. x64 yerel araç komut sistemini kullanmak daha iyi.
 
-.. note:: On Docker the path to a toolchain file is ``/opt/dependencies/scripts/buildsystems/vcpkg.cmake``. In other
-  environment please use the path you have got in previous steps.
-
-Number of threads will be defined differently depending on the platform:
-
-- On Linux: via ``nproc``.
-- On MacOS: with ``sysctl -n hw.ncpu``.
-- On Windows: use ``echo %NUMBER_OF_PROCESSORS%``.
-
-.. note:: When building on Windows do not execute this from the Power Shell. Better use x64 Native tools command prompt.
-
-Now Iroha is built. Although, if you like, you can build it with additional parameters described below.
+Şimdi Iroha oluşturuldu. İsterseniz, aşağıda açıklanan ek parametrelerle oluşturabilirsiniz.
 
 CMake Parameters
 ^^^^^^^^^^^^^^^^
 
-We use CMake to generate platform-dependent build files.
-It has numerous flags for configuring the final build.
-Note that besides the listed parameters cmake's variables can be useful as well.
-Also as long as this page can be deprecated (or just not complete) you can browse custom flags via ``cmake -L``, ``cmake-gui``, or ``ccmake``.
+Platforma bağlı oluşturma dosyaları oluşturmak için CMake kullanıyoruz.
+Son yapıyı konfigüre etmek için çok sayıda bayrak var.
+Listelenen parametrelerin dışında CMake'in değişkenleri de faydalı olabilir.
+Also as long as this page can be deprecated (or just not complete) Ayrıca bu sayfanın kullanımdan kaldırıldığı
+(veya henüz tamamlanmadığı) takdirde ``cmake -L``, ``cmake-gui``, or ``ccmake`` aracılığıyla özel bayraklara göz atabilirsiniz.
 
-.. hint::  You can specify parameters at the cmake configuring stage
-  (e.g cmake -DTESTING=ON).
+.. ipucu::  Parametreleri CMake konfigürasyon aşamasında belirleyebilirsiniz
+  (örneğin cmake -DTESTING=ON).
 
-Main Parameters
-"""""""""""""""
+Ana Parametreler
+""""""""""""""""
 
-+----------------------------------+-----------------+---------+------------------------------------------------------------------------+
-| Parameter                        | Possible values | Default | Description                                                            |
-+==================================+=================+=========+========================================================================+
-| TESTING                          |      ON/OFF     | ON      | Enables or disables build of the tests                                 |
-+----------------------------------+                 +---------+------------------------------------------------------------------------+
-| BENCHMARKING                     |                 | OFF     | Enables or disables build of the Google Benchmarks library             |
-+----------------------------------+                 +---------+------------------------------------------------------------------------+
-| COVERAGE                         |                 | OFF     | Enables or disables lcov setting for code coverage generation          |
-+----------------------------------+                 +---------+------------------------------------------------------------------------+
-| USE_LIBURSA                      |                 | OFF     | Enables usage of the HL Ursa cryptography instead of the standard one  |
-+----------------------------------+                 +---------+------------------------------------------------------------------------+
-| USE_BURROW                       |                 | OFF     | Enables the HL Burrow EVM integration                                  |
-+----------------------------------+-----------------+---------+------------------------------------------------------------------------+
++----------------------------------+-----------------+------------+----------------------------------------------------------------------------------+
+| Parametre                        | Olası değerler  | Varsayılan | Açıklama                                                                         |
++==================================+=================+============+==================================================================================+
+| TEST YAPMAK                      |      AÇIK/      | AÇIK       | Testlerin oluşturulmasını etkinleştirir/devre dışı bırakır                       |
++----------------------------------+      KAPALI     +------------+----------------------------------------------------------------------------------+
+| KIYASLAMA                        |                 | KAPALI     | GoogleBenchmarks kütüphanesinin oluşturulmasını etkinleştirir/devre dışı bırakır |
++----------------------------------+                 +------------+----------------------------------------------------------------------------------+
+| KAPSAM                           |                 | KAPALI     | Kod kapsamı oluşturma için lcov ayarını etkinleştirir/devredışı bırakır          |
++----------------------------------+                 +------------+----------------------------------------------------------------------------------+
+| LIBURSA_KULLANIMI                |                 | KAPALI     | Standart yerine HL Ursa kriptografisinin kullanılmasını sağlar                   |
++----------------------------------+                 +------------+----------------------------------------------------------------------------------+
+| BURROW_KULLANIMI                 |                 | KAPALI     | HL Burrow EVM entegrasyonunu etkinleştirir                                       |
++----------------------------------+-----------------+------------+----------------------------------------------------------------------------------+
 
-.. note:: If you would like to use HL Ursa cryptography for your build, please install `Rust <https://www.rust-lang.org/tools/install>`_ in addition to other dependencies. Learn more about HL Ursa integration `here <../integrations/index.html#hyperledger-ursa>`_.
+.. not:: Yapınız için HL Ursa kriptografi kullanmak istiyorsanız, lütfen diğer bağımlılıklara ek olarak `Rust <https://www.rust-lang.org/tools/install>`_ yükleyin. HL Ursa entegrasyonu hakkında daha fazla bilgi edinmek için `buraya <../integrations/index.html#hyperledger-ursa>`_ tıklayınız.
 
 Packaging Specific Parameters
 """""""""""""""""""""""""""""
 
-+-----------------------+-----------------+---------+--------------------------------------------+
-| Parameter             | Possible values | Default | Description                                |
-+=======================+=================+=========+============================================+
-| PACKAGE_ZIP           |      ON/OFF     | OFF     | Enables or disables zip packaging          |
-+-----------------------+                 +---------+--------------------------------------------+
-| PACKAGE_TGZ           |                 | OFF     | Enables or disables tar.gz packaging       |
-+-----------------------+                 +---------+--------------------------------------------+
-| PACKAGE_RPM           |                 | OFF     | Enables or disables rpm packaging          |
-+-----------------------+                 +---------+--------------------------------------------+
-| PACKAGE_DEB           |                 | OFF     | Enables or disables deb packaging          |
-+-----------------------+-----------------+---------+--------------------------------------------+
++-----------------------+-----------------+------------+----------------------------------------------------------------+
+| Parametre             | Olası değerler  | Varsayılan | Description                                                    |
++=======================+=================+============+================================================================+
+| PACKAGE_ZIP           |      AÇIK/      | KAPALI     | Zip paketlemeyi etkinleştirir veya devre dışı bırakır          |
++-----------------------+      KAPALI     +------------+----------------------------------------------------------------+
+| PACKAGE_TGZ           |                 | KAPALI     | Tar.gz paketlemeyi etkinleştirir veya devre dışı bırakır       |
++-----------------------+                 +------------+----------------------------------------------------------------+
+| PACKAGE_RPM           |                 | KAPALI     | rpm paketlemeyi etkinleştirir veya devre dışı bırakır          |
++-----------------------+                 +------------+----------------------------------------------------------------+
+| PACKAGE_DEB           |                 | KAPALI     | deb paketlemeyi etkinleştirir veya devre dışı bırakır          |
++-----------------------+-----------------+------------+----------------------------------------------------------------+
 
-Running Tests (optional)
-^^^^^^^^^^^^^^^^^^^^^^^^
-First of all, please make sure you `built Iroha correctly <#id8>`_ for the tests.
+Çalıştırma Testleri (isteğe bağlı)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-After building Iroha, it is a good idea to run tests to check the operability
-of the daemon. You can run tests with this code:
+Iroha oluşturulduktan sonra, daemon'un çalışabilirliğini test etmek 
+için çalıştırma testi yapmak iyi bir fikir. Bu kod ile testi çalıştırabilirsiniz:
 
 .. code-block:: shell
 
   cmake --build build --target test
 
-Alternatively, you can run the following command in the ``build`` folder
+Alternatif olarak, ``build`` dosyası içinde aşağıdaki komutlar ile çalıştırabilirsiniz.
 
 .. code-block:: shell
 
   cd build
   ctest . --output-on-failure
 
-.. note:: Some of the tests will fail without PostgreSQL storage running,
-  so if you are not using ``scripts/run-iroha-dev.sh`` script please run Docker
-  container or create a local connection with following parameters:
+.. not:: Teslerin bâzıları PostgreSQL depolaması çalışmadan başarısız olur,
+  bu nedenle eğer ``scripts/run-iroha-dev.sh`` betiği kullanmıyorsan lütfen Docker'ı çalıştırın
+  container veya aşağıdaki parametrelerle yerel bir bağlantı oluşturabilirsiniz:
 
   .. code-block:: shell
 
