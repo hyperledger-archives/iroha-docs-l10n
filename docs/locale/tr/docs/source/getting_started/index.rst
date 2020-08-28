@@ -1,49 +1,50 @@
 .. _getting-started:
 
-Getting Started
-===============
+========================
+Hızlı Başlangıç Kılavuzu
+========================
 
-In this guide, we will create a very basic Iroha network, launch it, create a
-couple of transactions, and check the data written in the ledger.
-To keep things simple, we will use Docker.
+Bu kılavuzda, çok basit bir Iroha ağı yaratacağız, başlatacağız, işlem 
+çiftlerini yaratacağız ve deftere yazılan verileri kontrol edeceğiz.
+İşleri basit tutmak için, Docker kullanacağız.
 
-.. note:: Ledger is the synonym for a blockchain, and Hyperledger Iroha is known
-  also as Distributed Ledger Technology framework — which in essence is the same as "blockchain framework".
-  You can check the rest of terminology used in the :ref:`core-concepts` section.
+.. not:: Defter blokzincirin eşanlamlısıdır ve Hyperledger Iroha ayrıca
+  Distributed Ledger Technology çalışma alanı olarak bilinir — esasen "blokzincir çalışma alanıyla" aynıdır.
+  :ref:`core-concepts` bölümünde kullanılan terminolojinin kalanını kontrol edebilirsiniz.
 
-Prerequisites
--------------
-For this guide, you need a machine with ``Docker`` installed.
-You can read how to install it on a `Docker's website <https://www.docker.com/community-edition/>`_.
+Önkoşullar
+----------
+Bu kılavuz için, ``Docker`` kurulu bir makineye ihtiyaç duyarsınız.
+`Docker'ın internet sitesinde <https://www.docker.com/community-edition/>`_ nasıl kurulacağını okuyabilirsiniz.
 
-.. note:: Of course you can build Iroha from scratch, modify its code and launch a customized node!
-  If you are curious how to do that — you can check :ref:`build-guide` section.
-  In this guide we will use a standard distribution of Iroha available as a docker image.
+.. not:: Tabiki Iroha'yı sıfırdan yükleyebilirsiniz, kodunu değiştirebilir ve özelleştirilmiş bir düğüm başlatabilirsiniz!
+  Eğer bunun nasıl yapıldığına dair meraklıysanız — :ref:`build-guide` bölümünü kontrol edebilirsiniz.
+  Bu kılavuzda docket görüntüsü olarak Iroha'nın mevcut standart dağıtımını kullanacağız.
 
-Starting Iroha Node
--------------------
+Iroha Düğümüne Başlamak
+-----------------------
 
 .. raw:: html
 
   <script src="https://asciinema.org/a/z7VkEd0hAfVnwwKcfJCbiRfJT.js" id="asciicast-z7VkEd0hAfVnwwKcfJCbiRfJT" async></script>
 
-Creating a Docker Network
-^^^^^^^^^^^^^^^^^^^^^^^^^
-To operate, Iroha requires a ``PostgreSQL`` database.
-Let's start with creating a Docker network, so containers for Postgres and
-Iroha can run on the same virtual network and successfully communicate.
-In this guide we will call it ``iroha-network``, but you can use any name.
-In your terminal write following command:
+Bir Docker Ağı Yaratmak
+^^^^^^^^^^^^^^^^^^^^^^^
+Çalıştırmak için, Iroha bir ``PostgreSQL`` veritabanı gerektirir.
+Bir Docker ağı yaratmakla başlayalım, böylece Postgres ve Iroha için 
+konteynerler aynı sanal ağda çalışabilir ve başarılı bir şekilde iletişim kurabilir.
+Bu kılavuzda ``iroha-network`` ismiyle bahsedeceğiz, fakat herhangi bir isim kullanabilirsiniz.
+Terminalinizde aşağıdaki komutu yazınız:
 
 .. code-block:: shell
 
   docker network create iroha-network
 
-Starting PostgreSQL Container
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PostgreSQL Konteynerine Başlamak
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now we need to run ``PostgreSQL`` in a container, attach it to the network
-you have created before, and expose ports for communication:
+Şimdi bir konteynerde ``PostgreSQL`` çalıştırmaya ihtiyaç duyuyoruz, daha önce oluşturduğumuz 
+ağa ekleyin, ve iletişim için bağlantı noktalarını açığa çıkarınız:
 
 .. code-block:: shell
 
@@ -55,52 +56,52 @@ you have created before, and expose ports for communication:
   -d postgres:9.5 \
   -c 'max_prepared_transactions=100'
 
-.. note:: If you already have Postgres running on a host system on default port (5432),
-  then you should pick another free port that will be occupied.
-  For example, 5433: ``-p 5433:5432``
+.. not:: Eğer varsayılan bağlantı noktasında (5432) bir ana bilgisayar sisteminde çalışan zaten Postgres'e sahipseniz,
+  kullanılacak başka bir boş bağlantı noktası seçmelisiniz.
+  Örneğin, 5433: ``-p 5433:5432``
 
-Creating Blockstore
+Blok Deposu Yaratmak
 ^^^^^^^^^^^^^^^^^^^
-Before we run Iroha container, we may create a persistent volume to store files, storing blocks for the chain.
-It is done via the following command:
+Iroha konteynerini çalıştırmadan önce, dosyaları saklamak ve zincir için blokları saklamak için kalıcı bir volüm yaratabiliriz.
+Aşağıdaki komutlar aracılığıyla yapılır:
 
 .. code-block:: shell
 
   docker volume create blockstore
 
-Preparing the configuration files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Konfigürasyon Dosyalarının Hazırlanması
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note:: To keep things simple, in this guide we will create a network containing only a single node.
-  To understand how to run several peers, follow :ref:`deploy-guide`
+.. not:: İşleri basit tutmak için, bu kılavuzda yalnızca tek bir düğüm içeren bir ağ yaratacağız.
+  Birkaç eşin nasıl çalıştığını anlamak için, :ref:`deploy-guide`'ı takip edin
 
-Now we need to configure our Iroha network.
-This includes creating a configuration file, generating keypairs for a users,
-writing a list of peers and creating a genesis block.
+Şimdi Iroha ağımızı yapılandırmamız gerekiyor.
+Bu bir konfigürasyon dosyası oluşturmayı, kullanıcılar için anahtar çifti oluşturmayı,
+eşlerin listesini yazmayı ve bir genesis bloğu yaratmayı içerir.
 
-Don't be scared away — we have prepared an example configuration for this guide,
-so you can start testing Iroha node now.
-In order to get those files, you need to clone the `Iroha repository <github.com/hyperledger/iroha>`_
-from Github or copy them manually (cloning is faster, though).
+Korkmayın — bu kılavuz için örnek bir konfigürasyon hazırladık,
+böylece şimdi Iroha düğümünü test etmeye başlayabilirsiniz.
+Bu dosyaları almak için, Github'dan `Iroha deposunu <https://github.com/hyperledger/iroha>`_ 
+klonlamanız gerekiyor veya manuel olarak kopyalayabilirsiniz (klonlama daha hızlı).
 
 .. code-block:: shell
 
   git clone -b master https://github.com/hyperledger/iroha --depth=1
 
-.. hint:: ``--depth=1`` option allows us to download only the latest commit and
-  save some time and bandwidth. If you want to get a full commit history, you
-  can omit this option.
+.. ipucu:: ``--depth=1`` seçeneği yalnızca son işlemeyi indirmemize ve zamandan ve 
+  bant genişliğinden tasarruf etmemizi sağlar. Eğer bütün işleme geçmişine erişmek isterseniz, 
+  bu seçeneği atlayabilirsiniz.
 
-There is a guide on how to set up the parameters and tune them with respect to your
-environment and load expectations: :ref:`configuration`.
-We don't need to do this at the moment.
+Parametrelerin nasıl kurulacağı ve ortamınıza ve yük beklentinize göre nasıl 
+ayarlanacağı hakkında bir kılavuz vardır: :ref:`configuration`.
+Şu anda bunu yapmamız gerekmiyor.
 
-Starting Iroha Container
-^^^^^^^^^^^^^^^^^^^^^^^^
-We are almost ready to launch our Iroha container.
-You just need to know the path to configuration files (from the step above).
+Iroha Konteynerine Başlamak
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Neredeyse Iroha konteynerimizi başlatmaya hazırız.
+Sadece konfigürasyon dosyalarının yolunu bilmeniz gerekiyor (üstteki adımdan).
 
-Let's start Iroha node in Docker container with the following command:
+Aşağıdaki komutla Docker konteynerindeki Iroha düğümünü başlatın:
 
 .. code-block:: shell
 
@@ -113,33 +114,33 @@ Let's start Iroha node in Docker container with the following command:
   -e KEY='node0' \
   hyperledger/iroha:latest
 
-If you started the node successfully you would see the container id in the same console where you started the container.
+Eğer düğümü başarılı bir şekilde başlattıysanız konteyneri başlattığınız aynı konsolda konteyner id'sini görürsünüz.
 
-Let's look in details what this command does:
+Bu komutun ne yaptığına detaylı olarak bakalım:
 
-- ``docker run --name iroha \`` creates a container ``iroha``
-- ``-d \`` runs container in the background
-- ``-p 50051:50051 \`` exposes a port for communication with a client (we will use this later)
-- ``-v YOUR_PATH_TO_CONF_FILES:/opt/iroha_data \`` is how we pass our configuration files to
-  docker container. The example directory is indicated in the code block above.
-- ``-v blockstore:/tmp/block_store \`` adds persistent block storage (Docker volume) to a container,
-  so that the blocks aren't lost after we stop the container
-- ``--network=iroha-network \`` adds our container to previously created ``iroha-network``
-  for communication with PostgreSQL server
-- ``-e KEY='node0' \`` - here please indicate a key name that will identify the node allowing it to confirm operations.
-  The keys should be placed in the directory with configuration files mentioned above.
-- ``hyperledger/iroha:latest`` is a reference to the image pointing to the
-  latest `release <https://github.com/hyperledger/iroha/releases>`__
+- ``docker run --name iroha \`` bir ``iroha`` konteyneri yaratır 
+- ``-d \`` arkaplanda konteyneri çalıştırır
+- ``-p 50051:50051 \`` bir kullanıcı ile iletişim için bir bağlantı noktası ortaya çıkarır (bunu daha sonra kullanacağız)
+- ``-v YOUR_PATH_TO_CONF_FILES:/opt/iroha_data \`` docker konteynerine konfigürasyon dosyalarımızı 
+  nasıl ilettiğimizdir. Örnek dizin yukarıdaki kod bloğunda belirtildi.
+- ``-v blockstore:/tmp/block_store \`` bir konteynere kalıcı blok depolama alanı (Docker volüm) ekler,
+  böylece biz konteyneri durdurduktan sonra bloklar kaybolmaz 
+- ``--network=iroha-network \`` PostgreSQL sunucusu ile iletişim için konteynerimizi daha önce 
+  oluşturulmuş ``iroha-network``'a ekler
+- ``-e KEY='node0' \`` - burada lütfen işlemlerin onaylanmasına izin veren düğümü tanımlayacak bir anahtar adı belirtin.
+  Anahtarlar yukarıda bahsedilen konfigürasyon dosyalarıyla birlikte dizine yerleştirilmelidir.
+- ``hyperledger/iroha:latest`` en son sürüme işaret eden görüntüye bir 
+  `referanstır <https://github.com/hyperledger/iroha/releases>`__
 
-You can check the logs by running ``docker logs iroha``.
+``docker logs iroha`` çalıştırarak işlem geçmişini kontrol edebilirsiniz.
 
-You can try using one of sample guides in order to send some transactions to Iroha and query its state.
+Bâzı işlemleri Iroha'ya göndermek ve durumunu sorgulamak için örnek kılavuzlardan birini kullanmayı deneyebilirsiniz.
 
-Try other guides
-----------------
+Diğer kılavuzları deneyin
+-------------------------
 
 .. toctree::
-      :maxdepth: 1
+      :maxdepth: 2
 
       cli-guide.rst
       python-guide.rst

@@ -4,67 +4,75 @@
 
 .. role:: red
 
-Restarting Iroha node with existing WSV
-=======================================
+Var olan WSV ile Iroha düğümünü yeniden başlatma
+================================================
 
-Previously, in cases when you had to update a node or it shut down for some reason, there was only one option of re-reading all of the blocks to recreate consistent `world state view (aka WSV) <../concepts_architecture/architecture.html#world-state-view>`__.
-To start up a node quicker, it is now possible to reuse an existing WSV database after a quick check.
-For that, ``hash`` of the top block and the ``height`` of the blockstorage are included in the WSV.
+Önceden, bir düğümü güncellemeniz veya bâzı nedenlerden dolayı kapatılması durumunda, tutarlı `world state view (aka WSV) <../concepts_architecture/architecture.html#world-state-view>`__'ı yeniden yaratmak için bütün blokları yeniden okumanın yalnızca bir seçeneği vardı.
+Bir düğümü daha hızlı başlatmak için, hızlı bir kontrolden sonra var olan bir WSV veritabanını yeniden kullanmak mümkündür.
+Bunun için, üst bloğun ``hash``'i ve the blok depolama alanının ``height``'ı WSV'ye dahil edildi.
 
-.. warning::
-	It is up to Administrators of the node to make sure the WSV is not edited manually – only by Iroha or the `migration script <#changing-iroha-version-migration>`__.
-	Manual editing or editing of the migration script not following a trustworthy guideline can lead to inconsistent network.
-	Only do so at your own risk (we warned you).
+.. uyarı::
+	WSV'nin manuel bir şekilde düzenlenmediğinden emin olmak düğümün Yöneticilerine kalmıştır – yalnızca Iroha veya `geçiş betiği <#changing-iroha-version-migration>`__ tarafından.
+	Manuel düzenleme veya geçiş betiğinin düzenlenmesi tutarsız bir ağa neden olabilecek güvenilir bir kılavuzu takip etmez.
+	Sadece kendi sorumluluğunuzdadır (sizi uyardık).
 
-Although it can be a great idea for some of the cases, but please consider that there are certain specifics of reusing WSV, compared to restoring it from blockstorage:
+Bâzı durumlar için harika bir fikir olmasına rağmen, lütfen blok depolama alanından geri yüklemeye kıyasla WSV yeniden kullanımının belirli detayları olduğunu düşünün:
 
 | :red:`Trust point`
-| **Reusing WSV:** we need to rely on both blockstorage and WSV.
-| **Restore WSV from block storage:** we trust only the genesis block.
+| **WSV'yi yeniden kullanmak:** hem blok depolama alanına hem de WSV'ye güvenmemiz gerekir.
+| **Blok depolama alanından WSV'yi restore etmek:** sadece genesis bloğuna güveniyoruz.
 
 
 | :red:`Integrity`
-| **Reusing WSV:** blockstorage and WSV must match each other! Iroha will not check for that.
-| **Restore WSV from block storage:** Iroha will check every block, while restoring WSV.
-	Any error in blockstorage will be found (except genesis block, of course).
-	WSV is guaranteed to match the blockstorage.
+| **WSV'yi yeniden kullanmak:** blok depolama alanı ve WSV birbirleriyle eşleşmelidir! Iroha bunu kontrol etmeyecek.
+| **Blok depolama alanından WSV'yi restore etmek:** WSV'yi restore ederken Iroha her bloğu kontrol edecek.
+	Blok depolama alanındaki herhangi bir hata bulunacak (elbette genesis blok hariç).
+	WSV ile blok depolama alanının eşleşeceği garanti edilir.
 
 | :red:`Time`
-| **Reusing WSV:** Iroha is almost immediately ready to operate in the network.
-| **Restore WSV from block storage:** the larger blockstorage - the longer it takes to restore it and begin operation.
+| **WSV'yi yeniden kullanmak:** Iroha hemen ağda çalışmaya hazırdır.
+| **Blok depolama alanından WSV'yi restore etmek:** daha büyük blok depolama alanı - restore edilmesi ve çalışmaya başlaması daha uzun sürer.
 
-.. note:: If the local ledger that shut down has more blocks than it should and the correct WSV is among them - it is ok, Iroha will take the WSV of the correct block.
-	If blocks are less than should be – the option of reusing WSV will not work for you.
-	Please, restore it from blocks.
+.. not:: Eğer kapanan yerel defterde olması gerekenden daha fazla blok varsa ve bunlar arasında doğru WSV varsa - herşey yolundadır, Iroha doğru bloğun WSV'sini alacaktırs.
+	Eğer bloklar olması gerekenden daha azsa – WSV'yi yeniden kullanma seçeneği sizin için çalışmayacaktır.
+	Lütfen, bloklardan geri yükleyin.
 
 
-Enabling WSV Reuse
-^^^^^^^^^^^^^^^^^^
+WSV'nin Yeniden Kullanımını Etkinleştirmek
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to reuse WSV state, start Iroha with `--reuse_state` flag.
-Given this flag, Iroha will not reset or overwrite the state database if it fails to start for whatever reason.
+Eğer WSV durumunu yeniden kullanmak istiyorsanız, `--reuse_state` bayrağı ile Iroha'yı başlatınız.
+Bu bayrak verildiğinde, eğer sebep ne olursa olsun başlamak başarısız olursa Iroha sıfırlama veya durum veritabanının üzerine yazma yapmayacaktır.
 
-State Database Schema version
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When reusing existing WSV, Iroha performs a schema version compatibility check.
-It will not start or somehow alter the database, if its schema is not compatible with the Iroha in use.
+WSV'nin Yeniden Kullanımını Etkinleştirmek
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If your schema was created by Iroha of version v1.1.1 or lower, most likely it does not include the version information.
-In this case you need to add it manually.
-You are encouraged to use our script for this purpose, it is located `here <https://github.com/hyperledger/iroha-state-migration-tool/blob/master/state_migration.py>`__.
-To forcefully (i.e. without any `migration process <#changing-iroha-version-migration>`__) set your schema version, launch the script with `--force_schema_version` flag and pass the version of Iroha binary that was used to create your schema.
+Eğer WSV durumunu yeniden kullanmak istiyorsanız, `--reuse_state` bayrağı ile Iroha'yı başlatınız.
+Bu bayrak verildiğinde, eğer sebep ne olursa olsun başlamak başarısız olursa Iroha sıfırlama veya durum veritabanının üzerine yazma yapmayacaktır.
 
-.. warning::
-  Before forcefully writing the schema version numbers, double check the version of irohad that created the schema.
-  No checks are performed when you force schema numbers, hence it is easy to break the state database in the future (during the next migration).
+Durum Veritabanı Şema versiyonu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Changing Iroha version. Migration.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In case you want to change Iroha version while keeping the WSV, you are encouraged to perform a migration.
-Although it might be unnecessary (Iroha will refuse to start if the schema is incompatible), as a general rule, we improve the schema with each version and migration might be a good idea for a better performance.
-You are encouraged to perform a database backup before migration using standard `PostgreSQL guidelines <https://www.postgresql.org/docs/current/backup.html>`__ for that.
+Var olan WSV'yi yeniden kullanırken, Iroha bir şema versiyonu uyumluluk kontrolü gerçekleştirir.
+Eğer şema kullanılan Iroha ile uyumlu değilse veritabanını başlatmayacak veya bir şekilde değiştirmeyecek.
 
-To perform migration, please use our `script <https://github.com/hyperledger/iroha-state-migration-tool/blob/master/state_migration.py>`__.
-It will load the schema information from the database and match it with migration steps (by default, migration scenarios are defined in ``migration_data`` directory in the same folder as the script).
-Then it will find all migration paths that will transition your database to the desired version and ask you to choose one.
+Eğer şemanız Iroha versiyon v1.1.1 veya daha altı tarafından yaratıldıysa, büyük ihtimalle versiyon bilgisini içermez.
+Bu durumda manuel bir şekilde eklemeniz gerekir.
+Betiğimizi bu amaç için kullanmanız teşvik edilir, `burada <https://github.com/hyperledger/iroha-state-migration-tool/blob/master/state_migration.py>`__ bulunur.s
+Zor kullanarak şema versiyonunuzu ayarlamak için (örneğin herhangi bir `geçiş süreci <#changing-iroha-version-migration>`__ olmaksızın), `--force_schema_version` bayrağı ile betiği başlatın ve şemanızı yaratmak için kullanılan Iroha ikili versiyonunu geçin.
+
+.. uyarı::
+  
+  Şema versiyon numaralarını zorla yazmadan önce, şemayı yaratan irohad versiyonunu iki kez kontrol ediniz.
+  Şema numaralarını zorladığınızda hiç bir kontrol yapılmaz, bu nedenle gelecekte (sonraki geçiş boyunca) durum veritabanını kırmak kolaydır.
+
+Iroha versiyonunu değiştirmek. Geçiş.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WSV'yi saklarken Iroha versiyonunu değiştirmek isterseniz bir geçiş gerçekleştirmeniz önerilir.
+Gereksiz olabilmesine rağmen (Iroha, şema uyumsuzsa başlatmayı reddedecektir), genel bir kural olarak,  şemayı her versiyonda geliştiririz ve daha iyi bir performans için geçiş iyi bir fikir olabilir.
+Bunun için standart `PostgreSQL kılavuzunu <https://www.postgresql.org/docs/current/backup.html>`__ kullanarak geçişten önce bir veritabanı yedeklemesi gerçekleştirmeniz önerilir.
+
+Geçişi gerçekleştirmek için, lütfen `betiğimizi <https://github.com/hyperledger/iroha-state-migration-tool/blob/master/state_migration.py>`__ kullanınız.
+Şema bilgilerini veritabanından yükler ve geçiş adımlarıyla eşleştirir (varsayılan olarak, geçiş senaryoları migration_data dizininde betik olarak aynı dosyada tanımlanır).
+Sonrasında, veritabanınızı istenen sürüme getirecek ve birini seçmenizi isteyecek tüm geçiş yollarını bulacak.

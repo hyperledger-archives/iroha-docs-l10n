@@ -1,48 +1,48 @@
-Sending transactions with Python library
-========================================
+Python kütüphanesi ile işlemleri göndermek
+==========================================
 
-Prerequisites
--------------
+Önkoşullar
+----------
 
-.. note:: The library only works in Python 3 environment (Python 2 is not supported yet).
+.. not:: Kütüphane yalnızca Python 3 ortamında çalışır (Python 2 henüz desteklenmiyor).
 
-To use Iroha Python library, you need to get it from the
-`repository <https://github.com/hyperledger/iroha-python>`_ or via pip3:
+Iroha Python kütüphanesini kullanmak için, `depodan <https://github.com/hyperledger/iroha-python>`_
+onu almanız gerekir ve pip3 aracılığıyla:
 
 .. code-block:: shell
 
 	pip3 install iroha
 
-Now, as we have the library, we can start sending the actual transactions.
+Şimdi, kütüphaneye sahip olduğumuz için, gerçek işlemleri göndermeye başlayabiliriz.
 
-Running example transactions
-----------------------------
+Örnek işlemleri çalıştırma
+--------------------------
 
-If you only want to try what Iroha transactions would look like,
-you can simply go to the examples from the repository
-`here <https://github.com/hyperledger/iroha-python/tree/master/examples>`_.
-Let's check out the `tx-example.py` file.
+Eğer sadece Iroha işlemlerinin nasıl görüneceğini denemek istiyorsanız,
+`Buradan <https://github.com/hyperledger/iroha-python/tree/master/examples>`_
+basitçe depodaki örneklere gidebilirsiniz.
+`tx-example.py` dosyasını kontrol edelim.
 
-Here are Iroha dependencies.
-Python library generally consists of 3 parts: Iroha, IrohaCrypto and IrohaGrpc which we need to import:
+İşte Iroha bağımlılıkları.
+Python kütüphanesi genellikle içeri aktarmamız gereken 3 bölümden oluşur: Iroha, IrohaCrypto ve IrohaGrpc:
 
 .. code-block:: python
 
 	from iroha import Iroha, IrohaGrpc
 	from iroha import IrohaCrypto
 
-The line
+Satır
 
 .. code-block:: python
 
 	from iroha.primitive_pb2 import can_set_my_account_detail
 
 
-is actually about the permissions you might be using for the transaction.
-You can find a full list here: `Permissions <../maintenance/permissions.html>`_.
+aslında işlem için kullanabileceğiniz izinler hakkındadır.
+Tam listeyi buradan bulabilirsiniz: `İzinler <../develop/api/permissions.html>`_.
 
 
-In the next block we can see the following:
+Bir sonraki blokta aşağıdakileri görebiliriz:
 
 .. code-block:: python
 
@@ -52,15 +52,15 @@ In the next block we can see the following:
 	iroha = Iroha('admin@test')
 	net = IrohaGrpc()
 
-Here you can see the example account information.
-It will be used later with the commands.
-If you change the commands in the transaction,
-the set of data in this part might also change depending on what you need.
+Burada hesap bilgisi örneğini görebilirsiniz.
+Komutlarla birlikte daha sonra kullanılacaktır.
+Eğer işlemdeki komutu değiştirirseniz,
+bu bölümdeki veri kümesi ayrıca neye ihtiyacınız olduğuna bağlı olarak değişebilir.
 
-Defining the commands
----------------------
+Komutları tanımlama
+-------------------
 
-Let's look at the first of the defined commands:
+Tanımlanmış komutların ilkine bakalım:
 
 .. code-block:: python
 
@@ -74,19 +74,19 @@ Let's look at the first of the defined commands:
 	        iroha.transaction(commands), admin_private_key)
 	    send_transaction_and_print_status(tx)
 
-Here we define a transaction made of 2 commands: CreateDomain and CreateAsset.
-You can find a full list here: `commands <../api/commands.html>`_.
-Each of Iroha commands has its own set of parameters.
-You can check them in command descriptions in `iroha-api-reference <../api/index.html>`_.
+Burada 2 komuttan oluşan bir işlem tanımlarız: CreateDomain ve CreateAsset.
+Tam listeyi buradan bulabilirsiniz: `Komutlar <../develop/api/commands.html>`_.
+Her Iroha komutu kendi parametre kümesine sahiptir.
+`iroha-api-reference <../develop/api.html>`_'deki komut açıklamalarında kontrol edebilirsiniz.
 
-Then we sign the transaction with the parameters defined earlier.
+Sonrasında, daha önce tanımlanmış parametrelerle işlemi imzalarız.
 
-You can define `queries <../api/queries.html>`_ the same way.
+`Sorguları <../develop/api/queries.html>`_ aynı yolla tanımlayabilirsiniz.
 
-Running the commands
+Komutları çalıştırma
 --------------------
 
-Last lines
+Son satırlar
 
 .. code-block:: python
 
@@ -95,7 +95,7 @@ Last lines
 	create_account_userone()
 	...
 
-run the commands defined previously.
+daha önce tanımlanmış komutları çalıştırın.
 
-Now, if you have `irohad` running, you can run the example or
-your own file by simply opening the .py file in another tab.
+Şimdi, eğer `irohad` çalıştırıyorsanız, başka bir sekmede .py dosyasını 
+açarak örneği veya kendi dosyanızı çalıştırabilirsiniz.
