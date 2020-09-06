@@ -77,7 +77,7 @@ Bayt kodunu aldıktan sonra, EVM'ye sözleşmeyi dağıtacak olan Python Iroha k
 	            "030033")
 
 	tx = iroha.transaction([
-	    iroha.command('EngineCall', callee='ServiceContract', input=bytecode)
+	    iroha.command('CallEngine', caller='admin@energy', input=bytecode)
 	])
 	IrohaCrypto.sign_transaction(tx, admin_key)
 
@@ -93,9 +93,21 @@ Bu sözleşmenin mint metodunu çağırmak için, metod seçiciyi içeren girdi 
 sözleşme ABI kurallarına göre kodlanmış fonksiyon argümanları ile birleştirildi – ilk fonksiyon argümanı 20-bayt uzunluğunda bir tam sayı olan *address* tipine sahiptir.
 
 Diyelim ki sözleşme sahibi (*admin@test* Iroha hesabı) 1000 coin mint istedi ve onları kendine atadı.
-*admin@test* 'e karşılık gelen EVM adresini türetmek için adlandırma kuralını hatırlatarak ve ayrıca EVM'deki sayıların sola dayalı olduğunu göz önünde bulundurarak, paraları mint için adresi temsil eden aşağıdaki dizeyi alacağız: 
+To get the EVM address corresponding to the *admin@test* using Python library we might use:
 
-``000000000000000000000000969453762b0c739dd285b31635efa00e24c25628``
+.. code-block:: python
+
+	import sha3
+	k = sha3.keccak_256()
+	k.update(b'admin@test')
+	print(hexlify(k.digest()[12:32]).zfill(64))
+
+That way, we'll get:
+
+``000000000000000000000000f205c4a929072dd6e7fc081c2a78dbc79c76070b``
+
+So, the last 20 bytes are keccak256, zero left-padded to 32 bytes.
+
 
 *amount* argümanı onaltılık olarak kodlanmış bir *uint256* sayısıdır  (ayrıca, sola dayalı):
 
@@ -116,12 +128,12 @@ Hepsini bir araya koyarak, *Coin* sözleşmesinin *mint* fonksiyonunu çağırma
 
 	admin_key = os.getenv(ADMIN_PRIVATE_KEY, IrohaCrypto.private_key())
 	params = ("40c10f19”                                                             # selector
-	          "000000000000000000000000969453762b0c739dd285b31635efa00e24c25628"  # address
+	          "000000000000000000000000f205c4a929072dd6e7fc081c2a78dbc79c76070b"  # address
 	          "00000000000000000000000000000000000000000000000000000000000003e8"  # amount
 	         )
 
 	tx = iroha.transaction([
-	    iroha.command('EngineCall', callee='ServiceContract', input=params)
+	    iroha.command('CallEngine', callee='ServiceContract', input=params)
 	])
 	IrohaCrypto.sign_transaction(tx, admin_key)
 
@@ -159,13 +171,13 @@ Sözleşmenin kodu aşağıdaki diyagramda sunulmuştur:
 	    }
 
 	    // Queries the balance in _asset of an Iroha _account
-	    function queryBalance(string memory _account, string memory _asset) public 
+	    function queryBalance(string memory _account, string memory _asset) public
 	                    returns (bytes memory result) {
 	        bytes memory payload = abi.encodeWithSignature(
-	            "getOtherAssetBalance(string,string)", 
-	            _account, 
+	            "getAssetBalance(string,string)",
+	            _account,
 	            _asset);
-	        (bool success, bytes memory ret) = 
+	        (bool success, bytes memory ret) =
 	            address(serviceContractAddress).delegatecall(payload);
 	        require(success, "Error calling service contract function");
 	        result = ret;
@@ -173,7 +185,7 @@ Sözleşmenin kodu aşağıdaki diyagramda sunulmuştur:
 	}
 
 Constructor'da Iroha durumuyla etkileşime geçmek için bir API gösteren `ServiceContract <burrow.html#running-native-iroha-commands-in-evm>`_'ın EVM adresini başlattık.
-Sözleşme fonksiyonu *queryBalance*, Iroha *ServiceContract* API'ının *getOtherAssetBalance* metodunu çağırır.
+Sözleşme fonksiyonu *queryBalance*, Iroha *ServiceContract* API'ının *getAssetBalance* metodunu çağırır.
 
 Durum 3. Iroha'nın durumunu değiştirme
 --------------------------------------
@@ -196,16 +208,16 @@ Sözleşme kodu aşağıdaki gibidir:
 	    }
 
 	    // Queries the balance in _asset of an Iroha _account
-	    function transferAsset(string memory src, string memory dst, 
-	                           string memory asset, string memory amount) public 
+	    function transferAsset(string memory src, string memory dst,
+	                           string memory asset, string memory amount) public
 	                    returns (bytes memory result) {
 	        bytes memory payload = abi.encodeWithSignature(
-	            "transferOtherAsset(string,string,string,string)", 
-	            src, 
+	            "transferAsset(string,string,string,string)",
+	            src,
 	            dst,
 	            asset,
 	            amount);
-	        (bool success, bytes memory ret) = 
+	        (bool success, bytes memory ret) =
 	            address(serviceContractAddress).delegatecall(payload);
 	        require(success, "Error calling service contract function");
 
@@ -216,7 +228,7 @@ Sözleşme kodu aşağıdaki gibidir:
 
 
 Iroha'nın durumunu sorgulamaya benzer bir şekilde, bir komut ikincisini değiştirmek için gönderilebilir.
-Üstteki örnekte `ServiceContract <burrow.html#running-native-iroha-commands-in-evm>`_'ın API metodu *transferOtherAssetBalance* Iroha hesabı *src*'den *dst* hesabına *varlığın* bir *miktarını* gönderdi. Elbette, eğer işlem yaratıcı bu işlemi yürütmek için yeterli izinlere sahipse.
+Üstteki örnekte `ServiceContract <burrow.html#running-native-iroha-commands-in-evm>`_'ın API metodu *transferAssetBalance* Iroha hesabı *src*'den *dst* hesabına *varlığın* bir *miktarını* gönderdi. Elbette, eğer işlem yaratıcı bu işlemi yürütmek için yeterli izinlere sahipse.
 
 
 

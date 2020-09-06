@@ -2,7 +2,7 @@ Sorgular
 ========
 
 Sorgu World State View'in belirli bir bölümüyle ilgili bir istektir — blokzincirinin son durumu.
-Sorgu zincirin içeriklerini değiştiremez ve herhangi bir 
+Sorgu zincirin içeriklerini değiştiremez ve herhangi bir
 kullanıcıya hemen bir cevap döndürür alıcı eş sorguyu işledikten sonra.
 
 Onaylama
@@ -12,8 +12,70 @@ Tüm sorgular için onaylama şunları içerir:
 
 - timestamp — geçmişten olmamalı (eş zamanından 24 saat önce) veya gelecekten (eş zamanına 5 dakika aralığı eklemek)
 - signature of query creator — sorgu yaratıcının kimliğini kontrol etmek için kullanılır
-- query counter — sorgu yaratıcısından her sonraki sorguyla arttırıldığını kontol etmek 
+- query counter — sorgu yaratıcısından her sonraki sorguyla arttırıldığını kontol etmek
 - roles — sorgu yaratıcısının rolüne bağlı olarak: sorgulanmak için uygun durum aralığı aynı hesapla, alandaki hesapla, bütün zincirle ilgili olabilir veya hiç izin verilmez
+
+Result Pagination
+^^^^^^^^^^^^^^^^^
+
+Some queries support `TxPaginationMeta` that allows to customise and sort the query result in different ways what could be used in development.
+Pagination works together with ordering prameters, similar to `ORDER BY in SQL language <https://www.postgresql.org/docs/12/sql-select.html#SQL-ORDERBY>`_ – "the result rows are sorted according to the specified expression (in Iroha – Field). If two rows are equal according to the leftmost expression, they are compared according to the next expression and so on."
+
+Here is how the "expression" is specified:
+
+.. code-block:: proto
+
+    enum Field {
+      kCreatedTime = 0;
+      kPosition = 1;
+    }
+
+There are 2 bases for ordering – on creation time and depending on the position in the block.
+
+There is an ascending and descending directions for each Field:
+
+.. code-block:: proto
+
+    enum Direction {
+      kAscending = 0;
+      kDescending = 1;
+    }
+
+Now, the ordering itself:
+
+.. code-block:: proto
+
+    message Ordering {
+      message FieldOrdering {
+        Field field = 1;
+        Direction direction = 2;
+      }
+      repeated FieldOrdering sequence = 1;
+    }
+
+After ordering is specified, pagination can be executed:
+
+.. code-block:: proto
+
+    message TxPaginationMeta {
+        uint32 page_size = 1;
+        oneof opt_first_tx_hash {
+            string first_tx_hash = 2;
+        }
+        Ordering ordering = 3;
+    }
+
+What is added to the request structure in case of pagination
+------------------------------------------------------------
+
+.. csv-table::
+    :header: "Field", "Description", "Constraint", "Example"
+    :widths: 15, 30, 20, 15
+
+    "Page size", "size of the page to be returned by the query, if the response contains fewer transactions than a page size, then next tx hash will be empty in response", "page_size > 0", "5"
+    "First tx hash", "hash of the first transaction in the page. If that field is not set — then the first transactions are returned", "hash in hex format", "bddd58404d1315e0eb27902c5d7c8eb0602c16238f005773df406bc191308929"
+    "ordering", "how the results should be ordered (before pagination is applied)", "see fields below", "see fields below"
+    "ordering.sequence", "ordeing spec, like in SQL ORDER BY", "sequence of fields and directions", "[{kCreatedTime, kAscending}, {kPosition, kDescending}]"
 
 Motor Alındı Bilgisi
 ^^^^^^^^^^^^^^^^^^^^
@@ -22,7 +84,7 @@ Amaç
 ----
 
 CallEngine komutunun alındı bilgisini geri almak.
-Ethereum JSON RPC API'ının eth.GetTransactionReceipt API çağrısına benzerdir. 
+Ethereum JSON RPC API'ının eth.GetTransactionReceipt API çağrısına benzerdir.
 EVM'in içinde hesaplamalar boyunca yaratılmış olay günlüğüne erişmeye izin verir.
 
 İstek Şeması
@@ -60,8 +122,12 @@ Cevap Şeması
         }
         repeated EngineLog logs = 5;
     }
+    message CallResult {
+        string callee = 1;
+        string result_data = 2;
+    }
     message EngineLog {
-        string address = 1;     // hex string
+        string address = 1;         // hex string
         string data = 2;            // hex string
         repeated string topics = 3; // hex string
     }
@@ -73,15 +139,15 @@ Cevap Yapısı
     :header: "Field", "Description", "Constraint", "Example"
     :widths: 15, 30, 20, 15
 
-    "Command Index", "Index of the CallEngine command in the transaction", "non-negative integer", "0"
-    "Tx Hash", "Hash of the transaction that contained the CallEngine command", "hash in hex format", "5241f70cf3adbc180199c1d2d02db82334137aede5f5ed35d649bbbc75ab2634"
-    "Tx Index", "Index of the transaction in the block", "non-negative integer", "3"
-    "Block Hash", "Hash of the block that contains the transaction with CallEngine command", "hash in hex format", "bf85ed02c52f8aed04e88cca3ce4595000ca10fe7ab5e07fc96f1d005eb6bedc"
-    "Block Height", "Block’s ordinal number in the chain", "non-negative integer", "19"
-    "From", "Transaction sender account ID", "<account_name>@<domain_id>", "admin@test"
-    "To", "EVM address of a contract - the Callee of the original CallEngine command", "20-bytes string in hex representation", "7C370993FD90AF204FD582004E2E54E6A94F2651"
-    "Contract Address", "EVM address of a newly deployed contract", "20-bytes string in hex representation", "7C370993FD90AF204FD582004E2E54E6A94F2651"
-    "Engine Log", "Array of EVM event logs created during smart contract execution. Each log entry is a tuple (Address, [Topic], Data), where Address is the contract caller EVM address, topics are 32-byte strings and Data is an arbitrary length byte array (in hex)", "From Ethereum Yellow Paper: Log entry O ≡ (Oa,(Ot0, Ot1, ...), Od), where Oa ∈ B20 ∧ ∀x ∈ Ot : x ∈ B32 ∧ Od ∈ B", "(577266A3CE7DD267A4C14039416B725786605FF4, [3990DB2D31862302A685E8086B5755072A6E2B5B780AF1EE81ECE35EE3CD3345, 000000000000000000000000969453762B0C739DD285B31635EFA00E24C25628], 0000000000000000000000007203DF5D7B4F198848477D7F9EE080B207E544DD000000000000000000000000000000000000000000000000000000000000006D)"
+    "command_index", "Index of the CallEngine command in the transaction", "non-negative integer", "0"
+    "caller", "caller account of the smart contract", "<account_name>@<domain_id>", "admin@test"
+    "call_result.callee", "address of called contract", "20-bytes string in hex representation", "0000000000000000000000000000000000000000"
+    "call_result.result_data", "the value returned by the contract", "string in hex representation", "00"
+    "contract_address", "EVM address of a newly deployed contract", "20-bytes string in hex representation", "7C370993FD90AF204FD582004E2E54E6A94F2651"
+    "logs", "Array of EVM event logs created during smart contract execution.", "see below", "see below"
+    "logs.[].address", "the contract caller EVM address", "20-bytes string in hex representation", "577266A3CE7DD267A4C14039416B725786605FF4"
+    "logs.[].data", "the logged data", "hex string", "0000000000000000000000007203DF5D7B4F198848477D7F9EE080B207E544DD000000000000000000000000000000000000000000000000000000000000006D"
+    "logs.[].topics", "log topic as in Ethereum", "32-byte strings", "[3990DB2D31862302A685E8086B5755072A6E2B5B780AF1EE81ECE35EE3CD3345, 000000000000000000000000969453762B0C739DD285B31635EFA00E24C25628]"
 
 
 Muhtemel Durumsal Onaylama Hataları
@@ -281,7 +347,8 @@ Amaç
 ----
 
 GetTransactions karışımlarını baz alarak işlemler hakkında bilgi geri almak için kullanılır.
-.. not:: Bu sorgu ancak ve ancak bütün talep edilen karışımlar doğruysa geçerlidir: karşılık gelen işlemler var ve kullanıcı geri almak için yetkiye sahip 
+
+.. not:: Bu sorgu ancak ve ancak bütün talep edilen karışımlar doğruysa geçerlidir: karşılık gelen işlemler var ve kullanıcı geri almak için yetkiye sahip
 
 İstek Şeması
 ------------
@@ -339,33 +406,16 @@ Amaç
 GetPendingTransactions bekleyen (tam olarak imzalanmamış) `çoklu imza işlemlerinin <../../concepts_architecture/glossary.html#multisignature-transactions>`_ bir listesini geri almak için kullanılır
 veya `toplu işlemler <../../concepts_architecture/glossary.html#batch-of-transactions>`__ sorgu yaratıcının hesabı tarafından yayınlandı.
 
-.. not:: Bu sorgu daha hızlı ve daha uygun sorgu cevapları için sayfaları numaralamayı kullanır.
+.. note:: This query uses `pagination <#result-pagination>`_ for quicker and more convenient query responses. Please read about it and specify pagination before sending the query request as well as `the request structure <#what-is-added-to-the-request-structure-in-case-of-pagination>`_.
 
 İstek Şeması
 ------------
 
 .. code-block:: proto
 
-    message TxPaginationMeta {
-        uint32 page_size = 1;
-        oneof opt_first_tx_hash {
-            string first_tx_hash = 2;
-        }
-    }
-
     message GetPendingTransactions {
         TxPaginationMeta pagination_meta = 1;
     }
-
-İstek Yapısı
-------------
-
-.. csv-table::
-    :header: "Field", "Description", "Constraint", "Example"
-    :widths: 15, 30, 20, 15
-
-    "Page size", "maximum amount of transactions returned in the response", "page_size > 0", "5"
-    "First tx hash", "optional - hash of the first transaction in the starting batch", "hash in hex format", "bddd58404d1315e0eb27902c5d7c8eb0602c16238f005773df406bc191308929"
 
 Bütün kullanıcıların yarı-imzalanmış çoklu imzalı (bekleyen) işlemleri sorgulanabilir.
 Maksimum işlem miktarı **page_size** alanı tarafından sınırlandırılabilir bir cevap içerir.
@@ -381,11 +431,11 @@ Bu toplu işlemin eksik bir karışımından dolayı durumsal hatalı sorgu ceva
 Örnek
 -----
 
-Her biri üç işlem içeren iki bekleyen toplu işlem varsa ve bir kullanıcı sayfa boyutu 5 olan 
-bekleyen işlemleri sorgularsa ilk toplu işin işlemleri cevaptadır ve ikinci toplu işe referans da 
+Her biri üç işlem içeren iki bekleyen toplu işlem varsa ve bir kullanıcı sayfa boyutu 5 olan
+bekleyen işlemleri sorgularsa ilk toplu işin işlemleri cevaptadır ve ikinci toplu işe referans da
 belirtilecektir (ilk aslında tek bir işlem olsa bile işlem karışımı ve toplu iş boyutu)
-İkinci toplu işin işlemleri ilk yanıtta bulunmaz çünkü toplu iş birkaç parçaya bölünemez ve bir 
-yanıtta sadece tam toplu işler bulunabilir 
+İkinci toplu işin işlemleri ilk yanıtta bulunmaz çünkü toplu iş birkaç parçaya bölünemez ve bir
+yanıtta sadece tam toplu işler bulunabilir
 
 Cevap Şeması
 ------------
@@ -429,7 +479,7 @@ Bekleyen işlemler edinmek (kullanımdan kaldırılmış)
 Amaç
 ----
 
-GetPendingTransactions bekleyen (tam olarak imzalanmamış) `çok imzalı işlemlerin <../../concepts_architecture/glossary.html#multisignature-transactions>`_ 
+GetPendingTransactions bekleyen (tam olarak imzalanmamış) `çok imzalı işlemlerin <../../concepts_architecture/glossary.html#multisignature-transactions>`_
 bir listesini geri almak için kullanılır
 veya `toplu işlemlerde <../../concepts_architecture/glossary.html#batch-of-transactions>`__ sorgu yaratıcının hesabı tarafından yayınlandı.
 
@@ -479,19 +529,12 @@ Amaç
 
 Bir durumda hesap başına işlemlerin listesine ihtiyaç duyulduğunda, `GetAccountTransactions` sorgusu oluşturulabilir.
 
-.. not:: Bu sorgu daha hızlı ve daha uygun sorgu cevapları için sayfaları numaralamayı kullanır.
+.. note:: This query uses `pagination <#result-pagination>`_ for quicker and more convenient query responses. Please read about it and specify pagination before sending the query request as well as `the request structure <#what-is-added-to-the-request-structure-in-case-of-pagination>`_.
 
 İstek Şeması
 ------------
 
 .. code-block:: proto
-
-    message TxPaginationMeta {
-        uint32 page_size = 1;
-        oneof opt_first_tx_hash {
-            string first_tx_hash = 2;
-        }
-    }
 
     message GetAccountTransactions {
         string account_id = 1;
@@ -506,8 +549,6 @@ Bir durumda hesap başına işlemlerin listesine ihtiyaç duyulduğunda, `GetAcc
     :widths: 15, 30, 20, 15
 
     "Account ID", "account id to request transactions from", "<account_name>@<domain_id>", "makoto@soramitsu"
-    "Page size", "size of the page to be returned by the query, if the response contains fewer transactions than a page size, then next tx hash will be empty in response", "page_size > 0", "5"
-    "First tx hash", "hash of the first transaction in the page. If that field is not set — then the first transactions are returned", "hash in hex format", "bddd58404d1315e0eb27902c5d7c8eb0602c16238f005773df406bc191308929"
 
 Cevap Şeması
 ------------
@@ -553,19 +594,12 @@ Amaç
 
 `GetAccountAssetTransactions` sorgusu verilen hesap ve varlık ile ilişkili bütün işlemleri geri döndürür.
 
-.. not:: Bu sorgu sorgu cevapları için sayfaları numaralamayı kullanır.
+.. note:: This query uses `pagination <#result-pagination>`_ for quicker and more convenient query responses. Please read about it and specify pagination before sending the query request as well as `the request structure <#what-is-added-to-the-request-structure-in-case-of-pagination>`_.
 
 İstek Şeması
 ------------
 
 .. code-block:: proto
-
-    message TxPaginationMeta {
-        uint32 page_size = 1;
-        oneof opt_first_tx_hash {
-            string first_tx_hash = 2;
-        }
-    }
 
     message GetAccountAssetTransactions {
         string account_id = 1;
@@ -582,8 +616,6 @@ Amaç
 
     "Account ID", "account id to request transactions from", "<account_name>@<domain_id>", "makoto@soramitsu"
     "Asset ID", "asset id in order to filter transactions containing this asset", "<asset_name>#<domain_id>", "jpy#japan"
-    "Page size", "size of the page to be returned by the query, if the response contains fewer transactions than a page size, then next tx hash will be empty in response", "page_size > 0", "5"
-    "First tx hash", "hash of the first transaction in the page. If that field is not set — then the first transactions are returned", "hash in hex format", "bddd58404d1315e0eb27902c5d7c8eb0602c16238f005773df406bc191308929"
 
 Cevap Şeması
 ------------
