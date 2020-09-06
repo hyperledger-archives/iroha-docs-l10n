@@ -63,7 +63,7 @@ Betiğimizi bu amaç için kullanmanız teşvik edilir, `burada <https://github.
 Zor kullanarak şema versiyonunuzu ayarlamak için (örneğin herhangi bir `geçiş süreci <#changing-iroha-version-migration>`__ olmaksızın), `--force_schema_version` bayrağı ile betiği başlatın ve şemanızı yaratmak için kullanılan Iroha ikili versiyonunu geçin.
 
 .. uyarı::
-  
+
   Şema versiyon numaralarını zorla yazmadan önce, şemayı yaratan irohad versiyonunu iki kez kontrol ediniz.
   Şema numaralarını zorladığınızda hiç bir kontrol yapılmaz, bu nedenle gelecekte (sonraki geçiş boyunca) durum veritabanını kırmak kolaydır.
 
@@ -74,5 +74,9 @@ Gereksiz olabilmesine rağmen (Iroha, şema uyumsuzsa başlatmayı reddedecektir
 Bunun için standart `PostgreSQL kılavuzunu <https://www.postgresql.org/docs/current/backup.html>`__ kullanarak geçişten önce bir veritabanı yedeklemesi gerçekleştirmeniz önerilir.
 
 Geçişi gerçekleştirmek için, lütfen `betiğimizi <https://github.com/hyperledger/iroha-state-migration-tool/blob/master/state_migration.py>`__ kullanınız.
+
 Şema bilgilerini veritabanından yükler ve geçiş adımlarıyla eşleştirir (varsayılan olarak, geçiş senaryoları migration_data dizininde betik olarak aynı dosyada tanımlanır).
 Sonrasında, veritabanınızı istenen sürüme getirecek ve birini seçmenizi isteyecek tüm geçiş yollarını bulacak.
+
+.. seealso::
+	`Here <https://github.com/hyperledger/iroha-state-migration-tool/blob/master/README.md>`_ are some details about different migration cases and examples you can check out to perform migration
