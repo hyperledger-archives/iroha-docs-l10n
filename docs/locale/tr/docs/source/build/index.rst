@@ -25,8 +25,8 @@ Iroha'nın başarılı bir şekilde kurulumu için ortamın konfigüre edilmesin
 Bunu yapmanın birkaç yolu var ve hepsini anlatacağız.
 
 Şu anda Unix benzeri sistemleri destekliyoruz (temel olarak popüler Linux dağıtımlarını
-ve MacOS'u hedefliyoruz). Windows'unuz varsa veya bütün bağımlılıkları yüklemek için 
-zaman harcamak istemiyorsanız Docker ortamını kullanmayı düşünmeyi 
+ve MacOS'u hedefliyoruz). Windows'unuz varsa veya bütün bağımlılıkları yüklemek için
+zaman harcamak istemiyorsanız Docker ortamını kullanmayı düşünmeyi
 isteyebilirsiniz. Ayrıca, Windows kullanıcıları `WSL <https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux>`_
 kullanmayı düşünebilir.
 
@@ -52,8 +52,8 @@ Lütfen hızlı erişim için aşağıdaki tercih ettiğiniz platformu seçiniz:
 Docker
 ^^^^^^
 
-Öncelikle, ``docker`` ve ``docker-compose``'u yüklemeniz gerekli. 
-`Docker'ın websitesinden <https://www.docker.com/community-edition/>`_ kurulumunu 
+Öncelikle, ``docker`` ve ``docker-compose``'u yüklemeniz gerekli.
+`Docker'ın websitesinden <https://www.docker.com/community-edition/>`_ kurulumunu
 nasıl yapabileceğinizi okuyabilirsiniz.
 
 .. not:: Lütfen, mevcut son çıkan docker daemon ve docker-compose'u kullanın.
@@ -65,7 +65,7 @@ dizine klonlamalısınız:
 
   git clone -b master https://github.com/hyperledger/iroha --depth=1
 
-.. ipucu:: ``--depth=1`` seçeneği yalnızca son işlemeyi indirmemize izin verir 
+.. ipucu:: ``--depth=1`` seçeneği yalnızca son işlemeyi indirmemize izin verir
   ve zaman ve bant genişliğinden tasarruf etmemizi sağlar. Eğer bütün işleme geçmişine
   erişmek istiyorsanız, bu seçeneği atlayabilirsiniz.
 
@@ -84,7 +84,7 @@ Bu betiği gerçekleştirdikten sonra, aşağıdakiler gerçekleştirilecek:
 
 #. Betik Iroha ile halihazırda çalışan konteynerlerin olup olmadığını kontrol eder. Yeni konteyner kabuğu ile başarılı bir şekilde tamamlanır.
 
-#. Betik ``hyperledger/iroha:develop-build`` ve ``postgres`` görüntülerini yükler. ``hyperledger/iroha:develop-build`` görüntüsü bütün geliştirme bağımlılıklarını içerir ve ``ubuntu:18.04``'nun üstüne dayanmaktadır. ``postgres`` görüntüsü Iroha'nın başlaması ve çalışması için gereklidir.
+#. Betik ``hyperledger/iroha:develop-build`` ve ``postgres`` görüntülerini yükler. ``hyperledger/iroha:develop-build`` görüntüsü bütün geliştirme bağımlılıklarını içerir ve ``ubuntu::20.04``'nun üstüne dayanmaktadır. ``postgres`` görüntüsü Iroha'nın başlaması ve çalışması için gereklidir.
 
 #. İki konteyner yaratılır ve başlatılır.
 
@@ -110,8 +110,8 @@ Debian tabanlı Linux dağıtımında ortam bağımlılıklarını yüklemek iç
   build-essential ninja-build \
   git ca-certificates tar curl unzip cmake
 
-.. not::  Eğer Iroha'yı aktif bir şekilde geliştirmeye ve paylaşılan kütüphaneler 
-  oluşturmaya istekliyseniz, lütfen CMake'in `son sürümünü 
+.. not::  Eğer Iroha'yı aktif bir şekilde geliştirmeye ve paylaşılan kütüphaneler
+  oluşturmaya istekliyseniz, lütfen CMake'in `son sürümünü
   <https://cmake.org/download/>`_ kurmayı düşünün.
 
 Şimdi `Iroha'nın bağımlılıklarını kurmaya <#installing-dependencies-with-vcpkg-dependency-manager>`_ hazırsınız.
@@ -121,13 +121,13 @@ Debian tabanlı Linux dağıtımında ortam bağımlılıklarını yüklemek iç
 MacOS
 ^^^^^
 
-Iroha'yı sıfırdan oluşturmak ve aktif bir şekilde geliştirmek istiyorsanız, lütfen Homebrew 
+Iroha'yı sıfırdan oluşturmak ve aktif bir şekilde geliştirmek istiyorsanız, lütfen Homebrew
 ile bütün ortam bağımlılıklarını yüklemek için aşağıdaki kodu kullanın:
 
 .. code-block:: shell
 
   xcode-select --install
-  brew install cmake ninja git gcc@7
+  brew install cmake ninja git gcc@9
 
 .. ipucu:: Homebrew'i yüklemek için lütfen çalıştırın
 
@@ -206,7 +206,7 @@ Vcpkg kurulumundan sonra size alttaki gibi bir CMake build parameter verilecekti
 Sonra kullanmak için bir yere kaydedin ve `Iroha'nın Oluşturulması <#build-process>`_ bölümüne gidin.
 
 .. not:: Eğer Iroha'nın 32 bit versiyonunu oluşturmayı planlıyorsanız -
-  üstte bahsedilen bütün kütüphaneleri öneki ``x64`` yerine 
+  üstte bahsedilen bütün kütüphaneleri öneki ``x64`` yerine
   ``x86`` olarak yüklemeniz gerekmektedir.
 
 Oluşturma Süreci
@@ -223,9 +223,9 @@ seçtiğiniz dizine klonlayabilirsiniz.
   git clone -b master https://github.com/hyperledger/iroha
   cd iroha
 
-.. ipucu:: Eğer Docker ile önkoşulları yüklediyseniz, Iroha'nın klonuna 
-  ihtiyaç duymayacaksınız, çünkü ``run-iroha-dev.sh``'ı çalıştırdığınızda Iroha 
-  kaynak kodu klasörüne eklenir. Ana ortamınız ile kaynak kodu dosyalarını 
+.. ipucu:: Eğer Docker ile önkoşulları yüklediyseniz, Iroha'nın klonuna
+  ihtiyaç duymayacaksınız, çünkü ``run-iroha-dev.sh``'ı çalıştırdığınızda Iroha
+  kaynak kodu klasörüne eklenir. Ana ortamınız ile kaynak kodu dosyalarını
   düzenleyebilir ve docker container'ının içinde oluşturabilirsiniz.
 
 
@@ -239,10 +239,18 @@ Iroha'yı oluşturmak için şu komutları kullanın:
   cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Ninja"
   cmake --build build --target irohad -- -j<number of threads>
 
-.. not:: Docker'da bir araç-zinciri dosyasına giden yol ``/opt/dependencies/scripts/buildsystems/vcpkg.cmake``. Diğer 
+.. warning:: If you want to use tests later, instead of building `irohad` target, you need to use this:
+
+.. code-block:: shell
+
+  cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake -G "Ninja"
+  cmake --build build --target all -- -j<number of threads>
+
+.. not:: Docker'da bir araç-zinciri dosyasına giden yol ``/opt/dependencies/scripts/buildsystems/vcpkg.cmake``. Diğer
   ortamlarda lütfen önceki adımlarda kullandığınız yolu kullanın.
 
 İş-dizisi sayısı platforma bağlı olarak farklı bir şekilde tanımlanacaktır:
+
 - Linux'ta: ``nproc`` aracılığıyla.
 - MacOS'ta: ``sysctl -n hw.ncpu`` ile.
 - Windows'ta: ``echo %NUMBER_OF_PROCESSORS%`` kullan.
@@ -299,8 +307,9 @@ Packaging Specific Parameters
 
 Çalıştırma Testleri (isteğe bağlı)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+First of all, please make sure you `built Iroha correctly <#id8>`_ for the tests.
 
-Iroha oluşturulduktan sonra, daemon'un çalışabilirliğini test etmek 
+Iroha oluşturulduktan sonra, daemon'un çalışabilirliğini test etmek
 için çalıştırma testi yapmak iyi bir fikir. Bu kod ile testi çalıştırabilirsiniz:
 
 .. code-block:: shell

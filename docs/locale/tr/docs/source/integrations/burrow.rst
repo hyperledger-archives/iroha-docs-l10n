@@ -77,7 +77,7 @@ Bu iki metodun imzası şöyle görünür:
 
 .. ipucu:: Geliştiricilerin perspektifinden yerel bir sözleşmenin fonksiyonunu çağırmak ikincisinin adresi biliniyorsa, başka bir akıllı sözleşmenin metodu çağırmaktan farklı değildir:
 
-	bytes memory payload = abi.encodeWithSignature("getOtherAssetBalance(string,string)", "myacc@test", "coin#test");
+	bytes memory payload = abi.encodeWithSignature("getAssetBalance(string,string)", "myacc@test", "coin#test");
 
 	(bool success, bytes memory ret) = address(0xA6ABC17819738299B3B2C1CE46D55C74F04E290C).delegatecall(payload);
 

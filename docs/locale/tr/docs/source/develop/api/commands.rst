@@ -112,7 +112,7 @@ Amaç
 ^^^^
 
 İmza sahibi ekleme komutunun amacı hesaba tanımlayıcı eklemektir.
-Böyle bir tanımlayıcı başka bir aygıtın genel anahtarı veya başka bir kullanıcının genel anahtarıdır. 
+Böyle bir tanımlayıcı başka bir aygıtın genel anahtarı veya başka bir kullanıcının genel anahtarıdır.
 
 Şema
 ^^^^
@@ -139,7 +139,7 @@ Onaylama
 
 İki durum:
 
-    Durum 1. İşlem yaratıcısı hesabına CanAddSignatory yetkilendirmesine sahip bir imza sahibi eklemek ister. 
+    Durum 1. İşlem yaratıcısı hesabına CanAddSignatory yetkilendirmesine sahip bir imza sahibi eklemek ister.
 
     Durum 2. CanAddSignatory işlem yaratıcıya verildi.
 
@@ -215,7 +215,7 @@ Akıllı sözleşmenin çalışması bu komutu içeren bir işlemin bir bloğa k
 .. code-block:: proto
 
     message CallEngine {
-        string caller = 1;  // hex string
+        string caller = 1;
         oneof opt_callee {
             string callee = 2;  // hex string
         }
@@ -236,7 +236,7 @@ Onaylama
 ^^^^^^^^
 
 1. Arayan geçerli bir Iroha hesabı ID'sidir.
-2. İşlem yaratıcısı CanCallEngine yetkisiyle bir rolü vardır.
+2. The transaction creator has a role with either can_call_engine or can_call_engine_on_my_behalf permission
 
 Muhtemel Durumsal Onaylama Hataları
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -608,13 +608,13 @@ Onaylama
 ^^^^^^^^
 
 1. İmza sahibi silindiğinde, **boyutun(imza sahibinin) sabit niceliği >= yeterli çoğunluk** olup olmadığını kontrol etmeliyiz
-2. İmza sahibi hesaba daha önceden eklenmiş olmalıdır 
+2. İmza sahibi hesaba daha önceden eklenmiş olmalıdır
 
 İki durum:
 
     Durum 1. İşlem yaratıcısı hesabından imza sahibini kaldırmak istediğinde ve CanRemoveSignatory yetkisine sahip olduğunda
 
-    Durum 2. CanRemoveSignatory işlem yaratıcısına verildi 
+    Durum 2. CanRemoveSignatory işlem yaratıcısına verildi
 
 Muhtemel Durumsal Onaylama Hataları
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -677,7 +677,7 @@ Hesap ayrıntılarını ayarlama
 Amaç
 ^^^^
 
-Hesap ayrıntılarını ayarlama komutunun amacı verilen hesap için anahtar-değer bilgisini ayarlamaktır 
+Hesap ayrıntılarını ayarlama komutunun amacı verilen hesap için anahtar-değer bilgisini ayarlamaktır
 
 .. uyarı:: Eğer zaten depoda verilen anahtar için bir değer varsa yeni değer ile değiştirilecektir
 
@@ -710,7 +710,7 @@ Onaylama
 
     Durum 1. İşlem yaratıcı diğer kişinin hesabının hesap detayını ayarlamak istediğinde ve yaratıcı `can_set_detail <../api/permissions.html#can-set-detail>`_ yetkisine sahip olduğunda.
 
-    Durum 2. `can_set_my_account_detail <../api/permissions.html#can-set-my-account-detail>`_ hedef hesabın hesap detaylarını ayarlamasına izin vermek için işlem yaratıcısına verilir.  
+    Durum 2. `can_set_my_account_detail <../api/permissions.html#can-set-my-account-detail>`_ hedef hesabın hesap detaylarını ayarlamasına izin vermek için işlem yaratıcısına verilir.
 
     Durum 3. Hesap sahibi kendi hesap detaylarını ayarlamak isterken – yetkiye ihtiyaç duymaz.
 
@@ -857,7 +857,7 @@ Yapı
     "Source account ID", "ID of the account to withdraw the asset from", "already existent", "makoto@soramitsu"
     "Destination account ID", "ID of the account to send the asset to", "already existent", "alex@california"
     "Asset ID", "ID of the asset to transfer", "already existent", "usd#usa"
-    "Description", "Message to attach to the transfer", "Max length of description (set in genesis block, by default is 64)", "here's my money take it"
+    "Description", "Message to attach to the transfer", "Max length of description (set in genesis block, by default is 100*1024)", "here's my money take it"
     "Amount", "amount of the asset to transfer", "0 <= precision <= 255", "200.20"
 
 Onaylama
@@ -867,6 +867,7 @@ Onaylama
 2. Miktar pozitif bir sayıdır ve varlık hassasiyeti varlık tanımı ile tutarlıdır
 3. Kaynak hesap transfer etmek için yeterli miktarda varlığa sahiptir ve sıfır değildir
 4. Kaynak hesap para transfer edebilir ve hedef hesap para alabilir (rolleri bu yetkilere sahiptir)
+5. Description length is less than 100*1024 (one hundred kilobytes) and less than 'MaxDescriptionSize' setting value if set.
 
 Muhtemel Durumsal Onaylama Hataları
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -881,6 +882,7 @@ Muhtemel Durumsal Onaylama Hataları
     "5", "No such asset found", "Cannot find such asset", "Make sure asset name and precision are correct"
     "6", "Not enough balance", "Source account's balance is too low to perform the operation", "Add asset to account or choose lower value to subtract"
     "7", "Too much asset to transfer", "Resulting asset quantity of destination account would exceed the allowed maximum", "Make sure that the final destination value is less than 2^256 / 10^asset_precision"
+    "8", "Too long description", "Too long description", "Ensure that description length matches the criteria above (or just shorten it)"
 
 .. [#f1] https://www.ietf.org/rfc/rfc1035.txt
 .. [#f2] https://www.ietf.org/rfc/rfc1123.txt
@@ -905,6 +907,7 @@ Hesap detaylarını ayarlamak ve karşılaştırmak komutunun amacı eğer eski 
         oneof opt_old_value {
             string old_value = 4;
         }
+        bool check_empty = 5;
     }
 
 .. not::
@@ -922,6 +925,7 @@ Yapı
     "Key", "key of information being set", "`[A-Za-z0-9_]{1,64}`", "Name"
     "Value", "new value for the corresponding key", "length of value ≤ 4096", "Artyom"
     "Old value", "current value for the corresponding key", "length of value ≤ 4096", "Artem"
+    "check_empty", "if true, empty old_value in command must match absent value in WSV; if false, any old_value in command matches absent in WSV (legacy)", "bool", "true"
 
 Onaylama
 ^^^^^^^^
