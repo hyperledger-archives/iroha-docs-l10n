@@ -1,0 +1,1 @@
+../../../../../../iroha/docs/source/iroha_rst/permissions_compiler.py
