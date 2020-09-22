@@ -1,0 +1,1 @@
+../../../../../../iroha/docs/source/sphinx_extensions/iroha_permissions.py
